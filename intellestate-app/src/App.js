@@ -1,13 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
-import Navibar from './components/Navibar';
 import HomepageLayout from './layout/layout';
+import CarouselHomePg from './components/CarouselHomePg';
 
 function App() {
   return (
     <div className="App">
-      <Navibar />
       <HomepageLayout />
+      <CarouselHomePg />
     </div>
   );
 }
