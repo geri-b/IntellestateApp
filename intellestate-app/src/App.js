@@ -1,12 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
-import Navibar from './components/Navibar';
 import HomepageLayout from './layout/layout';
+import HomepageCarousel from './components/HompageCarousel';
 
 function App() {
   return (
     <div className="App">
-      <Navibar />
       <HomepageLayout />
     </div>
   );
