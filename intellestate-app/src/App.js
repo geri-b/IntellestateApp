@@ -25,7 +25,7 @@ function App() {
   return (
     <div className="App">
       <Navibar handlePageChange={handlePageChange} />
-      <ServerTest/>
+      <ServerTest />
       {pageContent}
     </div>
   );
