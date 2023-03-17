@@ -23,7 +23,9 @@ function BrowsPageLayout() {
                 </Col>
             </Row>
         </Col>
-        <Col>dnfin</Col>
+        <Col>
+        dnfin
+        </Col>
       </Row>
     </Container>
   );
