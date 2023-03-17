@@ -3,8 +3,6 @@ import img2 from '../images/HomePage/CarouselSlide2.jpg';
 import img3 from '../images/HomePage/CarouselSlide3.jpg';
 import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import { Container } from 'react-bootstrap';
-import '../App.css';
 
 function HomepageCarousel() {
   const [index, setIndex] = useState(0);
@@ -14,8 +12,7 @@ function HomepageCarousel() {
   };
 
   return (
-    <Container fluid>
-    <Carousel classname='carousel-fullscreen' activeIndex={index} onSelect={handleSelect}>
+    <Carousel activeIndex={index} onSelect={handleSelect}>
       <Carousel.Item>
         <img
           className="d-block w-100"
@@ -24,10 +21,10 @@ function HomepageCarousel() {
         />
         <Carousel.Caption>
           <h3>About Intellestate</h3>
-          <p className='caption-box'><b>
+          <p>
             Here at Intellestate, we want to provide you with an "intellegent" property purchasing experience. Our goal is to 
             supply our users with essencial information about properties you can only find here!
-            </b></p>
+          </p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
@@ -38,10 +35,10 @@ function HomepageCarousel() {
         />
         <Carousel.Caption>
           <h3>Find a property</h3>
-          <p className='caption-box'><b>
+          <p>
             Use our real estate search feature to look for a property you are interested in, or just search for a general area. 
             As you view properties, our intellegent recomendation system will present homes you may be interested in.
-            </b></p>
+          </p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
@@ -53,14 +50,13 @@ function HomepageCarousel() {
 
         <Carousel.Caption>
           <h3>Buisness Hotspot Analisys</h3>
-          <p className='caption-box'><b>
+          <p>
             Home owners are not the only group that need access to a realestate marketplace. Many times buisness owners are in need of a way 
             to find an ideal place to run a buisness from. Our hotspot anlysis will show you if an area is "hot" to give your busness a better chance at thriving.
-          </b></p>
+          </p>
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
-    </Container>
   );
 }
 
