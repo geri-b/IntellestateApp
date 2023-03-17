@@ -1,7 +1,6 @@
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Navibar from "../components/Navibar";
 import HomepageCarousel from "../components/HompageCarousel";
 import SearchBar from "../components/Searchbar";
 import Cards from "../components/Cards";
@@ -18,6 +17,7 @@ function HomepageLayout() {
         }}>
         <Col className="mx-auto d-flex justify-content-center" style={{width: "100%"}}>
           <HomepageCarousel/>
+
         </Col>
         
       </Row>
