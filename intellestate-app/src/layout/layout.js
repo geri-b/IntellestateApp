@@ -4,6 +4,7 @@ import Col from "react-bootstrap/Col";
 import HomepageCarousel from "../components/HompageCarousel";
 import SearchBar from "../components/Searchbar";
 import Cards from "../components/Cards";
+
 function HomepageLayout() {
   return (
     <Container fluid='true'>

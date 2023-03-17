@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 
 app.get('/income_rating', (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
-    const sql = 'SELECT * FROM income_rating LIMIT 100';
+    const sql = 'SELECT * FROM parcel_price_rating LIMIT 2000';
     conn.query(sql, (error, results, fields) => {
         if (error) throw error;
         res.send(results);
