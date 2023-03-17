@@ -16,8 +16,8 @@ function HomepageLayout() {
       <Row style={{
         background: 'conic-gradient(at 50% 50%, #FFFFFF, #F5F5DC 50%, #FFFFFF 90%)',
         }}>
-        <Col sm={12} md={10} lg={7} xl={7} xxl={6} className="mx-auto d-flex justify-content-center">
-          <HomepageCarousel />
+        <Col className="mx-auto d-flex justify-content-center" style={{width: "100%"}}>
+          <HomepageCarousel/>
         </Col>
         
       </Row>
