@@ -1,24 +1,6 @@
-import { useState } from 'react';
-import { DropdownButton, Dropdown} from 'react-bootstrap';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
 
-function BuildingSQFT() {
-    //Price Range Hooks
-    const [minSQFT, setminSQFT] = useState('');
-    const [maxSQFT, setmaxSQFT] = useState('');
-
-
-    const handleminSQFTChange = (event) => {
-        setminSQFT(event.target.value);
-    };
-
-    const handlemaxSQFTChange = (event) => {
-        setmaxSQFT(event.target.value);
-    };
-
-    const handleApplyClick = () => {
-        // Do something with the min and max price values
-        console.log(`Selected price range: ${minSQFT} - ${maxSQFT}`);
-    };
+function BuildingSQFT({ minSQFT, maxSQFT, onMinSQFTChange, onMaxSQFTChange, onApplyClick }) {
 
     return (
         <DropdownButton
@@ -35,7 +17,7 @@ function BuildingSQFT() {
                     id="min-sqft-input"
                     placeholder="Enter min SQFT"
                     value={minSQFT}
-                    onChange={handleminSQFTChange}
+                    onChange={onMinSQFTChange}
                 />
             </div>
             <div className="m-2">
@@ -48,11 +30,11 @@ function BuildingSQFT() {
                     id="max-sqft-input"
                     placeholder="Enter max SQFT"
                     value={maxSQFT}
-                    onChange={handlemaxSQFTChange}
+                    onChange={onMaxSQFTChange}
                 />
             </div>
             <Dropdown.Divider />
-            <Dropdown.Item onClick={handleApplyClick}>Apply</Dropdown.Item>
+            <Dropdown.Item onClick={onApplyClick}>Apply</Dropdown.Item>
         </DropdownButton>
     );
 }
