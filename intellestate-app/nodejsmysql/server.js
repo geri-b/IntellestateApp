@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
 const fs = require('fs');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -19,7 +20,8 @@ const corsOptions = {
     origin: ['http:localhost:3000', 'http:localhost:3001']
 };
 
-app.use(cors(corsOptions));
+app.use(cors({ origin: '*' }))
+app.use(bodyParser.json());
 
 const conn = new mysql.createConnection(config);
 
@@ -38,7 +40,23 @@ app.get('/income_rating', (req, res) => {
     });
 });
 
+
+app.post("/search", (req, res) => {
+    const { city } = req.body;
+
+    const sql = `SELECT * FROM parcel_ratings WHERE CITY = '${city}'`;
+    conn.query(sql, (error, results, fields) => {
+        if (error) {
+            console.error('Error executing query:', error);
+            res.status(500).json({ error: 'An error occurred while executing the query.' });
+            return;
+        }
+        res.send(results);
+    });
+});
+
 const PORT = process.env.PORT || 3001;
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
