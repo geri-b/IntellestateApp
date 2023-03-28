@@ -8,7 +8,7 @@ function PropertyCardGrid({ properties }) {
     return (
         <div>
             {properties.map(property => (
-                <Row key={property.parcelpin}>
+                <Row key={property.parcelpin} className='my-2'>
                     <Col>
                         <PropertyCard property={property} />
                     </Col>

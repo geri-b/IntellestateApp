@@ -40,11 +40,10 @@ app.get('/income_rating', (req, res) => {
     });
 });
 
-
 app.post("/search", (req, res) => {
     const { city } = req.body;
 
-    const sql = `SELECT * FROM parcel_ratings WHERE CITY = '${city}'`;
+    const sql = `SELECT * FROM parcel_ratings WHERE CITY = '${city}' LIMIT 10`;
     conn.query(sql, (error, results, fields) => {
         if (error) {
             console.error('Error executing query:', error);
@@ -54,6 +53,7 @@ app.post("/search", (req, res) => {
         res.send(results);
     });
 });
+
 
 const PORT = process.env.PORT || 3001;
 

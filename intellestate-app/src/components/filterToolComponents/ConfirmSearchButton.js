@@ -5,7 +5,7 @@ function ConfirmSearchButton({onSearchClick}) {
 
   return (
     <>
-      <Button variant="primary" onClick={onSearchClick}>Search</Button>{''}
+      <Button style={{maxWidth: '200px'}} variant="primary" onClick={onSearchClick}>Search</Button>{''}
     </>
   );
 }

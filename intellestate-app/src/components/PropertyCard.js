@@ -1,40 +1,100 @@
 import Card from 'react-bootstrap/Card';
+import { Row, Col, Button, Dropdown } from 'react-bootstrap';
+import '../App.css';
 
 function PropertyCard({ property }) {
 
     return (
-        <Card>
-            <Card.Body>
-                <Card.Title>{property.full_address}</Card.Title>
-                <Card.Text>
-                    Price: ${property.price}<br />
-                    Bedrooms: {property.bedroom}<br />
-                    Bathrooms: {property.bathroom}<br />
-                    Square feet: {property.square_ft}<br />
-                    Price Rating (County): {property.county_price_rating}<br />
-                    Price Rating (City): {property.city_price_rating}<br />
-                    Block Population: {property.total_tract_population}<br />
-                    White Percentage: {Math.round(property.white*100)}%<br />
-                    Black Percentage: {Math.round(property.black*100)}%<br />
-                    Asian Percentage: {Math.round(property.asian*100)}%<br />
-                    Indigenous Percentage: {(property.indigenous*100).toFixed(1)}%<br />
-                    Mulitrace Percentage: {Math.round(property.multirace*100)}%<br />
-                    Hispanic Percentage: {Math.round(property.hispanic*100)}%<br />
-                    Pacific Percentage: {(property.pacific*100).toFixed(1)}%<br />
-                    Diversity Score: {Math.round(property.score_adjusted*100)}%<br />
-                    total_crimes: {property.total_crimes}<br />
-                    city_population: {property.city_population}<br />
-                    crime_ratio: {Math.round(property.crime_ratio*100)}<br />
-                    Indsutry1: {property.indsutry1}<br />
-                    indsutry2: {property.indsutry2}<br />
-                    indsutry3: {property.indsutry3}<br />
-                    indsutry4: {property.indsutry4}<br />
-                    indsutry5: {property.indsutry5}<br />
-                    
+        <Dropdown>
+            <Dropdown.Toggle as={Button} variant='light' style={{width: '100%'}}>
+                <Card>
+                    <Card.Body>
+                        <Card.Title>{property.FULL_ADDR}</Card.Title>
+                        <Card.Text >
+                            <Row>
+                                <Col>
+                                    <Row className='justify-content-center'>
+                                        Price
+                                    </Row>
+                                    <div className='circle-container'>
+                                        <div className='circle'>
+                                            {Math.round(property.p_rating * 100) / 100}
+                                        </div>
+                                    </div>
+                                    
+                                </Col>
+                                <Col>
+                                    <Row className='justify-content-center'>
+                                        Income
+                                    </Row>
+                                    <div className='circle-container'>
+                                        <div className='circle'>
+                                            {Math.round(property.i_rating * 100) / 100}
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col>
+                                    <Row className='justify-content-center'>
+                                        Diversity
+                                    </Row>
+                                    <div className='circle-container'>
+                                        <div className='circle'>
+                                            {Math.round(property.d_rating * 100) / 100}
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col>
+                                    <Row className='justify-content-center'>
+                                        Crime
+                                    </Row>
+                                    <div className='circle-container'>
+                                        <div className='circle'>
+                                            {Math.round(property.c_rating * 100) / 100}
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col>
+                                    <Row className='justify-content-center'>
+                                        School
+                                    </Row>
+                                    <div className='circle-container'>
+                                        <div className='circle'>
+                                            {Math.round(property.s_rating * 100) / 100}
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col className='my-2'>
+                                    <Row className='justify-content-center my-2'>
+                                        {property.TOTAL_SQUA} sq
+                                    </Row>
+                                    <Row className='justify-content-center'>
+                                        {property.Units} Building
+                                    </Row>
+                                </Col>
+                                <Col className='my-2'>
+                                    <Row className='justify-content-center my-2'>
+                                        ${property.GCERT3}
+                                    </Row>
+                                    <Row className='justify-content-center'>
+                                        {property.PROPERTY_C}
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </Card.Text>
+                    </Card.Body>
+                </Card>
+            </Dropdown.Toggle>
 
-                </Card.Text>
-            </Card.Body>
-        </Card>
+            <Dropdown.Menu>
+                <Dropdown.Header as="div">
+                    <Card>
+                        <Card.Body>
+                            <Card.Title>{property.FULL_ADDR}</Card.Title>
+                        </Card.Body>
+                    </Card>
+                </Dropdown.Header>
+            </Dropdown.Menu>
+        </Dropdown>
     );
 }
 

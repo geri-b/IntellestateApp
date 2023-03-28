@@ -124,6 +124,26 @@ Filter Tools
 .filters-container {
   /* Adjust the background color, padding, and border-radius as needed */
   background-color: #f8f9fa;
-  padding: 2rem;
   border-radius: 8px;
+  width: 100%;
+}
+
+.circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 1 rem;
+  text-align: center;
+}
+
+.circle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
