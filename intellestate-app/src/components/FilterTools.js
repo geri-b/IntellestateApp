@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { Card } from 'react-bootstrap';
 import '../App.css';
 
-function FilterTools() {
+function FilterTools(props) {
   //City Search Hooks
   const [cityName, setCityName] = useState("");
 
@@ -115,6 +115,7 @@ function FilterTools() {
 
       const data = await response.json();
       console.log(data);
+      props.onDataUpdate(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -127,31 +128,33 @@ function FilterTools() {
         <Card.Header>Location Filters</Card.Header>
         <Card.Body>
           <Row className="my-2">
-            <Col xs={12} sm={6} md={4} className="my-2">
+            <Col xs={12} className="my-2">
               <CitySearchBox cityName={cityName} onCityNameChange={handleCityNameChange} />
             </Col>
-            <Col xs={12} sm={6} md={4} className="my-2">
+            <Col xs={12} className="my-2">
               <ZipcodeSearchBox zipcodeName={zipcodeName} onzipcodeNameChange={handlezipcodeNameChange} />
             </Col>
-            <Col xs={12} sm={12} md={4} className="my-2">
+            <Col xs={12} className="my-2">
               <StreetNameSearchBox streetName={streetName} onstreetNameChange={handlestreetNameChange} />
             </Col>
           </Row>
         </Card.Body>
       </Card>
-
+      <Row className='justify-content-center my-3'>
+        <ConfirmSearchButton onSearchClick={handleSubmit} />
+      </Row>
       <Card className="mb-3">
         <Card.Header>Property Filters</Card.Header>
         <Card.Body>
           <Row className="my-2">
-            <Col xs={12} sm={6} md={4} xlg={3} className="my-2">
+            <Col xs={12}className="my-2">
               <PropertyTypeDropdown
                 propertyTypes={propertyTypes}
                 onCheckboxChange={handlePropertyTypeCheckboxChange}
               />
 
             </Col>
-            <Col xs={12} sm={6} md={4} xlg={3} className="my-2">
+            <Col xs={12}className="my-2">
               <PriceRangeDropdown
                 minPrice={minPrice}
                 maxPrice={maxPrice}
@@ -160,7 +163,7 @@ function FilterTools() {
                 onApplyClick={handlePriceApplyClick}
               />
             </Col>
-            <Col xs={12} sm={6} md={4} xlg={3} className="my-2">
+            <Col xs={12}className="my-2">
               <BuildingSQFT
                 minSQFT={minBuildingSQFT}
                 maxSQFT={maxBuildingSQFT}
@@ -169,7 +172,7 @@ function FilterTools() {
                 onApplyClick={handleBuildingApplyClick}
               />
             </Col>
-            <Col xs={12} sm={6} md={12} xlg={3} className="my-2">
+            <Col xs={12}className="my-2">
               <LandSQFTDropdown
                 minSQFT={minSQFT}
                 maxSQFT={maxSQFT}
@@ -184,7 +187,6 @@ function FilterTools() {
 
       <Row className="my-2">
         <Col xs={12} className="text-center my-2">
-          <ConfirmSearchButton onSearchClick={handleSubmit} />
         </Col>
       </Row>
     </Container>
