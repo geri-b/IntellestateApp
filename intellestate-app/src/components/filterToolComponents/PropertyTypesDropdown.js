@@ -1,25 +1,8 @@
 
-import { useState } from 'react';
 import { Dropdown, Form } from 'react-bootstrap';
 
-function PropertyTypeDropdown() {
-    const [propertyTypes, setPropertyTypes] = useState({
-        residential: false,
-        commercial: false,
-        institutional: false,
-        government: false,
-        industrial: false,
-        agricultural: false,
-        utility: false,
-    });
+function PropertyTypeDropdown({propertyTypes, onCheckboxChange}) {
 
-    const handleCheckboxChange = (e) => {
-        const { name, checked } = e.target;
-        setPropertyTypes((prevState) => ({
-            ...prevState,
-            [name]: checked,
-        }));
-    };
     return (
         <Dropdown>
             <Dropdown.Toggle id="property-type-dropdown-button" variant="primary">
@@ -35,7 +18,7 @@ function PropertyTypeDropdown() {
                             name={type}
                             label={type.charAt(0).toUpperCase() + type.slice(1)}
                             checked={propertyTypes[type]}
-                            onChange={handleCheckboxChange}
+                            onChange={onCheckboxChange}
                             onClick={(e) => e.stopPropagation()}
                         />
                     </Dropdown.Item>

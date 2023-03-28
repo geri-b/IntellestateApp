@@ -1,24 +1,7 @@
-import { useState } from 'react';
+
 import { DropdownButton, Dropdown} from 'react-bootstrap';
 
-function PriceRangeDropdown() {
-    //Price Range Hooks
-    const [minPrice, setMinPrice] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
-
-
-    const handleMinPriceChange = (event) => {
-        setMinPrice(event.target.value);
-    };
-
-    const handleMaxPriceChange = (event) => {
-        setMaxPrice(event.target.value);
-    };
-
-    const handleApplyClick = () => {
-        // Do something with the min and max price values
-        console.log(`Selected price range: ${minPrice} - ${maxPrice}`);
-    };
+function PriceRangeDropdown({ minPrice, maxPrice, onMinPriceChange, onMaxPriceChange, onApplyClick }) {
 
     return (
         <DropdownButton
@@ -35,7 +18,7 @@ function PriceRangeDropdown() {
                     id="min-price-input"
                     placeholder="Enter min price"
                     value={minPrice}
-                    onChange={handleMinPriceChange}
+                    onChange={onMinPriceChange}
                 />
             </div>
             <div className="m-2">
@@ -48,11 +31,11 @@ function PriceRangeDropdown() {
                     id="max-price-input"
                     placeholder="Enter max price"
                     value={maxPrice}
-                    onChange={handleMaxPriceChange}
+                    onChange={onMaxPriceChange}
                 />
             </div>
             <Dropdown.Divider />
-            <Dropdown.Item onClick={handleApplyClick}>Apply</Dropdown.Item>
+            <Dropdown.Item onClick={onApplyClick}>Apply</Dropdown.Item>
         </DropdownButton>
     );
 }

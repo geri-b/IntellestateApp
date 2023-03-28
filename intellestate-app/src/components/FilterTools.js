@@ -25,23 +25,81 @@ function FilterTools() {
   const [zipcodeName, setzipcodeName] = useState("");
 
   const handlezipcodeNameChange = (e) => {
-      setzipcodeName(e.target.value);
+    setzipcodeName(e.target.value);
   };
   //Street search hooks
   const [streetName, setstreetName] = useState("");
 
   const handlestreetNameChange = (e) => {
-      setstreetName(e.target.value);
+    setstreetName(e.target.value);
   };
 
   //Land dropdown hooks
+  const [minSQFT, setMinSQFT] = useState('');
+  const [maxSQFT, setMaxSQFT] = useState('');
 
+  const handleMinSQFTChange = (event) => {
+    setMinSQFT(event.target.value);
+  };
+
+  const handleMaxSQFTChange = (event) => {
+    setMaxSQFT(event.target.value);
+  };
+
+  const handleApplyClick = () => {
+    console.log(`Selected land square footage range: ${minSQFT} - ${maxSQFT}`);
+  };
   //Building dropdown hooks
+  const [minBuildingSQFT, setMinBuildingSQFT] = useState('');
+  const [maxBuildingSQFT, setMaxBuildingSQFT] = useState('');
 
+  const handleMinBuildingSQFTChange = (event) => {
+    setMinBuildingSQFT(event.target.value);
+  };
+
+  const handleMaxBuildingSQFTChange = (event) => {
+    setMaxBuildingSQFT(event.target.value);
+  };
+
+  const handleBuildingApplyClick = () => {
+    console.log(`Selected building square footage range: ${minBuildingSQFT} - ${maxBuildingSQFT}`);
+  };
   //Propert dropdown hooks
+  // Property Type Hooks
+  const [propertyTypes, setPropertyTypes] = useState({
+    residential: false,
+    commercial: false,
+    institutional: false,
+    government: false,
+    industrial: false,
+    agricultural: false,
+    utility: false,
+  });
+
+  const handlePropertyTypeCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setPropertyTypes((prevState) => ({
+      ...prevState,
+      [name]: checked,
+    }));
+  };
 
   //Price range dropdown hooks
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
+  const handleMinPriceChange = (event) => {
+    setMinPrice(event.target.value);
+  };
+
+  const handleMaxPriceChange = (event) => {
+    setMaxPrice(event.target.value);
+  };
+
+  const handlePriceApplyClick = () => {
+    // Do something with the min and max price values
+    console.log(`Selected price range: ${minPrice} - ${maxPrice}`);
+  };
 
   //Post to Server
   const handleSubmit = async () => {
@@ -73,10 +131,10 @@ function FilterTools() {
               <CitySearchBox cityName={cityName} onCityNameChange={handleCityNameChange} />
             </Col>
             <Col xs={12} sm={6} md={4} className="my-2">
-              <ZipcodeSearchBox zipcodeName={zipcodeName} onzipcodeNameChange={handlezipcodeNameChange}/>
+              <ZipcodeSearchBox zipcodeName={zipcodeName} onzipcodeNameChange={handlezipcodeNameChange} />
             </Col>
             <Col xs={12} sm={12} md={4} className="my-2">
-              <StreetNameSearchBox streetName={streetName} onstreetNameChange={handlestreetNameChange}/>
+              <StreetNameSearchBox streetName={streetName} onstreetNameChange={handlestreetNameChange} />
             </Col>
           </Row>
         </Card.Body>
@@ -87,16 +145,38 @@ function FilterTools() {
         <Card.Body>
           <Row className="my-2">
             <Col xs={12} sm={6} md={4} xlg={3} className="my-2">
-              <PropertyTypeDropdown />
+              <PropertyTypeDropdown
+                propertyTypes={propertyTypes}
+                onCheckboxChange={handlePropertyTypeCheckboxChange}
+              />
+
             </Col>
             <Col xs={12} sm={6} md={4} xlg={3} className="my-2">
-              <PriceRangeDropdown />
+              <PriceRangeDropdown
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                onMinPriceChange={handleMinPriceChange}
+                onMaxPriceChange={handleMaxPriceChange}
+                onApplyClick={handlePriceApplyClick}
+              />
             </Col>
             <Col xs={12} sm={6} md={4} xlg={3} className="my-2">
-              <BuildingSQFT />
+              <BuildingSQFT
+                minSQFT={minBuildingSQFT}
+                maxSQFT={maxBuildingSQFT}
+                onMinSQFTChange={handleMinBuildingSQFTChange}
+                onMaxSQFTChange={handleMaxBuildingSQFTChange}
+                onApplyClick={handleBuildingApplyClick}
+              />
             </Col>
             <Col xs={12} sm={6} md={12} xlg={3} className="my-2">
-              <LandSQFTDropdown />
+              <LandSQFTDropdown
+                minSQFT={minSQFT}
+                maxSQFT={maxSQFT}
+                onMinSQFTChange={handleMinSQFTChange}
+                onMaxSQFTChange={handleMaxSQFTChange}
+                onApplyClick={handleApplyClick}
+              />
             </Col>
           </Row>
         </Card.Body>
@@ -104,7 +184,7 @@ function FilterTools() {
 
       <Row className="my-2">
         <Col xs={12} className="text-center my-2">
-          <ConfirmSearchButton onSearchClick={handleSubmit}/>
+          <ConfirmSearchButton onSearchClick={handleSubmit} />
         </Col>
       </Row>
     </Container>
