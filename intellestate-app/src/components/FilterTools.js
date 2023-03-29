@@ -12,23 +12,24 @@ import ConfirmSearchButton from './filterToolComponents/ConfirmSearchButton';
 import { useState } from 'react';
 import { Card } from 'react-bootstrap';
 import '../App.css';
+import Checkbox from './filterToolComponents/SortingCheckBox';
 
 function FilterTools(props) {
   //City Search Hooks
-  const [cityName, setCityName] = useState("");
+  const [cityName, setCityName] = useState('');
 
   const handleCityNameChange = (e) => {
     setCityName(e.target.value);
   };
 
   //Zipcode search hooks
-  const [zipcodeName, setzipcodeName] = useState("");
+  const [zipcodeName, setzipcodeName] = useState('');
 
   const handlezipcodeNameChange = (e) => {
     setzipcodeName(e.target.value);
   };
   //Street search hooks
-  const [streetName, setstreetName] = useState("");
+  const [streetName, setstreetName] = useState('');
 
   const handlestreetNameChange = (e) => {
     setstreetName(e.target.value);
@@ -101,10 +102,44 @@ function FilterTools(props) {
     console.log(`Selected price range: ${minPrice} - ${maxPrice}`);
   };
 
+  //Sorting Hooks
+  const [ratingWeights, setRatingWeights] = useState({
+    price: false,
+    income: false,
+    diversity: false,
+    crime: false,
+    school: false,
+  });
+
+
+  const handleRatingWeightCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setRatingWeights((prevState) => {
+      const newState = {
+        ...prevState,
+        [name]: checked,
+      };
+      props.onRatingWeightsUpdate(newState);
+      return newState;
+    });
+  };
+
+
   //Post to Server
   const handleSubmit = async () => {
 
-    const requestBody = { city: cityName };
+    const requestBody = {
+      city: cityName,
+      ZIPCODE: zipcodeName,
+      STREET: streetName,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      minSQFT: minSQFT,
+      maxSQFT: maxSQFT,
+      minBuildingSQFT: minBuildingSQFT,
+      maxBuildingSQFT: maxBuildingSQFT,
+      propertyTypes: propertyTypes,
+    };
 
     try {
       const response = await fetch("http://localhost:3001/search", {
@@ -147,14 +182,14 @@ function FilterTools(props) {
         <Card.Header>Property Filters</Card.Header>
         <Card.Body>
           <Row className="my-2">
-            <Col xs={12}className="my-2">
+            <Col xs={12} className="my-2">
               <PropertyTypeDropdown
                 propertyTypes={propertyTypes}
                 onCheckboxChange={handlePropertyTypeCheckboxChange}
               />
 
             </Col>
-            <Col xs={12}className="my-2">
+            <Col xs={12} className="my-2">
               <PriceRangeDropdown
                 minPrice={minPrice}
                 maxPrice={maxPrice}
@@ -163,7 +198,7 @@ function FilterTools(props) {
                 onApplyClick={handlePriceApplyClick}
               />
             </Col>
-            <Col xs={12}className="my-2">
+            <Col xs={12} className="my-2">
               <BuildingSQFT
                 minSQFT={minBuildingSQFT}
                 maxSQFT={maxBuildingSQFT}
@@ -172,7 +207,7 @@ function FilterTools(props) {
                 onApplyClick={handleBuildingApplyClick}
               />
             </Col>
-            <Col xs={12}className="my-2">
+            <Col xs={12} className="my-2">
               <LandSQFTDropdown
                 minSQFT={minSQFT}
                 maxSQFT={maxSQFT}
@@ -186,7 +221,24 @@ function FilterTools(props) {
       </Card>
 
       <Row className="my-2">
-        <Col xs={12} className="text-center my-2">
+        <Col xs={12} className="my-2">
+          <Card className="mb-3">
+            <Card.Header>
+              <h5>Sort by</h5>
+            </Card.Header>
+            <Card.Body>
+              <p>
+                <em>
+                  Select a checkbox to sort a property based on what you are looking for. Don't worry, if you select multiple boxes we will sort the properties accordingly!
+                </em>
+              </p>
+              <Checkbox label="Price" name="price" checked={ratingWeights.price} onChange={handleRatingWeightCheckboxChange} />
+              <Checkbox label="Income" name="income" checked={ratingWeights.income} onChange={handleRatingWeightCheckboxChange} />
+              <Checkbox label="Diversity" name="diversity" checked={ratingWeights.diversity} onChange={handleRatingWeightCheckboxChange} />
+              <Checkbox label="Crime" name="crime" checked={ratingWeights.crime} onChange={handleRatingWeightCheckboxChange} />
+              <Checkbox label="School" name="school" checked={ratingWeights.school} onChange={handleRatingWeightCheckboxChange} />
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
     </Container>

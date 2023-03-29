@@ -15,7 +15,7 @@ function HomepageCarousel() {
 
   return (
     <Container className="carousel-container" fluid>
-      <Carousel classname='carousel-fullscreen' activeIndex={index} onSelect={handleSelect}>
+      <Carousel className='carousel-fullscreen' activeIndex={index} onSelect={handleSelect}>
         <Carousel.Item>
           <img
             className="d-block w-100"
