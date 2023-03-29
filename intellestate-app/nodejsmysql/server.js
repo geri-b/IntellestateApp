@@ -41,10 +41,62 @@ app.get('/income_rating', (req, res) => {
 });
 
 app.post("/search", (req, res) => {
-    const { city } = req.body;
+    const { city, ZIPCODE, STREET, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes } = req.body;
 
-    const sql = `SELECT * FROM parcel_ratings WHERE CITY = '${city}' LIMIT 10`;
-    conn.query(sql, (error, results, fields) => {
+    let sqlQuery = "SELECT * FROM parcel_ratings WHERE 1";
+
+    if (city != '') {
+        sqlQuery += ` AND city = '${city}'`;
+    }
+
+    if (ZIPCODE != '') {
+        sqlQuery += ` AND zipcode = '${ZIPCODE}'`;
+    }
+
+    if (STREET != '') {
+        sqlQuery += ` AND STREET = '${STREET}'`;
+    }
+
+    if (minPrice !== '' && maxPrice !== '') {
+        sqlQuery += ` AND GCERT3 BETWEEN ${minPrice} AND ${maxPrice}`;
+    }
+    if (minPrice !== '' && maxPrice == '') {
+        sqlQuery += ` AND GCERT3 >= ${minPrice}`;
+    }
+    if (minPrice == '' && maxPrice !== '') {
+        sqlQuery += ` AND GCERT3 <= ${maxPrice}`;
+    }
+
+    if (minSQFT !== '' && maxSQFT !== '') {
+        sqlQuery += ` AND TOTAL_SQUA BETWEEN ${minSQFT} AND ${maxSQFT}`;
+    }
+    if (minSQFT !== '' && maxSQFT == '') {
+        sqlQuery += ` AND TOTAL_SQUA >= ${minSQFT}`;
+    }
+    if (minSQFT == '' && maxSQFT !== '') {
+        sqlQuery += ` AND TOTAL_SQUA <= ${maxSQFT}`;
+    }
+
+    if (minBuildingSQFT !== '' && maxBuildingSQFT !== '') {
+        sqlQuery += ` AND TOTAL_RES_AREA BETWEEN ${minBuildingSQFT} AND ${maxBuildingSQFT}`;
+    }
+    if (minBuildingSQFT !== '' && maxBuildingSQFT == '') {
+        sqlQuery += ` AND TOTAL_RES_AREA >= ${minBuildingSQFT}`;
+    }
+    if (minBuildingSQFT == '' && maxBuildingSQFT !== '') {
+        sqlQuery += ` AND TOTAL_RES_AREA <= ${maxBuildingSQFT}`;
+    }
+
+    const propertyTypeKeys = Object.keys(propertyTypes);
+    const selectedPropertyTypes = propertyTypeKeys.filter((key) => propertyTypes[key]);
+
+    if (selectedPropertyTypes.length > 0) {
+        sqlQuery += ` AND SiteCat1 IN (${selectedPropertyTypes.map((type) => `'${type}'`).join(", ")})`;
+    }
+
+    sqlQuery = sqlQuery + ` LIMIT 50`
+    console.log(sqlQuery)
+    conn.query(sqlQuery, (error, results, fields) => {
         if (error) {
             console.error('Error executing query:', error);
             res.status(500).json({ error: 'An error occurred while executing the query.' });

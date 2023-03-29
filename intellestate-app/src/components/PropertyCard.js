@@ -9,7 +9,7 @@ function PropertyCard({ property }) {
             <Dropdown.Toggle as={Button} variant='light' style={{width: '100%'}}>
                 <Card>
                     <Card.Body>
-                        <Card.Title>{property.FULL_ADDR}</Card.Title>
+                        <Card.Header style={{textAlign: 'left'}}>{property.FULL_ADDR}</Card.Header>
                         <Card.Text >
                             <Row>
                                 <Col>
@@ -76,7 +76,7 @@ function PropertyCard({ property }) {
                                         ${property.GCERT3}
                                     </Row>
                                     <Row className='justify-content-center'>
-                                        {property.PROPERTY_C}
+                                        {property.SiteCat1}
                                     </Row>
                                 </Col>
                             </Row>
@@ -90,6 +90,11 @@ function PropertyCard({ property }) {
                     <Card>
                         <Card.Body>
                             <Card.Title>{property.FULL_ADDR}</Card.Title>
+                            <Card.Body>
+                                <Card.Text>
+                                    {property.ZIPCODE}
+                                </Card.Text>
+                            </Card.Body>
                         </Card.Body>
                     </Card>
                 </Dropdown.Header>
