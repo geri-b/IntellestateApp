@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  height: 100vh;
 }
 
 
@@ -62,8 +63,8 @@
 {
   padding-right: 0;
   padding-left: 0;
-  margin-right: auto;
-  margin-left: auto;
+  margin-right: 0;
+  margin-left: 0;
   width: 100%;
   max-width: 100%;
 }
