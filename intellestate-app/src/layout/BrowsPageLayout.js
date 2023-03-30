@@ -68,9 +68,13 @@ function BrowsePageLayout() {
 
 
   return (
-    <Container fluid>
-      <Row>
-        <Col className="left-col" md={3} style={{ maxHeight: '100vh', overflowY: 'auto' }}>
+    <Container fluid style={{ height: "calc(100% - 60px)" }}>
+      <Row style={{ height: "100%", overflowY: "auto" }}>
+        <Col
+          className="left-col"
+          md={3}
+          style={{ height: "100%", overflowY: "auto" }}
+        >
           <FilterTools
             ref={filterToolsRef}
             onDataUpdate={handleDataUpdate}
@@ -78,11 +82,19 @@ function BrowsePageLayout() {
             setResetData={setResetData}
           />
         </Col>
-        <Col md={6} style={{ maxHeight: '100vh', overflowY: 'auto' }}>
+        <Col md={6} style={{ height: "100%", overflowY: "auto" }}>
           <PropertyCardGrid properties={propertiesData} />
           <Button onClick={() => { filterToolsRef.current.handleLoadMoreClick(); }}>Load More</Button>
         </Col>
-        <Col className="right-col" md={3} style={{ maxHeight: '100vh', overflowY: 'auto' }}>
+        <Col
+          className="right-col"
+          md={3}
+          style={{
+            height: "100%",
+            overflowY: "auto",
+            background: "#f8f9fa",
+          }}
+        >
           <PropertyDetails />
         </Col>
       </Row>
