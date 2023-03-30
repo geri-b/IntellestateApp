@@ -41,7 +41,9 @@ app.get('/income_rating', (req, res) => {
 });
 
 app.post("/search", (req, res) => {
-    const { city, ZIPCODE, STREET, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes } = req.body;
+    const { city, ZIPCODE, STREET, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes, page = 1 } = req.body;
+    const limit = 50;
+    const offset = (page - 1) * limit;
 
     let sqlQuery = "SELECT * FROM parcel_ratings WHERE 1";
 
@@ -94,7 +96,7 @@ app.post("/search", (req, res) => {
         sqlQuery += ` AND SiteCat1 IN (${selectedPropertyTypes.map((type) => `'${type}'`).join(", ")})`;
     }
 
-    sqlQuery = sqlQuery + ` LIMIT 50`
+    sqlQuery = sqlQuery + ` LIMIT ${limit} OFFSET ${offset}`
     console.log(sqlQuery)
     conn.query(sqlQuery, (error, results, fields) => {
         if (error) {

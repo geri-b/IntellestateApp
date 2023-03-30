@@ -10,16 +10,65 @@ import ZipcodeSearchBox from './filterToolComponents/ZipcodeSearchBox';
 import StreetNameSearchBox from './filterToolComponents/StreetNameSearchBox';
 import ConfirmSearchButton from './filterToolComponents/ConfirmSearchButton';
 import { useState } from 'react';
-import { Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import '../App.css';
 import Checkbox from './filterToolComponents/SortingCheckBox';
+import { forwardRef, useImperativeHandle } from 'react';
 
-function FilterTools(props) {
+function FilterTools(props, ref) {
+  //reset form value hooks
+  const resetFormValues = () => {
+    setCityName('');
+    setzipcodeName('');
+    setstreetName('');
+    setMinPrice('');
+    setMaxPrice('');
+    setMinSQFT('');
+    setMaxSQFT('');
+    setMinBuildingSQFT('');
+    setMaxBuildingSQFT('');
+    setPropertyTypes({
+      residential: false,
+      commercial: false,
+      institutional: false,
+      government: false,
+      industrial: false,
+      agricultural: false,
+      utility: false,
+    });
+    setRatingWeights({
+      price: false,
+      income: false,
+      diversity: false,
+      crime: false,
+      school: false,
+    });
+  };
+
+  const handleResetFilters = () => {
+    resetFormValues();
+    props.setResetData(true);
+    const data = [];
+    props.onDataUpdate(data);
+  };
+
+  //load more pages hooks
+  useImperativeHandle(ref, () => ({
+    handleLoadMoreClick,
+  }));
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handleLoadMoreClick = () => {
+    setCurrentPage(currentPage + 1);
+    handleSubmit(currentPage + 1);
+  };
   //City Search Hooks
   const [cityName, setCityName] = useState('');
 
   const handleCityNameChange = (e) => {
     setCityName(e.target.value);
+    props.setResetData(true);
   };
 
   //Zipcode search hooks
@@ -27,12 +76,14 @@ function FilterTools(props) {
 
   const handlezipcodeNameChange = (e) => {
     setzipcodeName(e.target.value);
+    props.setResetData(true);
   };
   //Street search hooks
   const [streetName, setstreetName] = useState('');
 
   const handlestreetNameChange = (e) => {
     setstreetName(e.target.value);
+    props.setResetData(true);
   };
 
   //Land dropdown hooks
@@ -41,10 +92,12 @@ function FilterTools(props) {
 
   const handleMinSQFTChange = (event) => {
     setMinSQFT(event.target.value);
+    props.setResetData(true);
   };
 
   const handleMaxSQFTChange = (event) => {
     setMaxSQFT(event.target.value);
+    props.setResetData(true);
   };
 
   const handleApplyClick = () => {
@@ -56,10 +109,12 @@ function FilterTools(props) {
 
   const handleMinBuildingSQFTChange = (event) => {
     setMinBuildingSQFT(event.target.value);
+    props.setResetData(true);
   };
 
   const handleMaxBuildingSQFTChange = (event) => {
     setMaxBuildingSQFT(event.target.value);
+    props.setResetData(true);
   };
 
   const handleBuildingApplyClick = () => {
@@ -79,6 +134,7 @@ function FilterTools(props) {
 
   const handlePropertyTypeCheckboxChange = (e) => {
     const { name, checked } = e.target;
+    props.setResetData(true);
     setPropertyTypes((prevState) => ({
       ...prevState,
       [name]: checked,
@@ -91,10 +147,12 @@ function FilterTools(props) {
 
   const handleMinPriceChange = (event) => {
     setMinPrice(event.target.value);
+    props.setResetData(true);
   };
 
   const handleMaxPriceChange = (event) => {
     setMaxPrice(event.target.value);
+    props.setResetData(true);
   };
 
   const handlePriceApplyClick = () => {
@@ -126,7 +184,7 @@ function FilterTools(props) {
 
 
   //Post to Server
-  const handleSubmit = async () => {
+  const handleSubmit = async (page = 1) => {
 
     const requestBody = {
       city: cityName,
@@ -139,6 +197,7 @@ function FilterTools(props) {
       minBuildingSQFT: minBuildingSQFT,
       maxBuildingSQFT: maxBuildingSQFT,
       propertyTypes: propertyTypes,
+      page: page,
     };
 
     try {
@@ -149,8 +208,8 @@ function FilterTools(props) {
       });
 
       const data = await response.json();
-      console.log(data);
       props.onDataUpdate(data);
+      console.log(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -159,6 +218,7 @@ function FilterTools(props) {
   return (
     <Container className="filters-container p-3 rounded">
       <h2 className="my-4 text-center">Search Properties</h2>
+      <Button className='my-2' style={{ maxWidth: '200px' }} onClick={handleResetFilters}> Reset Filters</Button>
       <Card className="mb-3">
         <Card.Header>Location Filters</Card.Header>
         <Card.Body>
@@ -176,7 +236,7 @@ function FilterTools(props) {
         </Card.Body>
       </Card>
       <Row className='justify-content-center my-3'>
-        <ConfirmSearchButton onSearchClick={handleSubmit} />
+        <ConfirmSearchButton onSearchClick={() => { setCurrentPage(1); handleSubmit(1); }} />
       </Row>
       <Card className="mb-3">
         <Card.Header>Property Filters</Card.Header>
@@ -245,4 +305,4 @@ function FilterTools(props) {
   );
 }
 
-export default FilterTools;
+export default forwardRef(FilterTools);

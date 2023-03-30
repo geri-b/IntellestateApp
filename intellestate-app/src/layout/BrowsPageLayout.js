@@ -2,11 +2,18 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import PropertyCardGrid from '../components/PropertyCardGrid';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import FilterTools from '../components/FilterTools';
 import PropertyDetails from '../components/PropertyDetails';
+import { Button } from 'react-bootstrap';
 
 function BrowsePageLayout() {
+  // Ref to use handleLoadMoreClick function from parent component
+  const filterToolsRef = useRef(null);
+
+  // Flag To handle reset if the user adds information to one of the hard filters
+  const [resetData, setResetData] = useState(false);
+
   const [propertiesData, setPropertiesData] = useState([]);
 
   const [ratingWeights, setRatingWeights] = useState({
@@ -40,14 +47,22 @@ function BrowsePageLayout() {
       property.overallRating = overallRating;
       console.log(property.overallRating);
     });
-    
+
     // Sort the properties based on the calculated overall rating
     return properties.sort((a, b) => b.overallRating - a.overallRating);
   };
 
 
-  const handleDataUpdate = (data) => {
-    const sortedProperties = sortProperties(data, ratingWeights);
+  const handleDataUpdate = (newData) => {
+    let currentPropertiesData = propertiesData;
+
+    if (resetData) {
+      currentPropertiesData = [];
+      setResetData(false); // Reset the flag after handling the data
+    }
+
+    let combinedData = [...currentPropertiesData, ...newData];
+    const sortedProperties = sortProperties(combinedData, ratingWeights);
     setPropertiesData(sortedProperties);
   };
 
@@ -56,10 +71,16 @@ function BrowsePageLayout() {
     <Container fluid>
       <Row>
         <Col className="left-col" md={3} style={{ maxHeight: '100vh', overflowY: 'auto' }}>
-          <FilterTools onDataUpdate={handleDataUpdate} onRatingWeightsUpdate={setRatingWeights} />
+          <FilterTools
+            ref={filterToolsRef}
+            onDataUpdate={handleDataUpdate}
+            onRatingWeightsUpdate={setRatingWeights}
+            setResetData={setResetData}
+          />
         </Col>
         <Col md={6} style={{ maxHeight: '100vh', overflowY: 'auto' }}>
           <PropertyCardGrid properties={propertiesData} />
+          <Button onClick={() => { filterToolsRef.current.handleLoadMoreClick(); }}>Load More</Button>
         </Col>
         <Col className="right-col" md={3} style={{ maxHeight: '100vh', overflowY: 'auto' }}>
           <PropertyDetails />
