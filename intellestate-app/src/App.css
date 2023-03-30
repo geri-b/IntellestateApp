@@ -140,11 +140,12 @@ Filter Tools
   color: #fff;
   font-size: 1 rem;
   text-align: center;
+  font-weight: bold;
 }
 
 .circle-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: calc(100% - 24px);
 }

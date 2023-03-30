@@ -93,10 +93,10 @@ function PropertyCard({ property }) {
                 </Col>
                 <Col className="my-2" xs={5} sm={4} md={3} lg={3} xxl={2}>
                   <Row className="justify-content-center my-2">
-                    {property.TOTAL_RES_AREA} sq
+                    {property.TOTAL_RES_AREA + property.TOTAL_COM_AREA} sq.
                   </Row>
                   <Row className="justify-content-center">
-                    {property.Units} Building
+                    {property.RES_BLDG_CNT + property.COM_BLDG_CNT} Bldg.
                   </Row>
                 </Col>
                 <Col className="my-2" xs={5} sm={4} md={3} lg={3} xxl={2}>
