@@ -38,6 +38,9 @@ function PropertyDetails() {
         <Source id="my-data" type="geojson" data={geojson}>
           <Layer {...layerStyle}></Layer>
         </Source>
+        <Marker longitude={-81.9151} latitude={41.4816}>
+          
+        </Marker>
       </Map>
       <br></br>
       <Plot

@@ -6,21 +6,22 @@ import Col from 'react-bootstrap/Col';
 
 
 function PropertyCardGrid({ properties }) {
-    const [selectedProperty, setSelectedProperty] = useState(null);
+    const [selectedProperty, setSelectedProperty] = useState([]);
 
     const handleHeaderClick = (property) => {
-        if (selectedProperty === property.PARCELPIN) {
-            setSelectedProperty(null);
+        if (selectedProperty.includes(property.PARCELPIN)) {
+            let p_index = selectedProperty.indexOf(property.PARCELPIN);
+            setSelectedProperty(selectedProperty.slice(0, p_index).concat(selectedProperty.slice(p_index+ 1, selectedProperty.length)));
         } else {
-            setSelectedProperty(property.PARCELPIN);
+            setSelectedProperty(selectedProperty.concat([property.PARCELPIN]));
         }
     };
 
     const handleBodyClick = (property) => {
-        if (selectedProperty === property.PARCELPIN) {
-            setSelectedProperty(null);
+        if (selectedProperty.includes(property.PARCELPIN)) {
+            setSelectedProperty([]);
         } else {
-            setSelectedProperty(property.PARCELPIN);
+            setSelectedProperty([property.PARCELPIN]);
         }
     };
 
@@ -32,7 +33,7 @@ function PropertyCardGrid({ properties }) {
             {properties.map(property => (
                 <Col key={property.PARCELPIN} className='my-2'>
                         <PropertyCard 
-                            property={{ ...property, showExtraInfo: selectedProperty === property.PARCELPIN }}
+                            property={{ ...property, showExtraInfo: selectedProperty.includes(property.PARCELPIN) }}
                             onHeaderClick={handleHeaderClick}
                             onBodyClick={handleBodyClick}
                             onButtonClick={handleButtonClick}

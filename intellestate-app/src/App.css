@@ -177,6 +177,10 @@ Filter Tools
   gap: 5px;
 }
 
+.property-card-body {
+  border-radius: 0 0 5px 5px;
+}
+
 .property-card-header > div {
   text-overflow: ellipsis;
   overflow: hidden;

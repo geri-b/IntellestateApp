@@ -5,7 +5,7 @@ const StreetNameSearchBox = ({streetName, onstreetNameChange}) => {
         <Form.Group controlId="streetName">
             <Form.Control
                 type="text"
-                placeholder="Enter Street Name"
+                placeholder="Street"
                 value={streetName}
                 onChange={onstreetNameChange}
             />

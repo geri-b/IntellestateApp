@@ -6,7 +6,7 @@ const ZipcodeSearchBox = ({zipcodeName, onzipcodeNameChange}) => {
         <Form.Group controlId="zipcodeName">
             <Form.Control
                 type="text"
-                placeholder="Enter ZIP Code"
+                placeholder="ZIP"
                 value={zipcodeName}
                 onChange={onzipcodeNameChange}
             />

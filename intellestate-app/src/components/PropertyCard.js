@@ -18,7 +18,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
   const [bodyHover, setBodyHover] = useState(false);
 
   return (
-    <Card style={{ width: "100%", minWidth: "370px", /*boxShadow: '0px 1px 3px 2px lightgrey', border: 'none'*/ }}>
+    <Card style={{ width: "100%", minWidth: "370px", color: "#414243", /*boxShadow: '0px 1px 3px 2px lightgrey', border: 'none'*/ }}>
       <Card.Header
         className='property-card-header'
         style={{ overflowX: "hidden", textAlign: 'left', backgroundColor: headerHover ? '#eaebec' : '#f1f2f3', cursor: headerHover ? 'pointer' : 'default' }}
@@ -112,7 +112,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
               </div>
             </div>
           </Col>
-          <Col className="col" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{padding: 0}}>
+          <Col className="col fw-bold" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{padding: 0}}>
             <Row className="justify-content-center align-items-center">
               {property.TOTAL_RES_AREA + property.TOTAL_COM_AREA} sq.
             </Row>
@@ -120,7 +120,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
               {property.RES_BLDG_CNT + property.COM_BLDG_CNT} Bldg.
             </Row>
           </Col>
-          <Col className="col" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{paddingLeft: 0}}>
+          <Col className="col fw-bold" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{paddingLeft: 0}}>
             <Row className="justify-content-center align-items-center">
               ~${property.GCERT3}
             </Row>
