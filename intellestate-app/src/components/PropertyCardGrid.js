@@ -1,18 +1,43 @@
+import React, { useState } from 'react';
 import PropertyCard from './PropertyCard';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 
-function PropertyCardGrid({ properties }) {
 
+function PropertyCardGrid({ properties }) {
+    const [selectedProperty, setSelectedProperty] = useState(null);
+
+    const handleHeaderClick = (property) => {
+        if (selectedProperty === property.PARCELPIN) {
+            setSelectedProperty(null);
+        } else {
+            setSelectedProperty(property.PARCELPIN);
+        }
+    };
+
+    const handleBodyClick = (property) => {
+        if (selectedProperty === property.PARCELPIN) {
+            setSelectedProperty(null);
+        } else {
+            setSelectedProperty(property.PARCELPIN);
+        }
+    };
+
+    const handleButtonClick = (property) => {
+        // Your logic for handling button click
+    };
     return (
         <div>
             {properties.map(property => (
-                <Row key={property.parcelpin} className='my-2'>
-                    <Col>
-                        <PropertyCard property={property} />
-                    </Col>
-                </Row>
+                <Col key={property.PARCELPIN} className='my-2'>
+                        <PropertyCard 
+                            property={{ ...property, showExtraInfo: selectedProperty === property.PARCELPIN }}
+                            onHeaderClick={handleHeaderClick}
+                            onBodyClick={handleBodyClick}
+                            onButtonClick={handleButtonClick}
+                        />
+                </Col>
             ))}
         </div>
     );
