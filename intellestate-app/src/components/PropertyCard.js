@@ -2,12 +2,13 @@ import Card from 'react-bootstrap/Card';
 import { Row, Col, Button } from 'react-bootstrap';
 import '../App.css';
 import React, { useState } from 'react';
+import graphIcon from '../images/BrowsePage/BarGraphIcon.png'
 
 function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
   function ratingColor(rating) {
     if (rating === null) return "#ddd";
     else if (rating >= 0.8) return "#0d0";
-    else if (rating >= 0.6) return "#7d0";
+    else if (rating >= 0.6) return "#9d0";
     else if (rating >= 0.4) return "#dd0";
     else if (rating >= 0.2) return "#d70";
     else if (rating >= 0) return "#d00";
@@ -17,35 +18,35 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
   const [bodyHover, setBodyHover] = useState(false);
 
   return (
-    <Card style={{ width: "100%", minWidth: "370px" }}>
+    <Card style={{ width: "100%", minWidth: "370px", /*boxShadow: '0px 1px 3px 2px lightgrey', border: 'none'*/ }}>
       <Card.Header
-        style={{ overflowX: "hidden", textAlign: 'left', backgroundColor: headerHover ? '#f8f9fa' : 'transparent' }}
+        className='property-card-header'
+        style={{ overflowX: "hidden", textAlign: 'left', backgroundColor: headerHover ? '#eaebec' : '#f1f2f3', cursor: headerHover ? 'pointer' : 'default' }}
         onClick={() => onHeaderClick(property)}
         onMouseEnter={() => setHeaderHover(true)}
         onMouseLeave={() => setHeaderHover(false)}
       >
-        {property.FULL_ADDR}
+        <div>{property.FULL_ADDR}</div>
         <Button
-          className="btn btn-sm"
-          style={{
-            marginLeft: '100px'
-          }}
+          variant='light'
+          className="btn shadow-none show-more"
           onClick={(e) => {
             e.stopPropagation();
             onButtonClick(property);
           }}
         >
-          Update Graphs
+          <img className='bar-graph-icon' src={graphIcon} style={{width: '20px', height: '20px'}}></img>
         </Button>
       </Card.Header>
       <Card.Body
+        className='property-card-body'
         onClick={() => onBodyClick(property)}
         onMouseEnter={() => setBodyHover(true)}
         onMouseLeave={() => setBodyHover(false)}
-        style={{ backgroundColor: bodyHover ? '#f8f9fa' : 'transparent' }}
+        style={{ backgroundColor: bodyHover ? '#f8f9fa' : 'white', cursor: bodyHover ? 'pointer' : 'default' }}
 
       >
-        <Row style={{ gap: "5px" }}>
+        <Row className='card-body-row' style={{ gap: "5px" }}>
           <Col>
             <Row className="justify-content-center">Price</Row>
             <div className="circle-container">
@@ -111,32 +112,34 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
               </div>
             </div>
           </Col>
-          <Col className="my-2" xs={5} sm={4} md={3} lg={3} xxl={2}>
-            <Row className="justify-content-center my-2">
+          <Col className="col" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{padding: 0}}>
+            <Row className="justify-content-center align-items-center">
               {property.TOTAL_RES_AREA + property.TOTAL_COM_AREA} sq.
             </Row>
-            <Row className="justify-content-center">
+            <Row className="justify-content-center align-items-center">
               {property.RES_BLDG_CNT + property.COM_BLDG_CNT} Bldg.
             </Row>
           </Col>
-          <Col className="my-2" xs={5} sm={4} md={3} lg={3} xxl={2}>
-            <Row className="justify-content-center my-2">
+          <Col className="col" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{paddingLeft: 0}}>
+            <Row className="justify-content-center align-items-center">
               ~${property.GCERT3}
             </Row>
-            <Row className="justify-content-center">
+            <Row className="justify-content-center align-items-center">
               {property.SiteCat1}
             </Row>
           </Col>
         </Row>
+        <Row>
+          {property.showExtraInfo && (
+            <Card.Body>
+              <Card.Title>{property.FULL_ADDR}</Card.Title>
+              <Card.Text>
+                {property.ZIPCODE}
+              </Card.Text>
+            </Card.Body>
+          )}
+        </Row>
       </Card.Body>
-      {property.showExtraInfo && (
-        <Card.Body>
-          <Card.Title>{property.FULL_ADDR}</Card.Title>
-          <Card.Text>
-            {property.ZIPCODE}
-          </Card.Text>
-        </Card.Body>
-      )}
     </Card>
   );
 }

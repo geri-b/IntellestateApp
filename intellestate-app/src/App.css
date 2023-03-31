@@ -143,9 +143,53 @@ Filter Tools
   font-weight: bold;
 }
 
+.card-body-row > .col {
+  display: grid;
+  grid-template-rows: 24px 1fr;
+  gap: 10px;
+}
+
 .circle-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100% - 24px);
+}
+
+.maplibregl-map details {
+  display: none;
+}
+
+.maplibregl-canvas {
+  cursor: default;
+}
+
+.maplibregl-canvas:active {
+  cursor: grabbing;
+}
+
+.property-card-header {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: auto max-content;
+  align-items: center;
+  font-weight: bold;
+  color: #414243 !important;
+  gap: 5px;
+}
+
+.property-card-header > div {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.show-more {
+  padding: 0 !important;
+  height: calc(100% + 10px);
+  aspect-ratio: 1 / 1;
+  filter: invert(14%);
+}
+
+.bar-graph-icon {
+  opacity: 80%;
 }
