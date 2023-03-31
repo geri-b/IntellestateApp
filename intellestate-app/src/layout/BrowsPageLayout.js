@@ -24,28 +24,30 @@ function BrowsePageLayout() {
     school: false,
   });
 
-  const sortProperties = (properties, ratingWeights) => {
+  const [ratingWeightsValue, setRatingWeightsValue] = useState({
+    price: 1,
+    income: 1,
+    diversity: 1,
+    crime: 1,
+    school: 1,
+  });
+
+  const sortProperties = (properties, ratingWeights, ratingWeightsValue) => {
     // Find the number of selected checkboxes
     const selectedWeights = Object.keys(ratingWeights).filter((key) => ratingWeights[key]);
-    const numSelected = selectedWeights.length;
 
     // Calculate the overall rating for each property based on the selected checkboxes
     properties.forEach((property) => {
-      let overallRating = 0;
+        let overallRating = 0;
 
-      selectedWeights.forEach((weight) => {
-        const ratingKey = weight[0] + "_rating"; // e.g., p_rating, i_rating, etc.
-        if (property[ratingKey]) {
-          overallRating += property[ratingKey];
-        }
-      });
-
-      // Normalize the overall rating by the number of selected checkboxes
-      if (numSelected > 0) {
-        overallRating /= numSelected;
-      }
-      property.overallRating = overallRating;
-      console.log(property.overallRating);
+        selectedWeights.forEach((weight) => {
+            const ratingKey = weight[0] + "_rating"; // e.g., p_rating, i_rating, etc.
+            if (property[ratingKey]) {
+                overallRating += property[ratingKey] * ratingWeightsValue[weight];
+            }
+        });
+        property.overallRating = overallRating;
+        console.log(property.overallRating);
     });
 
     // Sort the properties based on the calculated overall rating
@@ -62,7 +64,12 @@ function BrowsePageLayout() {
     }
 
     let combinedData = [...currentPropertiesData, ...newData];
-    const sortedProperties = sortProperties(combinedData, ratingWeights);
+    setPropertiesData(combinedData);
+  };
+
+  const handleSortClick = () => {
+    const sortedProperties = sortProperties([...propertiesData], ratingWeights, ratingWeightsValue);
+    console.log(sortedProperties);
     setPropertiesData(sortedProperties);
   };
 
@@ -79,7 +86,11 @@ function BrowsePageLayout() {
             ref={filterToolsRef}
             onDataUpdate={handleDataUpdate}
             onRatingWeightsUpdate={setRatingWeights}
+            onRatingWeightsValueUpdate={setRatingWeightsValue}
             setResetData={setResetData}
+            onSortClick={handleSortClick}
+            initialRatingWeights={ratingWeights}
+            initialRatingWeightsValue={ratingWeightsValue}
           />
         </Col>
         <Col md={6} style={{ height: "100%", overflowY: "auto" }}>
