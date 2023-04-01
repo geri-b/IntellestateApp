@@ -79,7 +79,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
               <div
                 className="circle"
                 style={{
-                  backgroundColor: ratingColor(property.d_rating),
+                  backgroundColor: "#A8D8B9",
                 }}
               >
                 {Math.round(property.d_rating * 100)}
@@ -132,9 +132,44 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
         <Row>
           {property.showExtraInfo && (
             <Card.Body>
-              <Card.Title>{property.FULL_ADDR}</Card.Title>
-              <Card.Text>
-                {property.ZIPCODE}
+              <Card.Title style={{ borderBottom: '1px solid #ccc'}}>PROPERTY INFORMATION</Card.Title>
+              <Card.Text style={{ marginBottom: '-20px' }}>
+                <Row>
+                <Col className="text-left" style={{ whiteSpace: 'nowrap', textTransform: 'capitalize' }}>
+                Owner: <span style={{ fontWeight: 'bold' }}> {property.PARCL_OWN2} </span>
+                </Col>
+                <Col className="text-center" style={{ whiteSpace: 'nowrap' }}>
+                Units: <span style={{ fontWeight: 'bold' }}> {property.Units2}</span>
+                </Col>
+                <Col className="text-right" style={{ whiteSpace: 'nowrap' }}>
+                  Land Price: <span style={{ fontWeight: 'bold' }}> ${property.GCERT1} </span>
+                </Col>
+                </Row>
+
+                <Row>
+                <Col className="text-left" style={{ whiteSpace: 'nowrap' }}>
+                  Transfer Date: <span style={{ fontWeight: 'bold' }}> {property.TRANSFER_DATE} </span>
+                </Col>
+                <Col className="text-center" style={{ whiteSpace: 'nowrap' }}>
+                  Description: <span style={{ fontWeight: 'bold' }}> {property.SiteCat2} </span>
+                </Col>
+                <Col className="text-right" style={{ whiteSpace: 'nowrap' }}>
+                  Building Price: <span style={{ fontWeight: 'bold' }}> ${property.GCERT2} </span>
+                </Col>
+                </Row>
+
+                <Row>
+                  <Col className="text-left" style={{ whiteSpace: 'nowrap' }}>
+                  Transfer Price: <span style={{ fontWeight: 'bold' }}> {property.SALES_AMOU == 0 ? 'No Information' : `$${property.SALES_AMOU}`} </span>
+                </Col>
+                <Col className="text-center" style={{ whiteSpace: 'nowrap' }}>
+                  Neighborhood: <span style={{ fontWeight: 'bold' }}> {property.NEIGHBORHOOOD} </span>
+                </Col>
+                <Col className="text-right" style={{ whiteSpace: 'nowrap' }}>
+                  Acres: <span style={{ fontWeight: 'bold' }}> {property.TOTAL_ACRE} </span>
+                </Col>
+                </Row>
+
               </Card.Text>
             </Card.Body>
           )}

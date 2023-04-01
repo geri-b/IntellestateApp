@@ -12,10 +12,12 @@ import ConfirmSearchButton from './filterToolComponents/ConfirmSearchButton';
 import { useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import '../App.css';
-import Checkbox from './filterToolComponents/SortingCheckBox';
+import Checkbox from './filterToolComponents/CheckBox';
 import { forwardRef, useImperativeHandle } from 'react';
 
 function FilterTools(props, ref) {
+  //
+
   //reset form value hooks
   const resetFormValues = () => {
     setCityName('');
@@ -169,6 +171,13 @@ function FilterTools(props, ref) {
     school: false,
   });
 
+  const [ratingWeightsValue, setRatingWeightsValue] = useState({
+    price: 1,
+    income: 1,
+    diversity: 1,
+    crime: 1,
+    school: 1,
+  });
 
   const handleRatingWeightCheckboxChange = (e) => {
     const { name, checked } = e.target;
@@ -180,6 +189,13 @@ function FilterTools(props, ref) {
       props.onRatingWeightsUpdate(newState);
       return newState;
     });
+  };
+
+  const handleRatingWeightInputChange = (e) => {
+    const { name, value } = e.target;
+    const propName = name.replace("_weight", "");
+    setRatingWeightsValue((prev) => ({ ...prev, [propName]: Number(value) }));
+    props.onRatingWeightsValueUpdate(ratingWeightsValue);
   };
 
 
@@ -292,11 +308,55 @@ function FilterTools(props, ref) {
                   Select a checkbox to sort a property based on what you are looking for. Don't worry, if you select multiple boxes we will sort the properties accordingly!
                 </em>
               </p>
-              <Checkbox label="Price" name="price" checked={ratingWeights.price} onChange={handleRatingWeightCheckboxChange} />
-              <Checkbox label="Income" name="income" checked={ratingWeights.income} onChange={handleRatingWeightCheckboxChange} />
-              <Checkbox label="Diversity" name="diversity" checked={ratingWeights.diversity} onChange={handleRatingWeightCheckboxChange} />
-              <Checkbox label="Crime" name="crime" checked={ratingWeights.crime} onChange={handleRatingWeightCheckboxChange} />
-              <Checkbox label="School" name="school" checked={ratingWeights.school} onChange={handleRatingWeightCheckboxChange} />
+              <Checkbox
+                label="Price"
+                name="price"
+                checked={ratingWeights.price}
+                onChange={handleRatingWeightCheckboxChange}
+                weight={ratingWeightsValue.price}
+                onWeightChange={handleRatingWeightInputChange}
+              />
+              <Checkbox
+                label="Income"
+                name="income"
+                checked={ratingWeights.income}
+                onChange={handleRatingWeightCheckboxChange}
+                weight={ratingWeightsValue.income}
+                onWeightChange={handleRatingWeightInputChange}
+              />
+              <Checkbox
+                label="Diversity"
+                name="diversity"
+                checked={ratingWeights.diversity}
+                onChange={handleRatingWeightCheckboxChange}
+                weight={ratingWeightsValue.diversity}
+                onWeightChange={handleRatingWeightInputChange}
+              />
+              <Checkbox
+                label="Crime"
+                name="crime"
+                checked={ratingWeights.crime}
+                onChange={handleRatingWeightCheckboxChange}
+                weight={ratingWeightsValue.crime}
+                onWeightChange={handleRatingWeightInputChange}
+              />
+              <Checkbox
+                label="School"
+                name="school"
+                checked={ratingWeights.school}
+                onChange={handleRatingWeightCheckboxChange}
+                weight={ratingWeightsValue.school}
+                onWeightChange={handleRatingWeightInputChange}
+              />
+              <Button
+                className="mt-2"
+                variant="primary"
+                onClick={() => {
+                  props.onSortClick();
+                }}
+              >
+                Sort
+              </Button>
             </Card.Body>
           </Card>
         </Col>
