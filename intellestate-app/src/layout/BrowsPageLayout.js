@@ -32,6 +32,8 @@ function BrowsePageLayout() {
     school: 1,
   });
 
+  const [selectedProperty, setSelectedProperty] = useState({});
+
   const sortProperties = (properties, ratingWeights, ratingWeightsValue) => {
     // Find the number of selected checkboxes
     const selectedWeights = Object.keys(ratingWeights).filter((key) => ratingWeights[key]);
@@ -73,6 +75,10 @@ function BrowsePageLayout() {
     setPropertiesData(sortedProperties);
   };
 
+  const handleShowDetails = (property) => {
+    setSelectedProperty(property)
+  };
+
 
   return (
     <Container fluid style={{ height: "calc(100% - 60px)" }}>
@@ -94,7 +100,7 @@ function BrowsePageLayout() {
           />
         </Col>
         <Col md={6} style={{ height: "100%", overflowY: "auto" }}>
-          <PropertyCardGrid properties={propertiesData} />
+          <PropertyCardGrid properties={propertiesData} showDetails={handleShowDetails} />
           <Button onClick={() => { filterToolsRef.current.handleLoadMoreClick(); }}>Load More</Button>
         </Col>
         <Col
@@ -106,7 +112,7 @@ function BrowsePageLayout() {
             background: "#f8f9fa",
           }}
         >
-          <PropertyDetails />
+          <PropertyDetails property={selectedProperty} />
         </Col>
       </Row>
     </Container>
