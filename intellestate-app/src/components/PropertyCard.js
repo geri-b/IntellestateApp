@@ -79,7 +79,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
               <div
                 className="circle"
                 style={{
-                  backgroundColor: "#A8D8B9",
+                  backgroundColor: ratingColor(property.d_rating),
                 }}
               >
                 {Math.round(property.d_rating * 100)}

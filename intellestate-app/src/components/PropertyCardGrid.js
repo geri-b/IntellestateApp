@@ -5,10 +5,11 @@ import Col from 'react-bootstrap/Col';
 
 
 
-function PropertyCardGrid({ properties }) {
+function PropertyCardGrid({ properties, showDetails }) {
     const [selectedProperty, setSelectedProperty] = useState([]);
 
     const handleHeaderClick = (property) => {
+        showDetails(property);
         if (selectedProperty.includes(property.PARCELPIN)) {
             let p_index = selectedProperty.indexOf(property.PARCELPIN);
             setSelectedProperty(selectedProperty.slice(0, p_index).concat(selectedProperty.slice(p_index+ 1, selectedProperty.length)));
@@ -19,14 +20,15 @@ function PropertyCardGrid({ properties }) {
 
     const handleBodyClick = (property) => {
         if (selectedProperty.includes(property.PARCELPIN)) {
-            setSelectedProperty([]);
+            let p_index = selectedProperty.indexOf(property.PARCELPIN);
+            setSelectedProperty(selectedProperty.slice(0, p_index).concat(selectedProperty.slice(p_index+ 1, selectedProperty.length)));
         } else {
-            setSelectedProperty([property.PARCELPIN]);
+            setSelectedProperty(selectedProperty.concat([property.PARCELPIN]));
         }
     };
 
     const handleButtonClick = (property) => {
-        // Your logic for handling button click
+        showDetails(property);
     };
     return (
         <div>

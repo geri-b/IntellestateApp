@@ -175,6 +175,7 @@ Filter Tools
   font-weight: bold;
   color: #414243 !important;
   gap: 5px;
+  padding-right: 15px !important;
 }
 
 .property-card-body {

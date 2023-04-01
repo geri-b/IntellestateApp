@@ -19,10 +19,11 @@ const layerStyle = {
   }
 };
 
-function PropertyDetails() {
+function PropertyDetails({ property }) {
   return (
     <div style={{ width: "100%" }}>
       <h3>Visualizations</h3>
+      {property.ind_retail}
       <br></br>
       <Map
         initialViewState={{
@@ -32,7 +33,7 @@ function PropertyDetails() {
         }}
         style={{width: '100%', aspectRatio: '3/2', border: '2px solid lightgrey', borderRadius: '4px'}}
         mapLib={maplibregl}
-        mapStyle="https://api.maptiler.com/maps/bright/style.json?key=nmF5UJHGt6DxUo6Ooheo"
+        mapStyle="https://api.maptiler.com/maps/streets-v2/style.json?key=nmF5UJHGt6DxUo6Ooheo"
         type='vector'
       >
         <Source id="my-data" type="geojson" data={geojson}>
