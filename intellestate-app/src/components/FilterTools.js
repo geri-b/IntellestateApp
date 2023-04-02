@@ -14,6 +14,8 @@ import { Button, Card } from 'react-bootstrap';
 import '../App.css';
 import Checkbox from './filterToolComponents/CheckBox';
 import { forwardRef, useImperativeHandle } from 'react';
+import StreetNumBox from './filterToolComponents/StreetNumberBox';
+import SuffixSearchBox from './filterToolComponents/SuffixSearchBox';
 
 function FilterTools(props, ref) {
   //
@@ -29,6 +31,8 @@ function FilterTools(props, ref) {
     setMaxSQFT('');
     setMinBuildingSQFT('');
     setMaxBuildingSQFT('');
+    setSuffixName('');
+    setStreetNum('');
     setPropertyTypes({
       residential: false,
       commercial: false,
@@ -92,6 +96,20 @@ function FilterTools(props, ref) {
 
   const handlestreetNameChange = (e) => {
     setstreetName(e.target.value);
+    props.setResetData(true);
+  };
+  // StreetNum search hooks
+  const [streetNum, setStreetNum] = useState('');
+
+  const handlestreetNumChange = (e) => {
+    setStreetNum(e.target.value);
+    props.setResetData(true);
+  };
+  // Suffux Search hooks
+  const [suffixName, setSuffixName] = useState('');
+
+  const handlesSuffixfNameChange = (e) => {
+    setSuffixName(e.target.value);
     props.setResetData(true);
   };
 
@@ -216,6 +234,8 @@ function FilterTools(props, ref) {
     const requestBody = {
       city: cityName,
       ZIPCODE: zipcodeName,
+      streetNum: streetNum,
+      suffixName: suffixName,
       STREET: streetName,
       minPrice: minPrice,
       maxPrice: maxPrice,
@@ -260,6 +280,12 @@ function FilterTools(props, ref) {
             </Col>
             <Col xs={12} className="my-2">
               <StreetNameSearchBox streetName={streetName} onstreetNameChange={handlestreetNameChange} />
+            </Col>
+            <Col xs={12} className="my-2">
+              <StreetNumBox streetNum={streetNum} onStreetNumChange={handlestreetNumChange} />
+            </Col>
+            <Col xs={12} className="my-2">
+              <SuffixSearchBox suffixName={suffixName} onsuffixNameChange={handlesSuffixfNameChange} />
             </Col>
           </Row>
         </Card.Body>

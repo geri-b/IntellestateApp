@@ -41,7 +41,7 @@ app.get('/income_rating', (req, res) => {
 });
 
 app.post("/search", (req, res) => {
-    const { city, ZIPCODE, STREET, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes, page = 1, ratingWeights, ratingWeightsValue } = req.body;
+    const { city, ZIPCODE, STREET, streetNum, suffixName, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes, page = 1, ratingWeights, ratingWeightsValue } = req.body;
     const limit = 50;
     const offset = (page - 1) * limit;
 
@@ -70,6 +70,14 @@ app.post("/search", (req, res) => {
 
     if (STREET != '') {
         sqlQuery += ` AND STREET = '${STREET}'`;
+    }
+
+    if (streetNum != '') {
+        sqlQuery += ` AND STREET_NUM = '${streetNum}'`;
+    }
+
+    if (suffixName != '') {
+        sqlQuery += ` AND SUFFIX = '${suffixName}'`;
     }
 
     if (minPrice !== '' && maxPrice !== '') {
