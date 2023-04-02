@@ -14,6 +14,9 @@ function BrowsePageLayout() {
   // Flag To handle reset if the user adds information to one of the hard filters
   const [resetData, setResetData] = useState(false);
 
+  // Flag to check if search is in progress still.
+  const [searchInProgress, setSearchInProgress] = useState(false);
+
   const [propertiesData, setPropertiesData] = useState([]);
 
   const [ratingWeights, setRatingWeights] = useState({
@@ -35,32 +38,9 @@ function BrowsePageLayout() {
   const [openedProperties, setOpenedProperties] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState({});
 
-  const sortProperties = (properties, ratingWeights, ratingWeightsValue) => {
-    // Find the number of selected checkboxes
-    const selectedWeights = Object.keys(ratingWeights).filter((key) => ratingWeights[key]);
-
-    // Calculate the overall rating for each property based on the selected checkboxes
-    properties.forEach((property) => {
-        let overallRating = 0;
-
-        selectedWeights.forEach((weight) => {
-            const ratingKey = weight[0] + "_rating"; // e.g., p_rating, i_rating, etc.
-            if (property[ratingKey]) {
-                overallRating += property[ratingKey] * ratingWeightsValue[weight];
-            }
-        });
-        property.overallRating = overallRating;
-        console.log(property.overallRating);
-    });
-
-    // Sort the properties based on the calculated overall rating
-    return properties.sort((a, b) => b.overallRating - a.overallRating);
-  };
-
-
   const handleDataUpdate = (newData) => {
     let currentPropertiesData = propertiesData;
-
+    console.log(resetData);
     if (resetData) {
       currentPropertiesData = [];
       setOpenedProperties([]);
@@ -68,14 +48,15 @@ function BrowsePageLayout() {
       setResetData(false); // Reset the flag after handling the data
     }
 
-    let combinedData = [...currentPropertiesData, ...newData];
-    setPropertiesData(combinedData);
-  };
+    let combinedData = [...currentPropertiesData];
 
-  const handleSortClick = () => {
-    const sortedProperties = sortProperties([...propertiesData], ratingWeights, ratingWeightsValue);
-    console.log(sortedProperties);
-    setPropertiesData(sortedProperties);
+    newData.forEach((property) => {
+      if (!currentPropertiesData.find((existingProperty) => existingProperty.PARCELPIN === property.PARCELPIN)) {
+        combinedData.push(property);
+      }
+    });
+    setPropertiesData(combinedData);
+    setSearchInProgress(false); // Set the searchInProgress flag back to false
   };
 
   const handleShowDetails = (property) => {
@@ -93,13 +74,14 @@ function BrowsePageLayout() {
         >
           <FilterTools
             ref={filterToolsRef}
-            onDataUpdate={handleDataUpdate}
-            onRatingWeightsUpdate={setRatingWeights}
-            onRatingWeightsValueUpdate={setRatingWeightsValue}
-            setResetData={setResetData}
-            onSortClick={handleSortClick}
-            initialRatingWeights={ratingWeights}
+            onDataUpdate={handleDataUpdate} // On search click
+            onRatingWeightsUpdate={setRatingWeights} // On change to checkbox
+            onRatingWeightsValueUpdate={setRatingWeightsValue} // On Change to weight value
+            setResetData={setResetData} // On reset filter click
+            initialRatingWeights={ratingWeights} // Settting dafaults on checkbox and weight value change
             initialRatingWeightsValue={ratingWeightsValue}
+            searchInProgress={searchInProgress} // Setting seachInProgress
+            setSearchInProgress={setSearchInProgress} //handle search in progress change
           />
         </Col>
         <Col md={6} style={{ height: "100%", overflowY: "auto" }}>

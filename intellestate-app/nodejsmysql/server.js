@@ -41,12 +41,25 @@ app.get('/income_rating', (req, res) => {
 });
 
 app.post("/search", (req, res) => {
-    const { city, ZIPCODE, STREET, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes, page = 1 } = req.body;
+    const { city, ZIPCODE, STREET, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes, page = 1, ratingWeights, ratingWeightsValue } = req.body;
     const limit = 50;
     const offset = (page - 1) * limit;
 
-    let sqlQuery = "SELECT * FROM parcel_ratings WHERE 1";
+    const selectedWeights = Object.keys(ratingWeights).filter((key) => ratingWeights[key]);
+    let sqlQuery = "SELECT *";
 
+    if (selectedWeights.length > 0) {
+        sqlQuery += ", (";
+
+        selectedWeights.forEach((weight, index) => {
+            const ratingKey = weight[0] + "_rating"; // e.g., p_rating, i_rating, etc.
+            sqlQuery += `${index === 0 ? '' : ' + '}${ratingWeightsValue[weight]} * IFNULL(${ratingKey}, 0)`;
+        });
+
+        sqlQuery += ") AS overall_rating";
+    }
+
+    sqlQuery += " FROM parcel_ratings WHERE 1";
     if (city != '') {
         sqlQuery += ` AND city = '${city}'`;
     }
@@ -96,8 +109,12 @@ app.post("/search", (req, res) => {
         sqlQuery += ` AND SiteCat1 IN (${selectedPropertyTypes.map((type) => `'${type}'`).join(", ")})`;
     }
 
-    sqlQuery = sqlQuery + ` LIMIT ${limit} OFFSET ${offset}`
-    console.log(sqlQuery)
+    if (selectedWeights.length > 0) {
+        sqlQuery += ` ORDER BY overall_rating DESC`;
+    }
+
+    sqlQuery += ` LIMIT ${limit} OFFSET ${offset}`;
+    console.log(sqlQuery);
     conn.query(sqlQuery, (error, results, fields) => {
         if (error) {
             console.error('Error executing query:', error);

@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
 import PropertyCard from './PropertyCard';
-import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 
@@ -29,6 +27,9 @@ function PropertyCardGrid({ properties, openedProperties, setOpenedProperties, s
     const handleButtonClick = (property) => {
         showDetails(property);
     };
+
+    // Handling duplicates
+    
     return (
         <div>
             {properties.map(property => (

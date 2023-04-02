@@ -45,6 +45,13 @@ function FilterTools(props, ref) {
       crime: false,
       school: false,
     });
+    setRatingWeightsValue({
+      price: 1,
+      income: 1,
+      diversity: 1,
+      crime: 1,
+      school: 1,
+    });
   };
 
   const handleResetFilters = () => {
@@ -187,6 +194,8 @@ function FilterTools(props, ref) {
         [name]: checked,
       };
       props.onRatingWeightsUpdate(newState);
+      console.log(newState)
+      props.setResetData(true);
       return newState;
     });
   };
@@ -196,12 +205,14 @@ function FilterTools(props, ref) {
     const propName = name.replace("_weight", "");
     setRatingWeightsValue((prev) => ({ ...prev, [propName]: Number(value) }));
     props.onRatingWeightsValueUpdate(ratingWeightsValue);
+    props.setResetData(true);
+
   };
 
 
   //Post to Server
   const handleSubmit = async (page = 1) => {
-
+    props.setSearchInProgress(true); // Set the searchInProgress flag to true when search is initiated
     const requestBody = {
       city: cityName,
       ZIPCODE: zipcodeName,
@@ -214,6 +225,8 @@ function FilterTools(props, ref) {
       maxBuildingSQFT: maxBuildingSQFT,
       propertyTypes: propertyTypes,
       page: page,
+      ratingWeights: ratingWeights,
+      ratingWeightsValue: ratingWeightsValue,
     };
 
     try {
@@ -252,7 +265,10 @@ function FilterTools(props, ref) {
         </Card.Body>
       </Card>
       <Row className='justify-content-center my-3'>
-        <ConfirmSearchButton onSearchClick={() => { setCurrentPage(1); handleSubmit(1); }} />
+        <ConfirmSearchButton
+          onSearchClick={() => { setCurrentPage(1); handleSubmit(1); }}
+          searchInProgress={props.searchInProgress}
+        />
       </Row>
       <Card className="mb-3">
         <Card.Header>Property Filters</Card.Header>
@@ -348,15 +364,6 @@ function FilterTools(props, ref) {
                 weight={ratingWeightsValue.school}
                 onWeightChange={handleRatingWeightInputChange}
               />
-              <Button
-                className="mt-2"
-                variant="primary"
-                onClick={() => {
-                  props.onSortClick();
-                }}
-              >
-                Sort
-              </Button>
             </Card.Body>
           </Card>
         </Col>
