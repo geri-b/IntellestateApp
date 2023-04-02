@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   height: 100vh;
+  overflow: hidden;
 }
 
 
@@ -67,6 +68,11 @@
   margin-left: 0;
   width: 100%;
   max-width: 100%;
+}
+
+/* Navbar */
+.navbar {
+  padding: 8px 10px 8px 10px !important;
 }
 
 /*
@@ -188,6 +194,10 @@ Filter Tools
   white-space: nowrap;
 }
 
+.hide {
+  display: none !important;
+}
+
 .show-more {
   padding: 0 !important;
   height: calc(100% + 10px);
@@ -197,4 +207,12 @@ Filter Tools
 
 .bar-graph-icon {
   opacity: 80%;
+}
+
+.maplibregl-marker:hover {
+  z-index: 2;
+}
+
+.maplibregl-popup {
+  z-index: 3;
 }

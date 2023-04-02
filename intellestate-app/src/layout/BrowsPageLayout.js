@@ -32,6 +32,7 @@ function BrowsePageLayout() {
     school: 1,
   });
 
+  const [openedProperties, setOpenedProperties] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState({});
 
   const sortProperties = (properties, ratingWeights, ratingWeightsValue) => {
@@ -62,6 +63,8 @@ function BrowsePageLayout() {
 
     if (resetData) {
       currentPropertiesData = [];
+      setOpenedProperties([]);
+      setSelectedProperty({});
       setResetData(false); // Reset the flag after handling the data
     }
 
@@ -81,7 +84,7 @@ function BrowsePageLayout() {
 
 
   return (
-    <Container fluid style={{ height: "calc(100% - 60px)" }}>
+    <Container fluid style={{ height: "calc(100% - 57.8px)" }}>
       <Row style={{ height: "100%", overflowY: "auto" }}>
         <Col
           className="left-col"
@@ -100,8 +103,23 @@ function BrowsePageLayout() {
           />
         </Col>
         <Col md={6} style={{ height: "100%", overflowY: "auto" }}>
-          <PropertyCardGrid properties={propertiesData} showDetails={handleShowDetails} />
-          <Button onClick={() => { filterToolsRef.current.handleLoadMoreClick(); }}>Load More</Button>
+          <div
+            className={propertiesData.length === 0 ? '' : 'hide'}
+            style={{display: 'flex', height: '20%', justifyContent: 'center', alignItems: 'center', opacity: '50%'}}
+          >
+            Perform a search to see property recommendations.
+          </div>
+          <PropertyCardGrid
+            properties={propertiesData}
+            openedProperties={openedProperties}
+            setOpenedProperties={setOpenedProperties}
+            showDetails={handleShowDetails}
+          />
+          <Button
+            className={propertiesData.length === 0 ? 'hide' : ''}
+            onClick={() => { filterToolsRef.current.handleLoadMoreClick(); }}
+            >Load More
+          </Button>
         </Col>
         <Col
           className="right-col"
@@ -112,7 +130,7 @@ function BrowsePageLayout() {
             background: "#f8f9fa",
           }}
         >
-          <PropertyDetails property={selectedProperty} />
+          <PropertyDetails properties={propertiesData} property={selectedProperty} />
         </Col>
       </Row>
     </Container>
