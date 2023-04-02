@@ -12,7 +12,7 @@ function HomepageLayout() {
     setPropertiesData(data);
   };
   return (
-    <Container fluid='true'>
+    <Container fluid='true' style={{overflowY: 'auto', height: 'calc(100% - 57.8px)'}}>
       <Row>
         <Col className="mx-auto d-flex justify-content-center" style={{ width: "100%" }}>
           <HomepageCarousel />
