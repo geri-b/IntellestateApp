@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col';
 
 
 
-function PropertyCardGrid({ properties, openedProperties, setOpenedProperties, showDetails }) {
+function PropertyCardGrid({ properties, openedProperties, setOpenedProperties, showDetails, selectedProperty }) {
 
     const handleHeaderClick = (property) => {
         showDetails(property);
@@ -33,7 +33,7 @@ function PropertyCardGrid({ properties, openedProperties, setOpenedProperties, s
     return (
         <div>
             {properties.map(property => (
-                <Col key={property.PARCELPIN} className='my-2'>
+                <Col key={property.PARCELPIN} className={isNaN(selectedProperty.PARCELPIN) ? 'my-2 ' + property.PARCELPIN : (selectedProperty.PARCELPIN === property.PARCELPIN ? 'my-2 selected-property-card ' + property.PARCELPIN : 'my-2 ' + property.PARCELPIN)}>
                         <PropertyCard 
                             property={{ ...property, showExtraInfo: openedProperties.includes(property.PARCELPIN) }}
                             onHeaderClick={handleHeaderClick}

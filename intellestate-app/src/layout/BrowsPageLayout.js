@@ -37,6 +37,7 @@ function BrowsePageLayout() {
 
   const [openedProperties, setOpenedProperties] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState({});
+  const [mapPopupOpen, setMapPopupOpen] = useState('');
 
   const handleDataUpdate = (newData) => {
     let currentPropertiesData = propertiesData;
@@ -60,8 +61,15 @@ function BrowsePageLayout() {
   };
 
   const handleShowDetails = (property) => {
-    setSelectedProperty(property)
+    setSelectedProperty(property);
+    setMapPopupOpen('');
   };
+
+  const handleSetSelectedMarker = (property) => {
+    setMapPopupOpen(property.PARCELPIN)
+    setSelectedProperty(property);
+    document.getElementsByClassName(property.PARCELPIN)[0].scrollIntoView({behavior: 'smooth', block: 'center'});
+  }
 
 
   return (
@@ -96,6 +104,7 @@ function BrowsePageLayout() {
             openedProperties={openedProperties}
             setOpenedProperties={setOpenedProperties}
             showDetails={handleShowDetails}
+            selectedProperty={selectedProperty}
           />
           <Button
             className={propertiesData.length === 0 ? 'hide' : ''}
@@ -112,7 +121,13 @@ function BrowsePageLayout() {
             background: "#f8f9fa",
           }}
         >
-          <PropertyDetails properties={propertiesData} property={selectedProperty} />
+          <PropertyDetails
+            properties={propertiesData}
+            property={selectedProperty}
+            showDetails={handleSetSelectedMarker}
+            popupOpen={mapPopupOpen}
+            setPopupOpen={setMapPopupOpen}
+          />
         </Col>
       </Row>
     </Container>
