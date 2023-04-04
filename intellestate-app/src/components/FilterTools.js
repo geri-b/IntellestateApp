@@ -43,11 +43,11 @@ function FilterTools(props, ref) {
       utility: false,
     });
     setRatingWeights({
-      price: false,
-      income: false,
-      diversity: false,
-      crime: false,
-      school: false,
+      price: true,
+      income: true,
+      diversity: true,
+      crime: true,
+      school: true,
     });
     setRatingWeightsValue({
       price: 1,
@@ -189,11 +189,11 @@ function FilterTools(props, ref) {
 
   //Sorting Hooks
   const [ratingWeights, setRatingWeights] = useState({
-    price: false,
-    income: false,
-    diversity: false,
-    crime: false,
-    school: false,
+    price: true,
+    income: true,
+    diversity: true,
+    crime: true,
+    school: true,
   });
 
   const [ratingWeightsValue, setRatingWeightsValue] = useState({
