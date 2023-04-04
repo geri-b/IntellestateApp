@@ -8,7 +8,7 @@ import { Button, Col, Modal, Row } from "react-bootstrap";
 const geojson = {
   type: 'FeatureCollection',
   features: [
-    {type: 'Feature', geometry: {type: 'Point', coordinates: [-81.9151, 41.4816]}}
+    { type: 'Feature', geometry: { type: 'Point', coordinates: [-81.9151, 41.4816] } }
   ]
 };
 
@@ -54,15 +54,15 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
   }
 
   const markerColor = {
-    'Residential'   : 'lightskyblue',
-    'Commercial'    : 'forestgreen',
-    'Agricultural'  : 'orange',
-    'Utility'       : 'lightgreen',
-    'Government'    : 'royalblue',
-    'Institutional' : 'gold',
-    'Industrial'    : 'saddlebrown',
-    'Mixed'         : 'purple',
-    'Other'         : 'lightgrey',
+    'Residential': 'lightskyblue',
+    'Commercial': 'forestgreen',
+    'Agricultural': 'orange',
+    'Utility': 'lightgreen',
+    'Government': 'royalblue',
+    'Institutional': 'gold',
+    'Industrial': 'saddlebrown',
+    'Mixed': 'purple',
+    'Other': 'lightgrey',
   };
 
   return (
@@ -77,7 +77,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           latitude: 41.5,
           zoom: 8
         }}
-        style={{width: '100%', aspectRatio: '3/2', border: '2px solid lightgrey', borderRadius: '4px'}}
+        style={{ width: '100%', aspectRatio: '3/2', border: '2px solid lightgrey', borderRadius: '4px' }}
         mapLib={maplibregl}
         mapStyle="https://api.maptiler.com/maps/streets-v2/style.json?key=nmF5UJHGt6DxUo6Ooheo"
         type='vector'
@@ -115,7 +115,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           latitude={isNaN(property.AVG_LAT) ? 0 : property.AVG_LAT}
           longitude={isNaN(property.AVG_LONG) ? 0 : property.AVG_LONG}
           color="red"
-          style={{zIndex: 1, display: isNaN(property.PARCELPIN) ? 'none' : ''}}
+          style={{ zIndex: 1, display: isNaN(property.PARCELPIN) ? 'none' : '' }}
           onClick={() => setPopupOpen(property.PARCELPIN)}
         ></Marker>
       </Map>

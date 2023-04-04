@@ -46,6 +46,7 @@ app.post("/search", (req, res) => {
     const offset = (page - 1) * limit;
 
     const selectedWeights = Object.keys(ratingWeights).filter((key) => ratingWeights[key]);
+    let totalWeightDiv = 0;
     let sqlQuery = "SELECT *";
 
     if (selectedWeights.length > 0) {
@@ -54,9 +55,10 @@ app.post("/search", (req, res) => {
         selectedWeights.forEach((weight, index) => {
             const ratingKey = weight[0] + "_rating"; // e.g., p_rating, i_rating, etc.
             sqlQuery += `${index === 0 ? '' : ' + '}${ratingWeightsValue[weight]} * IFNULL(${ratingKey}, 0)`;
+            totalWeightDiv += ratingWeightsValue[weight];
         });
 
-        sqlQuery += ") AS overall_rating";
+        sqlQuery += `) / ${totalWeightDiv} AS overall_rating`;
     }
 
     sqlQuery += " FROM parcel_ratings WHERE 1";
