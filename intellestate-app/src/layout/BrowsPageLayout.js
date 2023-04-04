@@ -20,11 +20,11 @@ function BrowsePageLayout() {
   const [propertiesData, setPropertiesData] = useState([]);
 
   const [ratingWeights, setRatingWeights] = useState({
-    price: false,
-    income: false,
-    diversity: false,
-    crime: false,
-    school: false,
+    price: true,
+    income: true,
+    diversity: true,
+    crime: true,
+    school: true,
   });
 
   const [ratingWeightsValue, setRatingWeightsValue] = useState({

@@ -68,8 +68,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
   return (
     <div style={{ width: "100%" }}>
       <h3>Visualizations</h3>
-      {property.FULL_ADDR} <br></br>
-      {property.PARCL_OWN2}
+      {property.FULL_ADDR}
       <br></br>
       <Map
         initialViewState={{
@@ -91,7 +90,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
             <Marker
               latitude={prop.AVG_LAT}
               longitude={prop.AVG_LONG}
-              color={markerColor[prop.SiteCat1 === null ? 'Other' : prop.SiteCat1]}
+              color={markerColor[prop.SiteCat1 === '' ? 'Other' : prop.SiteCat1]}
               onClick={() => {setPopupOpen(prop.PARCELPIN); showDetails(prop)}}
             ></Marker>
             {popupOpen === prop.PARCELPIN && (
@@ -104,7 +103,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
               >
                 <span>
                   {prop.FULL_ADDR} <br></br>
-                  {prop.SiteCat1} <br></br>
+                  {prop.SiteCat1 === '' ? 'Undefined' : prop.SiteCat1} <br></br>
                   {prop.PARCL_OWN2}
                 </span>
               </Popup>
@@ -115,7 +114,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           latitude={isNaN(property.AVG_LAT) ? 0 : property.AVG_LAT}
           longitude={isNaN(property.AVG_LONG) ? 0 : property.AVG_LONG}
           color="red"
-          style={{ zIndex: 1, display: isNaN(property.PARCELPIN) ? 'none' : '' }}
+          style={{ zIndex: 1, display: property.PARCELPIN === '' ? 'none' : '' }}
           onClick={() => setPopupOpen(property.PARCELPIN)}
         ></Marker>
       </Map>
