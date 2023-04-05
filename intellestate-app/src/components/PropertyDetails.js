@@ -21,7 +21,7 @@ const layerStyle = {
   }
 };
 
-function PropertyDetails({ properties, property, showDetails, popupOpen, setPopupOpen }) {
+function PropertyDetails({ properties, property, showDetails, popupOpen, setPopupOpen, mapRef }) {
 
   const [mapState, setMapState] = useState('');
 
@@ -71,6 +71,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
       {property.FULL_ADDR}
       <br></br>
       <Map
+        ref={mapRef}
         initialViewState={{
           longitude: -81.6,
           latitude: 41.5,

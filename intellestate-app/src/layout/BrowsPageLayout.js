@@ -38,6 +38,7 @@ function BrowsePageLayout() {
   const [openedProperties, setOpenedProperties] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState({});
   const [mapPopupOpen, setMapPopupOpen] = useState('');
+  const mapRef = useRef();
 
   const handleDataUpdate = (newData) => {
     let currentPropertiesData = propertiesData;
@@ -46,6 +47,7 @@ function BrowsePageLayout() {
       currentPropertiesData = [];
       setOpenedProperties([]);
       setSelectedProperty({});
+      setMapPopupOpen('');
       setResetData(false); // Reset the flag after handling the data
     }
 
@@ -61,8 +63,15 @@ function BrowsePageLayout() {
   };
 
   const handleShowDetails = (property) => {
-    setSelectedProperty(property);
-    setMapPopupOpen('');
+    if (property.PARCELPIN != selectedProperty.PARCELPIN) {
+      setSelectedProperty(property);
+      setMapPopupOpen('');
+      mapRef.current.flyTo({
+        center: [property.AVG_LONG, property.AVG_LAT],
+        zoom: 13,
+        essential: true,
+      });
+    }
   };
 
   const handleSetSelectedMarker = (property) => {
@@ -127,6 +136,7 @@ function BrowsePageLayout() {
             showDetails={handleSetSelectedMarker}
             popupOpen={mapPopupOpen}
             setPopupOpen={setMapPopupOpen}
+            mapRef={mapRef}
           />
         </Col>
       </Row>

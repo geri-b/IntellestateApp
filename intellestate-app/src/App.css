@@ -211,10 +211,95 @@ Filter Tools
 
 .maplibregl-marker:hover {
   z-index: 2;
+  cursor: pointer;
 }
 
 .maplibregl-popup {
   z-index: 3;
+  width: 240px;
+  height: 120px;
+  max-width: 50% !important;
+  max-height: 50% !important;
+}
+
+.maplibregl-popup-content {
+  height: 100%;
+  border-radius: 6px !important;
+  padding: 10px 5px 5px 5px !important;
+  border: 2px solid black;
+}
+
+.maplibregl-popup-content > div {
+  height: 100%;
+  overflow: auto !important;
+}
+
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+  border-bottom: none;
+  border-top-color: black !important;
+}
+
+.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+  border-top: none;
+  border-bottom-color: black !important;
+}
+
+.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-left: none;
+  border-right-color: black !important;
+}
+
+.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-right: none;
+  border-left-color: black !important;
+}
+
+.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip {
+  border-bottom: none;
+  border-left: none;
+  border-top-color: black !important;
+}
+
+.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip {
+  border-bottom: none;
+  border-right: none;
+  border-top-color: black !important;
+}
+
+.maplibregl-popup-anchor-top-left .maplibregl-popup-tip {
+  border-top: none;
+  border-left: none;
+  border-bottom-color: black !important;
+}
+
+.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
+  border-top: none;
+  border-right: none;
+  border-bottom-color: black !important;
+}
+
+.maplibregl-popup-anchor-bottom-left > .maplibregl-popup-content {
+  border-radius: 6px 6px 6px 0px !important;
+}
+
+.maplibregl-popup-anchor-bottom-right > .maplibregl-popup-content {
+  border-radius: 6px 6px 0px 6px !important;
+}
+
+.maplibregl-popup-anchor-top-left > .maplibregl-popup-content {
+  border-radius: 0px 6px 6px 6px !important;
+}
+
+.maplibregl-popup-anchor-top-right > .maplibregl-popup-content {
+  border-radius: 6px 0px 6px 6px !important;
+}
+
+.maplibregl-popup-close-button {
+  display: flex;
+  margin: 0px;
+  align-items: center;
+  border-radius: 3px !important;
+  aspect-ratio: 1 / 1;
 }
 
 .modal-90w {
