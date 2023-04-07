@@ -136,6 +136,46 @@ app.post("/search", (req, res) => {
 });
 
 
+
+app.post("/searchHP", (req, res) => {
+    const { city, ZIPCODE, STREET, streetNum, suffixName} = req.body;
+    const limit = 50;
+    sqlQuery += " FROM parcel_ratings WHERE 1";
+    if (city != '') {
+        sqlQuery += ` AND city = '${city}'`;
+    }
+
+    if (ZIPCODE != '') {
+        sqlQuery += ` AND zipcode = '${ZIPCODE}'`;
+    }
+
+    if (STREET != '') {
+        sqlQuery += ` AND STREET = '${STREET}'`;
+    }
+
+    if (streetNum != '') {
+        sqlQuery += ` AND STREET_NUM = '${streetNum}'`;
+    }
+
+    if (suffixName != '') {
+        sqlQuery += ` AND SUFFIX = '${suffixName}'`;
+    }
+
+    sqlQuery += ` LIMIT ${limit}`;
+    console.log(sqlQuery);
+    conn.query(sqlQuery, (error, results, fields) => {
+        if (error) {
+            console.error('Error executing query:', error);
+            res.status(500).json({ error: 'An error occurred while executing the query.' });
+            return;
+        }
+        res.send(results);
+    });
+});
+
+
+
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
