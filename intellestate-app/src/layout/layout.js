@@ -2,31 +2,32 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import HomepageCarousel from "../components/HompageCarousel";
-import FilterTools from "../components/FilterTools";
-import { useState } from "react";
+import HPCard1 from "../components/HPCard1";
+import HPCard2 from "../components/HPCard2";
+import HPCard3 from "../components/HPCard3";
+import SearchBar from "../components/Searchbar";
 
 function HomepageLayout() {
-  const [propertiesData, setPropertiesData] = useState([]);
 
-  const handleDataUpdate = (data) => {
-    setPropertiesData(data);
-  };
   return (
     <Container fluid='true' style={{overflowY: 'auto', height: 'calc(100% - 57.8px)'}}>
       <Row>
-        <Col className="mx-auto d-flex justify-content-center" style={{ width: "100%" }}>
+        <Col>
           <HomepageCarousel />
-          
         </Col>
       </Row>
-      <Row >
-        <hr className="my-4" />
-        <FilterTools onDataUpdate={handleDataUpdate}/>
-        <hr className="my-4" />
+      <Row style={{display: 'flex', justifyContent: 'center'}}>
+      <SearchBar/>
       </Row>
-      <Row>
-        <Col>
-          
+      <Row style={{paddingTop: '250px'}}>
+        <Col className="d-flex justify-content-center align-items-center">
+          <HPCard1 />
+        </Col>
+        <Col className="d-flex justify-content-center align-items-center">
+          <HPCard2 />
+        </Col>
+        <Col className="d-flex justify-content-center align-items-center">
+          <HPCard3 />
         </Col>
       </Row>
     </Container>

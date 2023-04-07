@@ -53,13 +53,6 @@
 }
 
 
-.carousel-fullscreen
-{
-  height: 500px;
-  width: 100%;
-}
-
-
 .container-fluid
 {
   padding-right: 0;
@@ -328,3 +321,16 @@ Filter Tools
   box-shadow: 0 0 0 4px rgba(13,110,253,.25);
   border-radius: 6px;
 }
+
+
+/* Homepage carousel css*/
+.carousel-custom {
+  width: 100%;
+  height: 400px;
+}
+
+.carousel-custom img {
+  object-fit: cover;
+  height: 600px;
+}
+
