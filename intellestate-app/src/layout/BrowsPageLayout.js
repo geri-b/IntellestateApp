@@ -63,6 +63,86 @@ function BrowsePageLayout() {
   };
 
   const handleShowDetails = (property) => {
+    if (property.ind_farm < 0.02) {
+      property.ind_other += property.ind_farm;
+      property.ind_farm = null;
+    }
+
+    if (property.ind_mining < 0.02) {
+      property.ind_other += property.ind_mining;
+      property.ind_mining = null;
+    }
+
+    if (property.ind_utility < 0.02) {
+      property.ind_other += property.ind_utility;
+      property.ind_utility = null;
+    }
+    if (property.ind_retail < 0.02) {
+      property.ind_other += property.ind_retail;
+      property.ind_retail = null;
+    }
+    if (property.ind_construction < 0.02) {
+      property.ind_other += property.ind_construction;
+      property.ind_construction = null;
+    }
+    if (property.ind_manufacture < 0.02) {
+      property.ind_other += property.ind_manufacture;
+      property.ind_manufacture = null;
+    }
+    if (property.ind_wholesale < 0.02) {
+      property.ind_other += property.ind_wholesale
+      property.ind_wholesale = null;
+    }
+    if (property.ind_transport < 0.02) {
+      property.ind_other += property.ind_transport;
+      property.ind_transport = null;
+    }
+    if (property.ind_real_estate < 0.02) {
+      property.ind_other += property.ind_real_estate;
+      property.ind_real_estate = null;
+    }
+    if (property.ind_science < 0.02) {
+      property.ind_other += property.ind_science;
+      property.ind_science = null;
+    }
+    if (property.ind_management < 0.02) {
+      property.ind_other += property.ind_management;
+      property.ind_management = null;
+    }
+    if (property.ind_waste < 0.02) {
+      property.ind_other += property.ind_waste;
+      property.ind_waste = null;
+    }
+    if (property.ind_finance < 0.02) {
+      property.ind_other += property.ind_finance;
+      property.ind_finance = null;
+    }
+    if (property.ind_it < 0.02) {
+      property.ind_other += property.ind_it;
+      property.ind_it = null;
+    }
+    if (property.ind_education < 0.02) {
+      property.ind_other += property.ind_education;
+      property.ind_education = null;
+    }
+    if (property.ind_health_care < 0.02) {
+      property.ind_other += property.ind_health_care;
+      property.ind_health_care = null;
+    }
+    if (property.ind_entertain < 0.02) {
+      property.ind_other += property.ind_entertain;
+      property.ind_entertain = null;
+    }
+    if (property.ind_food_service < 0.02) {
+      property.ind_other += property.ind_food_service;
+      property.ind_food_service = null;
+    }
+
+    if (property.ind_public_admin < 0.02) {
+      property.ind_other += property.ind_public_admin;
+      property.ind_public_admin = null;
+    }
+
     if (property.PARCELPIN != selectedProperty.PARCELPIN) {
       setSelectedProperty(property);
       setMapPopupOpen('');
@@ -77,7 +157,7 @@ function BrowsePageLayout() {
   const handleSetSelectedMarker = (property) => {
     setMapPopupOpen(property.PARCELPIN)
     setSelectedProperty(property);
-    document.getElementsByClassName(property.PARCELPIN)[0].scrollIntoView({behavior: 'smooth', block: 'center'});
+    document.getElementsByClassName(property.PARCELPIN)[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
 
@@ -104,7 +184,7 @@ function BrowsePageLayout() {
         <Col md={6} style={{ height: "100%", overflowY: "auto" }}>
           <div
             className={propertiesData.length === 0 ? '' : 'hide'}
-            style={{display: 'flex', height: '20%', justifyContent: 'center', alignItems: 'center', opacity: '50%'}}
+            style={{ display: 'flex', height: '20%', justifyContent: 'center', alignItems: 'center', opacity: '50%' }}
           >
             Perform a search to see property recommendations.
           </div>
@@ -118,7 +198,7 @@ function BrowsePageLayout() {
           <Button
             className={propertiesData.length === 0 ? 'hide' : ''}
             onClick={() => { filterToolsRef.current.handleLoadMoreClick(); }}
-            >Load More
+          >Load More
           </Button>
         </Col>
         <Col

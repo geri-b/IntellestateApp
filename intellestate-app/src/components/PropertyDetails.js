@@ -182,26 +182,52 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         </Modal.Body>
       </Modal>
       <br></br>
-      <Plot
-        data={[
-          // {
-          //     x: [1, 2, 3],
-          //     y: [2, 6, 3],
-          //     type: "scatter",
-          //     mode: "lines+markers",
-          //     marker: { color: "red" },
-          // },
-          { type: "bar", x: [1, 2, 3], y: [2, 5, 3] },
-        ]}
-        layout={{
-          title: "A Fancy Plot",
-          margin: { pad: 10, l: 40, r: 40, t: 40, b: 40 },
-          paper_bgcolor: "rgba(0,0,0,0)",
-          //plot_bgcolor: "rgba(0,0,0,0)",
-        }}
+      <br></br>
+      <br></br>
+      <Plot 
+        var data = {[{
+
+          // make function and set data equal to something set data = to function that returns whole data object with use state
+          values: [property.ind_farm, property.ind_mining, property.ind_utility, property.ind_construction, property.ind_manufacture, property.ind_wholesale, property.ind_retail, property.ind_transport, property.ind_it, property.ind_finance, property.ind_real_estate, property.ind_science, property.ind_management, property.ind_waste, property.ind_education, property.ind_health_care, property.ind_entertain, property.ind_food_service, property.ind_other, property.ind_public_admin],
+          // values: [2,3,4,5,6],
+          labels: ['Farming', 'Mining', 'Utility', 'Construction', 'Manufacturing', 'Wholesale', 'Retail', 'Transport', 'Information Technology', 'Finance', 'Real Estate', 'Science', 'Management', 'Waste Management', 'Education', 'Health Care', 'Entertainment', 'Food Service', 'Other', 'Public Administration'],
+          type: 'pie'
+        }]}
+        layout = {{margin: { pad: 10, l: 5, r: 40, t: 40, b: 40 }, title: 'Area Industry Distribution', showlegend: false, textinfo: 'none', automargin: false}}
         config={{ responsive: true }}
         style={{ width: "100%", aspectRatio: "5 / 4" }}
-      />
+
+        />
+        <br></br>
+        <br></br>
+
+        <Plot 
+        var data = {[{
+          values: [property.d_white, property.d_black, property.d_asian, property.d_indegenous, property.d_pacific],
+          // values: [.50, .50],
+          labels: ['White', 'Black', 'Asian', 'Indigenous', 'Pacific'],
+          type: 'pie'
+        }]}
+        layout = {{margin: { pad: 10, l: 40, r: 40, t: 40, b: 40 }, showlegend: false, title: 'Diversity Distribution'}}
+        config={{ responsive: true }}
+        style={{ width: "100%", aspectRatio: "5 / 4" }}
+
+        />
+        <br></br>
+        <br></br>
+
+        <Plot 
+        var data = {[{
+          values: [property.i_percent_low, property.i_percent_med, property.i_percent_high],
+          // values: [.50, .50],
+          labels: ['Less than 15k per year','15k - 40k per year', 'More than 40k per year'],
+          type: 'pie'
+        }]}
+        layout = {{margin: { pad: 10, l: 40, r: 40, t: 40, b: 40 }, showlegend: false, title: 'Income Distribution'}}
+        config={{ responsive: true }}
+        style={{ width: "100%", aspectRatio: "5 / 4" }}
+
+        />
     </div>
   );
 }
