@@ -202,6 +202,20 @@ Filter Tools
   opacity: 80%;
 }
 
+.invert-rank {
+  display: flex !important;
+  padding: 0 !important;
+  height: 30px;
+  aspect-ratio: 1 / 1;
+  filter: invert(10%);
+  align-items: center;
+  justify-content: center;
+}
+
+.invert-icon {
+  opacity: 70%;
+}
+
 .maplibregl-marker:hover {
   z-index: 2;
   cursor: pointer;
@@ -220,6 +234,8 @@ Filter Tools
   border-radius: 6px !important;
   padding: 10px 5px 5px 5px !important;
   border: 2px solid black;
+  background-color: #282c34 !important;
+  color: whitesmoke;
 }
 
 .maplibregl-popup-content > div {
@@ -292,6 +308,7 @@ Filter Tools
   margin: 0px;
   align-items: center;
   border-radius: 3px !important;
+  color: white;
   aspect-ratio: 1 / 1;
 }
 

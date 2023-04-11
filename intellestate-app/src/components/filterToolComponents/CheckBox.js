@@ -1,5 +1,6 @@
 import React from 'react';
-import { Col } from 'react-bootstrap';
+import { Button, Col } from 'react-bootstrap';
+import invertIcon from '../../images/BrowsePage/InvertIcon.png'
 
 function Checkbox({ label, name, checked, onChange, weight, onWeightChange }) {
     return (
@@ -30,6 +31,12 @@ function Checkbox({ label, name, checked, onChange, weight, onWeightChange }) {
                     style={{ width: "80px" }}
                 />
             </Col>
+            <Button
+                variant='light'
+                className='btn shadow-none invert-rank'
+            >
+                <img className='invert-icon' src={invertIcon} style={{width: '20px', height: '20px'}}></img>
+            </Button>
         </div>
     );
 }

@@ -40,6 +40,64 @@ app.get('/income_rating', (req, res) => {
     });
 });
 
+const tractHotspotTables = {
+    'income': 'z_dennis_t_income_pei',
+    'price_residential': 'z_dennis_t_price_pei where SiteCat1 = "Residential"',
+    'price_commercial': 'z_dennis_t_price_pei where SiteCat1 = "Commercial"',
+    'price_industrial': 'z_dennis_t_price_pei where SiteCat1 = "Industrial"',
+    'price_institutional': 'z_dennis_t_price_pei where SiteCat1 = "Institutional"',
+    'density': 'z_dennis_t_bldg_density_pei',
+    'races': 'z_dennis_t_races_pei',
+};
+
+const cityHotspotTables = {
+    'crime': 'city_crime_rating',
+};
+
+const hotspotSubTypes = {
+    'white': 'pei_white',
+    'black': 'pei_black',
+    'indigenous': 'pei_indigenous',
+    'asian': 'pei_asian',
+    'pacific': 'pei_pacific',
+    'hispanic': 'pei_hispanic',
+};
+
+const areaTypes = {
+    'tract': 'tract',
+    'city': 'city',
+    'block': 'block',
+};
+
+app.post("/hotspots", (req, res) => {
+    const {areaType, hotspotType, hotspotSubType} = req.body;
+
+    let sqlQuery = "select ";
+
+    if (hotspotSubType) {
+        sqlQuery += areaType + ", " + hotspotSubTypes[hotspotSubType] + " as pei ";
+    } else {
+        sqlQuery += "* ";
+    }
+
+    if (areaType == 'tract') {
+        sqlQuery += "from " + tractHotspotTables[hotspotType];
+    } else if (areaType == 'city') {
+        sqlQuery += "from " + cityHotspotTables[hotspotType];
+    }
+
+    console.log(sqlQuery);
+
+    conn.query(sqlQuery, (error, results, fields) => {
+        if (error) {
+            console.error('Error executing query:', error);
+            res.status(500).json({ error: 'An error occurred while executing the query.' });
+            return;
+        }
+        res.send(results);
+    });
+});
+
 app.post("/search", (req, res) => {
     const { city, ZIPCODE, STREET, streetNum, suffixName, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes, page = 1, ratingWeights, ratingWeightsValue } = req.body;
     const limit = 50;
@@ -106,10 +164,10 @@ app.post("/search", (req, res) => {
         sqlQuery += ` AND TOTAL_RES_AREA BETWEEN ${minBuildingSQFT} AND ${maxBuildingSQFT}`;
     }
     if (minBuildingSQFT !== '' && maxBuildingSQFT == '') {
-        sqlQuery += ` AND TOTAL_RES_AREA >= ${minBuildingSQFT}`;
+        sqlQuery += ` AND TOTAL_RES_AREA + TOTAL_COM_AREA >= ${minBuildingSQFT}`;
     }
     if (minBuildingSQFT == '' && maxBuildingSQFT !== '') {
-        sqlQuery += ` AND TOTAL_RES_AREA <= ${maxBuildingSQFT}`;
+        sqlQuery += ` AND TOTAL_RES_AREA + TOTAL_COM_AREA <= ${maxBuildingSQFT}`;
     }
 
     const propertyTypeKeys = Object.keys(propertyTypes);

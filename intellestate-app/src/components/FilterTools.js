@@ -265,8 +265,8 @@ function FilterTools(props, ref) {
   };
 
   return (
-    <Container className="filters-container p-3 rounded">
-      <h2 className="my-4 text-center">Search Properties</h2>
+    <Container>
+      <h3 className="my-4 text-center">Search Properties</h3>
       <Button className='my-2' style={{ maxWidth: '200px' }} onClick={handleResetFilters}> Reset Filters</Button>
       <Card className="mb-3">
         <Card.Header>Location Filters</Card.Header>

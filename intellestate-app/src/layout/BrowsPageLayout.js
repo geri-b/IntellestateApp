@@ -6,6 +6,7 @@ import { useState, useRef } from 'react';
 import FilterTools from '../components/FilterTools';
 import PropertyDetails from '../components/PropertyDetails';
 import { Button } from 'react-bootstrap';
+import { useEffect } from 'react';
 
 function BrowsePageLayout() {
   // Ref to use handleLoadMoreClick function from parent component
@@ -143,7 +144,7 @@ function BrowsePageLayout() {
       property.ind_public_admin = null;
     }
 
-    if (property.PARCELPIN != selectedProperty.PARCELPIN) {
+    if (property.PARCELPIN !== selectedProperty.PARCELPIN) {
       setSelectedProperty(property);
       setMapPopupOpen('');
       mapRef.current.flyTo({
@@ -160,6 +161,68 @@ function BrowsePageLayout() {
     document.getElementsByClassName(property.PARCELPIN)[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
+  const [shapeValues, setShapeValues] = useState(null);
+  const [geographicShapes, setGeographicShapes] = useState(null);
+
+  const loadGeographicShapes = async () => {
+    let initialGeoShapes = {};
+    const tractResponse = await fetch('/TractShapes.geojson');
+    const tractJson = await tractResponse.json();
+    initialGeoShapes['tract'] = tractJson;
+    const cityResponse = await fetch('/CityShapes.geojson');
+    const cityJson = await cityResponse.json();
+    initialGeoShapes['city'] = cityJson;
+    setGeographicShapes(initialGeoShapes);
+  };
+  
+  useEffect(() => {
+    loadGeographicShapes();
+  }, []);
+  
+  const setHotspots = async (aType, hType, hSubType) => {
+    const requestBody = {
+      areaType: aType,
+      hotspotType: hType,
+      hotspotSubType: hSubType,
+    };
+
+    try {
+      const response = await fetch("http://localhost:3001/hotspots", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      });
+
+      const data = await response.json();
+      if (geographicShapes[aType]) {
+        let newShapeValues = {...geographicShapes[aType]};
+        let newFeatures = [];
+        for (const feature of newShapeValues.features) {
+          let newFeature = {...feature};
+          newFeature.properties.hotspotValue = -1;
+          if (aType === 'tract') {
+            for (const tractData of data) {
+              if (Number(tractData.tract) === newFeature.id) {
+                newFeature.properties.hotspotValue = tractData.pei;
+              }
+            }
+          } else if (aType === 'city') {
+            for (const cityData of data) {
+              if (cityData.city === newFeature.properties.name) {
+                newFeature.properties.hotspotValue = cityData.pei;
+              }
+            }
+          }
+          newFeatures.push(newFeature);
+        }
+        newShapeValues.features = newFeatures;
+        setShapeValues(newShapeValues);
+      }
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
   return (
     <Container fluid style={{ height: "calc(100% - 57.8px)" }}>
@@ -167,7 +230,7 @@ function BrowsePageLayout() {
         <Col
           className="left-col"
           md={3}
-          style={{ height: "100%", overflowY: "auto" }}
+          style={{ height: "100%", overflowY: "auto", background: "#f8f9fa" }}
         >
           <FilterTools
             ref={filterToolsRef}
@@ -181,7 +244,26 @@ function BrowsePageLayout() {
             setSearchInProgress={setSearchInProgress} //handle search in progress change
           />
         </Col>
-        <Col md={6} style={{ height: "100%", overflowY: "auto" }}>
+        <Col
+          className="right-col"
+          md={6}
+          style={{
+            height: "100%",
+            overflowY: "auto",
+          }}
+        >
+          <PropertyDetails
+            properties={propertiesData}
+            property={selectedProperty}
+            showDetails={handleSetSelectedMarker}
+            popupOpen={mapPopupOpen}
+            setPopupOpen={setMapPopupOpen}
+            mapRef={mapRef}
+            shapes={shapeValues}
+            setHotspots={setHotspots}
+          />
+        </Col>
+        <Col md={3} style={{ height: "100%", overflowY: "auto", background: "#f8f9fa", }}>
           <div
             className={propertiesData.length === 0 ? '' : 'hide'}
             style={{ display: 'flex', height: '20%', justifyContent: 'center', alignItems: 'center', opacity: '50%' }}
@@ -200,24 +282,6 @@ function BrowsePageLayout() {
             onClick={() => { filterToolsRef.current.handleLoadMoreClick(); }}
           >Load More
           </Button>
-        </Col>
-        <Col
-          className="right-col"
-          md={3}
-          style={{
-            height: "100%",
-            overflowY: "auto",
-            background: "#f8f9fa",
-          }}
-        >
-          <PropertyDetails
-            properties={propertiesData}
-            property={selectedProperty}
-            showDetails={handleSetSelectedMarker}
-            popupOpen={mapPopupOpen}
-            setPopupOpen={setMapPopupOpen}
-            mapRef={mapRef}
-          />
         </Col>
       </Row>
     </Container>

@@ -46,6 +46,36 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
         style={{ backgroundColor: bodyHover ? '#f8f9fa' : 'white', cursor: bodyHover ? 'pointer' : 'default' }}
 
       >
+        <Row style={{padding: '0 0 10px 0'}}>
+          <Col className='col fw-bold'>
+            ~${property.GCERT3}
+          </Col>
+          <Col className='col fw-bold'>
+            {property.TOTAL_RES_AREA + property.TOTAL_COM_AREA} sq.
+          </Col>
+          <Col className='col fw-bold'>
+            {property.RES_BLDG_CNT + property.COM_BLDG_CNT} Bldg.
+          </Col>
+          <Col className='col fw-bold'>
+            {property.SiteCat1}
+          </Col>
+          {/* <Col className="col fw-bold" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{padding: 0}}>
+            <Row className="justify-content-center align-items-center">
+              {property.TOTAL_RES_AREA + property.TOTAL_COM_AREA} sq.
+            </Row>
+            <Row className="justify-content-center align-items-center">
+              {property.RES_BLDG_CNT + property.COM_BLDG_CNT} Bldg.
+            </Row>
+          </Col>
+          <Col className="col fw-bold" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{paddingLeft: 0}}>
+            <Row className="justify-content-center align-items-center">
+              ~${property.GCERT3}
+            </Row>
+            <Row className="justify-content-center align-items-center">
+              {property.SiteCat1}
+            </Row>
+          </Col> */}
+        </Row>
         <Row className='card-body-row' style={{ gap: "5px" }}>
           <Col>
             <Row className="justify-content-center">Price</Row>
@@ -111,22 +141,6 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
                 {Math.round(property.s_rating * 100)}
               </div>
             </div>
-          </Col>
-          <Col className="col fw-bold" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{padding: 0}}>
-            <Row className="justify-content-center align-items-center">
-              {property.TOTAL_RES_AREA + property.TOTAL_COM_AREA} sq.
-            </Row>
-            <Row className="justify-content-center align-items-center">
-              {property.RES_BLDG_CNT + property.COM_BLDG_CNT} Bldg.
-            </Row>
-          </Col>
-          <Col className="col fw-bold" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{paddingLeft: 0}}>
-            <Row className="justify-content-center align-items-center">
-              ~${property.GCERT3}
-            </Row>
-            <Row className="justify-content-center align-items-center">
-              {property.SiteCat1}
-            </Row>
           </Col>
         </Row>
         <Row>

@@ -3,7 +3,7 @@ import { Form, FormControl, Button } from "react-bootstrap";
 
 function SearchBar() {
   return (
-    <Form inline style={{
+    <Form style={{
       position: 'static',
       top: '50%',
       left: '50%',
