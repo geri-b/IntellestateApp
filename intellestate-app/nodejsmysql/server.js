@@ -46,8 +46,10 @@ const tractHotspotTables = {
     'price_commercial': 'z_dennis_t_price_pei where SiteCat1 = "Commercial"',
     'price_industrial': 'z_dennis_t_price_pei where SiteCat1 = "Industrial"',
     'price_institutional': 'z_dennis_t_price_pei where SiteCat1 = "Institutional"',
+    'price_government': 'z_dennis_t_price_pei where SiteCat1 = "Government"',
     'density': 'z_dennis_t_bldg_density_pei',
     'races': 'z_dennis_t_races_pei',
+    'com_luc': 'z_dennis_t_luc_pei',
 };
 
 const cityHotspotTables = {
@@ -61,6 +63,17 @@ const hotspotSubTypes = {
     'asian': 'pei_asian',
     'pacific': 'pei_pacific',
     'hispanic': 'pei_hispanic',
+    'vacant': 'vacant_pei',
+    'living': 'living_pei',
+    'retail': 'retail_pei',
+    'food': 'food_pei',
+    'life_services': 'life_services_pei',
+    'office': 'office_pei',
+    'automotive': 'automotive_pei',
+    'entertainment_sports': 'entertainment_sports_pei',
+    'warehouse_supply': 'warehouse_supply_pei',
+    'watercraft_aircraft': 'watercraft_aircraft_pei',
+    'other': 'other_pei',
 };
 
 const areaTypes = {
@@ -75,14 +88,14 @@ app.post("/hotspots", (req, res) => {
     let sqlQuery = "select ";
 
     if (hotspotSubType) {
-        sqlQuery += areaType + ", " + hotspotSubTypes[hotspotSubType] + " as pei ";
+        sqlQuery += areaTypes[areaType] + ", " + hotspotSubTypes[hotspotSubType] + " as pei ";
     } else {
         sqlQuery += "* ";
     }
 
-    if (areaType == 'tract') {
+    if (areaTypes[areaType] == 'tract') {
         sqlQuery += "from " + tractHotspotTables[hotspotType];
-    } else if (areaType == 'city') {
+    } else if (areaTypes[areaType] == 'city') {
         sqlQuery += "from " + cityHotspotTables[hotspotType];
     }
 

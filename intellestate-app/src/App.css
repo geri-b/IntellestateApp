@@ -351,3 +351,33 @@ Filter Tools
   height: 600px;
 }
 
+#hotspot-scale {
+  display: grid;
+  grid-auto-flow: column;
+  width: 100%;
+  height: 24px;
+  background: rgb(0,128,240);
+  background: linear-gradient(90deg, rgba(0,128,240,0.5) 0%, rgba(0,240,0,0.5) 25%, rgba(240,240,0,0.5) 50%, rgba(240,128,0,0.5) 75%, rgba(240,0,0,0.5) 100%);
+  margin: 5px 0 5px 0;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  padding: 0 4px 0 4px;
+}
+
+#hotspot-scale > div {
+  display: grid;
+  height: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  align-content: center;
+}
+
+#hotspot-scale-label-low {
+  justify-content: left;
+  color: #06a;
+}
+
+#hotspot-scale-label-high {
+  justify-content: right;
+  color: #a00;
+}

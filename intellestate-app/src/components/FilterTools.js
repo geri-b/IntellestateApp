@@ -265,8 +265,8 @@ function FilterTools(props, ref) {
   };
 
   return (
-    <Container>
-      <h3 className="my-4 text-center">Search Properties</h3>
+    <Container style={{margin: 0}}>
+      <h3 className="text-center" style={{margin: '10px 0 0 0'}}>Search Properties</h3>
       <Button className='my-2' style={{ maxWidth: '200px' }} onClick={handleResetFilters}> Reset Filters</Button>
       <Card className="mb-3">
         <Card.Header>Location Filters</Card.Header>
@@ -342,12 +342,12 @@ function FilterTools(props, ref) {
         <Col xs={12} className="my-2">
           <Card className="mb-3">
             <Card.Header>
-              <h5>Sort by</h5>
+              <h5>Recommendation Weights</h5>
             </Card.Header>
             <Card.Body>
               <p>
                 <em>
-                  Select a checkbox to sort a property based on what you are looking for. Don't worry, if you select multiple boxes we will sort the properties accordingly!
+                  Select the attributes you're looking for. If one matters more to you, increase its weight. Don't like our default scoring? Toggle inversion to look for properties with a lower score instead!
                 </em>
               </p>
               <Checkbox

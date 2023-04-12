@@ -246,7 +246,6 @@ function BrowsePageLayout() {
         </Col>
         <Col
           className="right-col"
-          md={6}
           style={{
             height: "100%",
             overflowY: "auto",
@@ -263,7 +262,8 @@ function BrowsePageLayout() {
             setHotspots={setHotspots}
           />
         </Col>
-        <Col md={3} style={{ height: "100%", overflowY: "auto", background: "#f8f9fa", }}>
+        <Col md={3} style={{ minWidth: 'min-content', height: "100%", overflowY: "auto", background: "#f8f9fa", }}>
+          <h3 style={{margin: '10px 0 0 0'}}>Recommended Matches</h3> (Based on 5 rating categories)
           <div
             className={propertiesData.length === 0 ? '' : 'hide'}
             style={{ display: 'flex', height: '20%', justifyContent: 'center', alignItems: 'center', opacity: '50%' }}

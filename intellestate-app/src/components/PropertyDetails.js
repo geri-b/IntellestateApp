@@ -134,9 +134,11 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
 
   return (
     <div style={{ width: "100%" }}>
-      <h3>Visualizations</h3>
-      {property.SiteCat2} : {property.FULL_ADDR}
-      <br></br>
+      <h3 style={{margin: '10px 0 0 0'}}>Advanced Location Details</h3>
+      <div id="hotspot-scale">
+        <div id="hotspot-scale-label-low">Low Quantity</div>
+        <div id="hotspot-scale-label-high">High Quantity</div>
+      </div>
       <Map
         ref={mapRef}
         initialViewState={{
@@ -190,6 +192,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           onClick={() => setPopupOpen(property.PARCELPIN)}
         ></Marker>
       </Map>
+      <div style={{margin: '5px 0 0 0', display: property.FULL_ADDR == null ? 'none' : 'inline-block'}}>{property.FULL_ADDR}</div><br></br>
       <Button style={{margin: '5px'}} onClick={() => setShowAdvancedMap(true)}>Advanced Map</Button>
       <Button style={{margin: '5px'}} onClick={() => setHotspots('tract', 'races', 'hispanic')}>Show Tract Hotspots</Button>
       <Button style={{margin: '5px'}} onClick={() => setHotspots('city', 'crime')}>Show City Hotspots</Button>

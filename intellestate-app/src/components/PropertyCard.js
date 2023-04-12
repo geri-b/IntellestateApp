@@ -35,7 +35,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
             onButtonClick(property);
           }}
         >
-          <img className='bar-graph-icon' src={graphIcon} style={{width: '20px', height: '20px'}}></img>
+          <img className='bar-graph-icon' src={graphIcon} style={{width: '20px', height: '20px'}} alt='Show Details'></img>
         </Button>
       </Card.Header>
       <Card.Body
@@ -86,7 +86,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
                   backgroundColor: ratingColor(property.p_rating),
                 }}
               >
-                {Math.round(property.p_rating * 100)}
+                {Math.round(property.p_rating * 100) / 10}
               </div>
             </div>
           </Col>
@@ -99,7 +99,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
                   backgroundColor: ratingColor(property.i_rating),
                 }}
               >
-                {Math.round(property.i_rating * 100)}
+                {Math.round(property.i_rating * 100) / 10}
               </div>
             </div>
           </Col>
@@ -112,7 +112,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
                   backgroundColor: ratingColor(property.d_rating),
                 }}
               >
-                {Math.round(property.d_rating * 100)}
+                {Math.round(property.d_rating * 100) / 10}
               </div>
             </div>
           </Col>
@@ -125,7 +125,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
                   backgroundColor: ratingColor(property.c_rating),
                 }}
               >
-                {Math.round(property.c_rating * 100)}
+                {Math.round(property.c_rating * 100) / 10}
               </div>
             </div>
           </Col>
@@ -138,7 +138,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
                   backgroundColor: ratingColor(property.s_rating),
                 }}
               >
-                {Math.round(property.s_rating * 100)}
+                {Math.round(property.s_rating * 100) / 10}
               </div>
             </div>
           </Col>
@@ -174,7 +174,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
 
                 <Row>
                   <Col className="text-left" style={{ whiteSpace: 'nowrap' }}>
-                  Transfer Price: <span style={{ fontWeight: 'bold' }}> {property.SALES_AMOU == 0 ? 'No Information' : `$${property.SALES_AMOU}`} </span>
+                  Transfer Price: <span style={{ fontWeight: 'bold' }}> {property.SALES_AMOU === 0 ? 'No Information' : `$${property.SALES_AMOU}`} </span>
                 </Col>
                 <Col className="text-center" style={{ whiteSpace: 'nowrap' }}>
                   Neighborhood: <span style={{ fontWeight: 'bold' }}> {property.NEIGHBORHOOOD} </span>
