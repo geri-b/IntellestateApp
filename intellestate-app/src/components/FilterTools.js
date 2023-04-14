@@ -41,6 +41,8 @@ function FilterTools(props, ref) {
       industrial: false,
       agricultural: false,
       utility: false,
+      mixed: false,
+      other: false,
     });
     setRatingWeights({
       price: true,
@@ -157,6 +159,8 @@ function FilterTools(props, ref) {
     industrial: false,
     agricultural: false,
     utility: false,
+    mixed: false,
+    other: false,
   });
 
   const handlePropertyTypeCheckboxChange = (e) => {
@@ -264,9 +268,24 @@ function FilterTools(props, ref) {
     }
   };
 
+  const [invertChecked, setInvertChecked] = useState({
+    price: false,
+    income: false,
+    diversity: false,
+    crime: false,
+    school: false,
+  });
+
+  const handleInvertClick = (name) => {
+    setInvertChecked((prevInvertChecked) => ({
+      ...prevInvertChecked,
+      [name]: !prevInvertChecked[name],
+    }));
+  };
+
   return (
-    <Container className="filters-container p-3 rounded">
-      <h2 className="my-4 text-center">Search Properties</h2>
+    <Container style={{ margin: 0 }}>
+      <h3 className="text-center" style={{ margin: '10px 0 0 0' }}>Search Properties</h3>
       <Button className='my-2' style={{ maxWidth: '200px' }} onClick={handleResetFilters}> Reset Filters</Button>
       <Card className="mb-3">
         <Card.Header>Location Filters</Card.Header>
@@ -342,12 +361,12 @@ function FilterTools(props, ref) {
         <Col xs={12} className="my-2">
           <Card className="mb-3">
             <Card.Header>
-              <h5>Sort by</h5>
+              <h5>Recommendation Weights</h5>
             </Card.Header>
             <Card.Body>
               <p>
                 <em>
-                  Select a checkbox to sort a property based on what you are looking for. Don't worry, if you select multiple boxes we will sort the properties accordingly!
+                  Select the attributes you're looking for. If one matters more to you, increase its weight. Don't like our default scoring? Toggle inversion to look for properties with a lower score instead!
                 </em>
               </p>
               <Checkbox
@@ -357,6 +376,8 @@ function FilterTools(props, ref) {
                 onChange={handleRatingWeightCheckboxChange}
                 weight={ratingWeightsValue.price}
                 onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.price}
+                onInvertClick={() => handleInvertClick("price")}
               />
               <Checkbox
                 label="Income"
@@ -365,6 +386,8 @@ function FilterTools(props, ref) {
                 onChange={handleRatingWeightCheckboxChange}
                 weight={ratingWeightsValue.income}
                 onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.income}
+                onInvertClick={() => handleInvertClick("income")}
               />
               <Checkbox
                 label="Diversity"
@@ -373,6 +396,8 @@ function FilterTools(props, ref) {
                 onChange={handleRatingWeightCheckboxChange}
                 weight={ratingWeightsValue.diversity}
                 onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.diversity}
+                onInvertClick={() => handleInvertClick("diversity")}
               />
               <Checkbox
                 label="Crime"
@@ -381,6 +406,8 @@ function FilterTools(props, ref) {
                 onChange={handleRatingWeightCheckboxChange}
                 weight={ratingWeightsValue.crime}
                 onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.crime}
+                onInvertClick={() => handleInvertClick("crime")}
               />
               <Checkbox
                 label="School"
@@ -389,6 +416,8 @@ function FilterTools(props, ref) {
                 onChange={handleRatingWeightCheckboxChange}
                 weight={ratingWeightsValue.school}
                 onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.school}
+                onInvertClick={() => handleInvertClick("school")}
               />
             </Card.Body>
           </Card>
