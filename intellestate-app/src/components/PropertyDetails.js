@@ -3,7 +3,7 @@ import Map, { Layer, Source, Marker, Popup } from 'react-map-gl';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useState } from "react";
-import { Button, Col, Modal, Row } from "react-bootstrap";
+import { Button, Col, Modal, Row, Form } from "react-bootstrap";
 
 function PropertyDetails({ properties, property, showDetails, popupOpen, setPopupOpen, mapRef, shapes, setHotspots }) {
 
@@ -50,49 +50,24 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
   };
 
   let hoveredPolygon = null;
-
-  const layerStyle = {
-    id: 'tract-fills',
-    type: 'fill',
-    paint: {
-      'fill-color': {
-        'property': 'hotspotValue',
-        'stops': [
-          [-1, '#888'],
-          [0, '#08f'],
-          [.25, '#0f0'],
-          [.5, '#ff0'],
-          [.75, '#f80'],
-          [1, '#f00'],
-        ]
-      },
-      'fill-opacity': [
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        .5,
-        .25
-      ],
-      'fill-outline-color': {
-        'property': 'hotspotValue',
-        'stops': [
-          [-1, '#888'],
-          [0, '#06a'],
-          [.25, '#0a0'],
-          [.5, '#aa0'],
-          [.75, '#a60'],
-          [1, '#a00'],
-        ]
-      },
-    },
-  };
   
   const layerStyle2 = {
     id: 'tract-labels',
     type: 'symbol',
-    minzoom: 12,
+    minzoom: 0,
     layout: {
-      'text-field': '{name}'
-    }
+      'text-field': '{name}\n{hotspotValue} / 10',
+      'text-allow-overlap': true,
+      'text-anchor': 'bottom',
+    },
+    paint: {
+      'text-opacity': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        1,
+        0
+      ]
+    },
   };
 
   const onHover = (e) => {
@@ -102,10 +77,18 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           { source: 'my-data', id: hoveredPolygon },
           { hover: false }
         );
+        mapRef.current.setFeatureState(
+          { source: 'my-data2', id: hoveredPolygon },
+          { hover: false }
+        );
       }
       hoveredPolygon = e.features[0].id;
       mapRef.current.setFeatureState(
         { source: 'my-data', id: hoveredPolygon },
+        { hover: true }
+      );
+      mapRef.current.setFeatureState(
+        { source: 'my-data2', id: hoveredPolygon },
         { hover: true }
       );
       e.originalEvent.target.style.cursor = 'pointer';
@@ -127,9 +110,45 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         { source: 'my-data', id: hoveredPolygon },
         { hover: false }
       );
+      mapRef.current.setFeatureState(
+        { source: 'my-data2', id: hoveredPolygon },
+        { hover: false }
+      );
     }
     hoveredPolygon = null;
     e.originalEvent.target.style.cursor = '';
+  }
+
+  const [openMapMenu, setOpenMapMenu] = useState('closed');
+
+  const changeOpenMapMenuState = (e) => {
+    if (e.target.checked) {
+      setOpenMapMenu('open');
+    } else {
+      setOpenMapMenu('closed');
+    }
+  }
+
+  const [showRecommendedProperties, setShowRecommendedProperties] = useState('');
+
+  const changeShowRecommendedProperties = (e) => {
+    if (e.target.checked) {
+      setShowRecommendedProperties('');
+    } else {
+      setShowRecommendedProperties('none');
+    }
+  }
+
+  const [showHotspots, setShowHotspots] = useState('visible');
+
+  const changeShowHotspots = (e) => {
+    if (e.target.checked) {
+      setShowHotspots('visible');
+      // mapRef.current.getMap().setLayoutProperty('tract-fills', 'visibility', 'visible')
+    } else {
+      setShowHotspots('none');
+      // mapRef.current.getMap().setLayoutProperty('tract-fills', 'visibility', 'none')
+    }
   }
 
   return (
@@ -149,23 +168,163 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         style={{ width: '100%', aspectRatio: '2/1', border: '2px solid #0d6efd', borderRadius: '4px' }}
         mapLib={maplibregl}
         mapStyle="https://api.maptiler.com/maps/streets-v2/style.json?key=nmF5UJHGt6DxUo6Ooheo"
+        attributionControl={false}
         type='vector'
         onClick={handleMapClick}
         onMouseMove={onHover}
         onMouseLeave={onLeave}
         interactiveLayerIds={['tract-fills']}
       >
+        <div id="map-menu-container">
+          <div style={{height: 'fit-content', borderBottom: openMapMenu === 'open' ? '2px solid #0d4ead' : '', paddingBottom: openMapMenu === 'open'? '5px' : '0px', display: 'grid', gridAutoFlow: 'column', gridTemplateColumns: openMapMenu === 'open' ? 'min-content 1fr' : '1fr', gap: '10px'}}>
+            <div id="map-menu-button-container">
+              <input
+                id="map-menu-button"
+                type="checkbox"
+                onChange={changeOpenMapMenuState}
+              />
+              <label htmlFor="map-menu-button" id="map-menu-line-container">
+                <div id="l1" className="map-menu-line"></div>
+                <div id="l2" className="map-menu-line"></div>
+                <div id="l3" className="map-menu-line"></div>
+              </label>
+            </div>
+            <div style={{display: 'flex', margin: 0, alignItems: 'center', fontSize: '21px', color: '#0d4ead'}} className={openMapMenu === 'open' ? 'justify-content-center' : 'hide'}>
+              Map Controls
+            </div>
+          </div>
+          <Col className={openMapMenu === 'open' ? '' : 'hide'} style={{padding: '0 5px'}}>
+            <Row style={{margin: 0}}>
+              <Form.Check
+                type="switch"
+                id='show-recommended-properties'
+                name='recommended-properties'
+                label='Recommended Properties'
+                style={{margin: '0', padding: 0, alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left'}}
+                onChange={changeShowRecommendedProperties}
+                defaultChecked={true}
+              />
+            </Row>
+            <hr style={{margin: '.5rem 0'}}></hr>
+            <Row style={{margin: 0, gap: '5px'}}>
+              <Form.Check
+                type="switch"
+                id='show-hotspots'
+                name='hotspots'
+                label='Hotspots'
+                style={{margin: '0', padding: 0, alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left'}}
+                onChange={changeShowHotspots}
+                defaultChecked={true}
+              />
+              <Form.Select aria-label="Hotspot Area Type" size="sm" defaultValue='tract'>
+                <option value='tract'>Census Tract</option>
+                <option value='city'>City</option>
+              </Form.Select>
+              <Col>
+                <b><u>Hotspot Type</u></b>
+                <Row>
+                  <Col style={{display: 'flex', alignContent: 'center', alignItems: 'center'}}>
+                    <Form.Check
+                      type="radio"
+                      label='General'
+                      name="tract-hotspot-types"
+                      style={{textAlign: 'left'}}
+                    ></Form.Check>
+                  </Col>
+                  <Col>
+                    <Form.Select aria-label="General Hotspots" size="sm" defaultValue='price'>
+                      <option value='price'>Price</option>
+                      <option value='income'>Income Level</option>
+                      <option value='density'>Building Density</option>
+                    </Form.Select>
+                  </Col>
+                </Row>
+                <Form.Check
+                  type="radio"
+                  label='Businesses'
+                  name="tract-hotspot-types"
+                  style={{textAlign: 'left'}}
+                ></Form.Check>
+                <Form.Check
+                  type="radio"
+                  label='Ethnicities'
+                  name="tract-hotspot-types"
+                  style={{textAlign: 'left'}}
+                ></Form.Check>
+                <Form.Check
+                  type="radio"
+                  label='Ratings'
+                  name="tract-hotspot-types"
+                  style={{textAlign: 'left'}}
+                ></Form.Check>
+              </Col>
+            </Row>
+            <hr style={{margin: '.5rem 0'}}></hr>
+            <Row style={{margin: 0}}>
+              <Form.Check
+                type="switch"
+                id='show-nearby-property-types'
+                name='nearby-property-types'
+                label='Nearby Property Types'
+                style={{margin: '0', padding: 0, alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left'}}
+                // onChange={changeShowHotspots}
+                defaultChecked={true}
+              />
+            </Row>
+          </Col>
+        </div>
+        {
         <Source key={new Date().getTime()} id="my-data" type="geojson" data={shapes}>
-          <Layer {...layerStyle}></Layer>
+          <Layer {...{
+            id: 'tract-fills',
+            type: 'fill',
+            layout: {
+              'visibility': showHotspots
+            },
+            paint: {
+              'fill-color': {
+                'property': 'hotspotValue',
+                'stops': [
+                  [-1, '#888'],
+                  [0, '#08f'],
+                  [2.5, '#0f0'],
+                  [5, '#ff0'],
+                  [7.5, '#f80'],
+                  [10, '#f00'],
+                ]
+              },
+              'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], false],
+                .5,
+                .25
+              ],
+              'fill-outline-color': {
+                'property': 'hotspotValue',
+                'stops': [
+                  [-1, '#888'],
+                  [0, '#06a'],
+                  [2.5, '#0a0'],
+                  [5, '#aa0'],
+                  [7.5, '#a60'],
+                  [10, '#a00'],
+                ]
+              },
+            }
+          }}></Layer>
+        </Source>
+        }
+        <Source key={new Date().getTime() + 1} id="my-data2" type="geojson" data={shapes}>
           <Layer {...layerStyle2}></Layer>
         </Source>
         {properties.map(prop => (
-          <div key={prop.PARCELPIN}>
+          <div key={prop.PARCELPIN} style={{display: 'none'}}>
             <Marker
               latitude={prop.AVG_LAT}
               longitude={prop.AVG_LONG}
               color={markerColor[prop.SiteCat1 === '' ? 'Other' : prop.SiteCat1]}
               onClick={() => {setPopupOpen(prop.PARCELPIN); showDetails(prop)}}
+              style={{display: showRecommendedProperties}}
             ></Marker>
             {popupOpen === prop.PARCELPIN && (
               <Popup
@@ -194,7 +353,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
       </Map>
       <div style={{margin: '5px 0 0 0', display: property.FULL_ADDR == null ? 'none' : 'inline-block'}}>{property.FULL_ADDR}</div><br></br>
       <Button style={{margin: '5px'}} onClick={() => setShowAdvancedMap(true)}>Advanced Map</Button>
-      <Button style={{margin: '5px'}} onClick={() => setHotspots('tract', 'races', 'hispanic')}>Show Tract Hotspots</Button>
+      <Button style={{margin: '5px'}} onClick={() => setHotspots('tract', 'income')}>Show Tract Hotspots</Button>
       <Button style={{margin: '5px'}} onClick={() => setHotspots('city', 'crime')}>Show City Hotspots</Button>
       <Modal
         show={showAdvancedMap}

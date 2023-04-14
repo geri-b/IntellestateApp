@@ -14,6 +14,31 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
     else if (rating >= 0) return "#d00";
   }
 
+  function ratingDescription(ratingName, rating) {
+    if (ratingName === 'price' || ratingName === 'school') {
+      if (rating === null) return 'N/A';
+      else if (rating >= 0.8) return 'Excellent';
+      else if (rating >= 0.6) return 'Great';
+      else if (rating >= 0.4) return 'Average';
+      else if (rating >= 0.2) return 'Bad';
+      else if (rating >= 0) return 'Awful';
+    } else if (ratingName === 'income' || ratingName === 'diversity') {
+      if (rating === null) return 'N/A';
+      else if (rating >= 0.8) return 'Very High';
+      else if (rating >= 0.6) return 'High';
+      else if (rating >= 0.4) return 'Average';
+      else if (rating >= 0.2) return 'Low';
+      else if (rating >= 0) return 'Very Low';
+    } else if (ratingName === 'crime') {
+      if (rating === null) return 'N/A';
+      else if (rating >= 0.8) return 'Very Low Crime';
+      else if (rating >= 0.6) return 'Low Crime';
+      else if (rating >= 0.4) return 'Moderate Crime';
+      else if (rating >= 0.2) return 'High Crime';
+      else if (rating >= 0) return 'Very High Crime';
+    }
+  }
+
   const [headerHover, setHeaderHover] = useState(false);
   const [bodyHover, setBodyHover] = useState(false);
 
@@ -46,7 +71,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
         style={{ backgroundColor: bodyHover ? '#f8f9fa' : 'white', cursor: bodyHover ? 'pointer' : 'default' }}
 
       >
-        <Row style={{padding: '0 0 10px 0'}}>
+        <Row style={{padding: '0 0 0px 0'}}>
           <Col className='col fw-bold'>
             ~${property.GCERT3}
           </Col>
@@ -54,7 +79,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
             {property.TOTAL_RES_AREA + property.TOTAL_COM_AREA} sq.
           </Col>
           <Col className='col fw-bold'>
-            {property.RES_BLDG_CNT + property.COM_BLDG_CNT} Bldg.
+            {property.COM_BLDG_CNT === '0' ? property.RES_BLDG_COUNT : property.COM_BLDG_CNT} Bldg.
           </Col>
           <Col className='col fw-bold'>
             {property.SiteCat1}
@@ -76,9 +101,9 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
             </Row>
           </Col> */}
         </Row>
-        <Row className='card-body-row' style={{ gap: "5px" }}>
+        <Row className='card-body-row' style={{ gap: "5px", padding: '5px 0 5px 0', margin: 0 }}>
           <Col>
-            <Row className="justify-content-center">Price</Row>
+            <Row className="justify-content-center">Price:</Row>
             <div className="circle-container">
               <div
                 className="circle"
@@ -89,9 +114,10 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
                 {Math.round(property.p_rating * 100) / 10}
               </div>
             </div>
+            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('price', property.p_rating)}</Row>
           </Col>
           <Col>
-            <Row className="justify-content-center">Income</Row>
+            <Row className="justify-content-center">Income:</Row>
             <div className="circle-container">
               <div
                 className="circle"
@@ -102,6 +128,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
                 {Math.round(property.i_rating * 100) / 10}
               </div>
             </div>
+            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('income', property.i_rating)}</Row>
           </Col>
           <Col>
             <Row className="justify-content-center">Diversity</Row>
@@ -115,6 +142,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
                 {Math.round(property.d_rating * 100) / 10}
               </div>
             </div>
+            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('diversity', property.d_rating)}</Row>
           </Col>
           <Col>
             <Row className="justify-content-center">Crime</Row>
@@ -128,6 +156,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
                 {Math.round(property.c_rating * 100) / 10}
               </div>
             </div>
+            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('crime', property.c_rating)}</Row>
           </Col>
           <Col>
             <Row className="justify-content-center">School</Row>
@@ -141,6 +170,15 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
                 {Math.round(property.s_rating * 100) / 10}
               </div>
             </div>
+            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('school', property.s_rating)}</Row>
+          </Col>
+        </Row>
+        <Row style={{margin: '-5px 0 0 -1rem', position: 'absolute', color: '#888', width: '100%'}}>
+          {/* <Col style={{padding: 0, fontSize: '12px'}}>
+            Compared to City
+          </Col> */}
+          <Col style={{padding: 0, fontSize: '12px'}}>
+            *Compared to Cuyahoga County Average
           </Col>
         </Row>
         <Row>

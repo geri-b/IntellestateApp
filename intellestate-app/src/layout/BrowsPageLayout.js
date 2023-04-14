@@ -203,13 +203,13 @@ function BrowsePageLayout() {
           if (aType === 'tract') {
             for (const tractData of data) {
               if (Number(tractData.tract) === newFeature.id) {
-                newFeature.properties.hotspotValue = tractData.pei;
+                newFeature.properties.hotspotValue = Math.round(Number(tractData.pei) * 100) / 10;
               }
             }
           } else if (aType === 'city') {
             for (const cityData of data) {
               if (cityData.city === newFeature.properties.name) {
-                newFeature.properties.hotspotValue = cityData.pei;
+                newFeature.properties.hotspotValue = Math.round(Number(cityData.pei) * 100) / 10;
               }
             }
           }

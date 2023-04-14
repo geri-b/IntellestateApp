@@ -41,6 +41,8 @@ function FilterTools(props, ref) {
       industrial: false,
       agricultural: false,
       utility: false,
+      mixed: false,
+      other: false,
     });
     setRatingWeights({
       price: true,
@@ -157,6 +159,8 @@ function FilterTools(props, ref) {
     industrial: false,
     agricultural: false,
     utility: false,
+    mixed: false,
+    other: false,
   });
 
   const handlePropertyTypeCheckboxChange = (e) => {
