@@ -268,9 +268,24 @@ function FilterTools(props, ref) {
     }
   };
 
+  const [invertChecked, setInvertChecked] = useState({
+    price: false,
+    income: false,
+    diversity: false,
+    crime: false,
+    school: false,
+  });
+
+  const handleInvertClick = (name) => {
+    setInvertChecked((prevInvertChecked) => ({
+      ...prevInvertChecked,
+      [name]: !prevInvertChecked[name],
+    }));
+  };
+
   return (
-    <Container style={{margin: 0}}>
-      <h3 className="text-center" style={{margin: '10px 0 0 0'}}>Search Properties</h3>
+    <Container style={{ margin: 0 }}>
+      <h3 className="text-center" style={{ margin: '10px 0 0 0' }}>Search Properties</h3>
       <Button className='my-2' style={{ maxWidth: '200px' }} onClick={handleResetFilters}> Reset Filters</Button>
       <Card className="mb-3">
         <Card.Header>Location Filters</Card.Header>
@@ -361,6 +376,8 @@ function FilterTools(props, ref) {
                 onChange={handleRatingWeightCheckboxChange}
                 weight={ratingWeightsValue.price}
                 onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.price}
+                onInvertClick={() => handleInvertClick("price")}
               />
               <Checkbox
                 label="Income"
@@ -369,6 +386,8 @@ function FilterTools(props, ref) {
                 onChange={handleRatingWeightCheckboxChange}
                 weight={ratingWeightsValue.income}
                 onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.income}
+                onInvertClick={() => handleInvertClick("income")}
               />
               <Checkbox
                 label="Diversity"
@@ -377,6 +396,8 @@ function FilterTools(props, ref) {
                 onChange={handleRatingWeightCheckboxChange}
                 weight={ratingWeightsValue.diversity}
                 onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.diversity}
+                onInvertClick={() => handleInvertClick("diversity")}
               />
               <Checkbox
                 label="Crime"
@@ -385,6 +406,8 @@ function FilterTools(props, ref) {
                 onChange={handleRatingWeightCheckboxChange}
                 weight={ratingWeightsValue.crime}
                 onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.crime}
+                onInvertClick={() => handleInvertClick("crime")}
               />
               <Checkbox
                 label="School"
@@ -393,6 +416,8 @@ function FilterTools(props, ref) {
                 onChange={handleRatingWeightCheckboxChange}
                 weight={ratingWeightsValue.school}
                 onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.school}
+                onInvertClick={() => handleInvertClick("school")}
               />
             </Card.Body>
           </Card>

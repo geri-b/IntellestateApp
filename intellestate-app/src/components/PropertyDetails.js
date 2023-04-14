@@ -425,43 +425,93 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
             
               // make function and set data equal to something set data = to function that returns whole data object with use state
               values: [property.ind_farm, property.ind_mining, property.ind_utility, property.ind_construction, property.ind_manufacture, property.ind_wholesale, property.ind_retail, property.ind_transport, property.ind_it, property.ind_finance, property.ind_real_estate, property.ind_science, property.ind_management, property.ind_waste, property.ind_education, property.ind_health_care, property.ind_entertain, property.ind_food_service, property.ind_other, property.ind_public_admin],
-              // values: [2,3,4,5,6],
               labels: ['Farming', 'Mining', 'Utility', 'Construction', 'Manufacturing', 'Wholesale', 'Retail', 'Transport', 'Information Technology', 'Finance', 'Real Estate', 'Science', 'Management', 'Waste Management', 'Education', 'Health Care', 'Entertainment', 'Food Service', 'Other', 'Public Administration'],
-              type: 'pie'
+              type: 'pie',
+              marker: {colors: [
+                '#e71d43',
+                '#ff3700',
+                '#ff6e00',
+                '#ffa500',
+                '#ffc300',
+                '#ffe100',
+                '#aad500',
+                '#55aa00',
+                '#008000',
+                '#005555',
+                '#002baa',
+                '#0000ff',
+                '#1900d5',
+                '#3200ac',
+                '#4b0082',
+                '#812ba6',
+                '#b857ca',
+                '#d03a87',
+                '#A0A4A5',
+                '#33E6FF'
+              ]}
             }]}
-            layout = {{margin: { pad: 10, l: 5, r: 40, t: 40, b: 40 }, title: 'Area Industry Distribution', showlegend: false, textinfo: 'none', automargin: false}}
+            layout = {{automargin: true, autosize: false, width:"25%", height:"25%",  title: 'Area Industry Distribution', showlegend: false, textinfo: 'none', automargin: false}}
             config={{ responsive: true }}
-            style={{ width: "100%", aspectRatio: "5 / 4" }}
+            style={{width: "50%", aspectRatio: "5 / 4" }}
           
           />
         </Col>
+        </Row>
+        <Row>
         <Col md={4}>
           <Plot 
             var data = {[{
               values: [property.d_white, property.d_black, property.d_asian, property.d_indegenous, property.d_pacific],
               // values: [.50, .50],
               labels: ['White', 'Black', 'Asian', 'Indigenous', 'Pacific'],
-              type: 'pie'
+              type: 'pie',
+              marker: {colors: [
+                '#4444AA',
+                '#DDDD44',
+                '#44AA44',
+                '#AA44AA',
+                '#AA4444'
+              ]}
             }]}
-            layout = {{margin: { pad: 10, l: 40, r: 40, t: 40, b: 40 }, showlegend: false, title: 'Diversity Distribution'}}
+            layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Diversity Distribution'}}
             config={{ responsive: true }}
-            style={{ width: "100%", aspectRatio: "5 / 4" }}
+            style={{width: "50%", aspectRatio: "5 / 4" }}
 
           />
         </Col>
+        </Row>
+        <br></br>
+        <br></br>
+        <Row>
         <Col md={4}>
           <Plot 
             var data = {[{
               values: [property.i_percent_low, property.i_percent_med, property.i_percent_high],
-              // values: [.50, .50],
               labels: ['Less than 15k per year','15k - 40k per year', 'More than 40k per year'],
-              type: 'pie'
+              type: 'pie',
+              marker: {colors: ['#f29eab','#d9463e', '#74c365']}
             }]}
-            layout = {{margin: { pad: 10, l: 40, r: 40, t: 40, b: 40 }, showlegend: false, title: 'Income Distribution'}}
+            layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Income Distribution'}}
             config={{ responsive: true }}
-            style={{ width: "100%", aspectRatio: "5 / 4" }}
+            style={{width: "50%", aspectRatio: "5 / 4" }}
           
           />
+        </Col>
+        </Row>
+        <Row>
+        <Col>
+          <Plot
+
+            data = {[{
+              r: [property.comm_vacant, property.comm_living, property.comm_retail, property.comm_food, property.comm_life_services, property.comm_office, property.comm_automotive, property.comm_entertainment_sports, property.comm_warehouse_supply, property.comm_watercraft_aircraft, property.comm_other],
+              theta: ['Vacant','Living','Retail', 'Food', 'Life Services', 'Office', 'Automotive','Entertainment', 'Warehouse', 'Aircraft', 'Other'],
+              type: "scatterpolar",
+              fill: 'toself'
+            }]}
+            layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Number of Commercial Parcels'}}
+            config={{ responsive: true }}
+            style={{width: "50%", aspectRatio: "5 / 4" }}
+            />
         </Col>
       </Row>
     </div>

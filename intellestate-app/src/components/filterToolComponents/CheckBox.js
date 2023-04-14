@@ -1,8 +1,14 @@
 import React from 'react';
-import { Button, Col } from 'react-bootstrap';
+import { ToggleButton, Col } from 'react-bootstrap';
 import invertIcon from '../../images/BrowsePage/InvertIcon.png'
 
-function Checkbox({ label, name, checked, onChange, weight, onWeightChange }) {
+function Checkbox({ invertChecked, onInvertClick, label, name, checked, onChange, weight, onWeightChange }) {
+    const invertIconStyle = {
+        width: '20px',
+        height: '20px',
+        backgroundColor: invertChecked ? 'blue' : 'transparent',
+    };
+
     return (
         <div className="form-check d-flex align-items-center">
             <Col className="d-flex justify-content-start">
@@ -31,12 +37,14 @@ function Checkbox({ label, name, checked, onChange, weight, onWeightChange }) {
                     style={{ width: "80px" }}
                 />
             </Col>
-            <Button
-                variant='light'
-                className='btn shadow-none invert-rank'
+            <ToggleButton
+                variant="light"
+                className="btn shadow-none invert-rank"
+                active={invertChecked}
+                onClick={onInvertClick}
             >
-                <img className='invert-icon' src={invertIcon} style={{width: '20px', height: '20px'}}></img>
-            </Button>
+                <img className="invert-icon" src={invertIcon} style={invertIconStyle} />
+            </ToggleButton>
         </div>
     );
 }
