@@ -47,16 +47,36 @@ const tractHotspotTables = {
     'price_industrial': 'z_dennis_t_price_pei where SiteCat1 = "Industrial"',
     'price_institutional': 'z_dennis_t_price_pei where SiteCat1 = "Institutional"',
     'price_government': 'z_dennis_t_price_pei where SiteCat1 = "Government"',
+    'price_agricultural': 'z_dennis_t_price_pei where SiteCat1 = "Agricultural"',
+    'price_utility': 'z_dennis_t_price_pei where SiteCat1 = "Utility"',
+    'price_rating_residential': 'z_dennis_t_price_rating_pei where SiteCat1 = "Residential"',
+    'price_rating_commercial': 'z_dennis_t_price_rating_pei where SiteCat1 = "Commercial"',
+    'price_rating_industrial': 'z_dennis_t_price_rating_pei where SiteCat1 = "Industrial"',
+    'price_rating_institutional': 'z_dennis_t_price_rating_pei where SiteCat1 = "Institutional"',
+    'price_rating_government': 'z_dennis_t_price_rating_pei where SiteCat1 = "Government"',
+    'price_rating_agricultural': 'z_dennis_t_price_rating_pei where SiteCat1 = "Agricultural"',
+    'price_rating_utility': 'z_dennis_t_price_pei where SiteCat1 = "Utility"',
     'density': 'z_dennis_t_bldg_density_pei',
     'races': 'z_dennis_t_races_pei',
     'com_luc': 'z_dennis_t_luc_pei',
+    'income_rating': 'tract_income_rating',
+    'diversity_rating': 'tract_race_percents',
 };
 
 const cityHotspotTables = {
     'crime': 'city_crime_rating',
+    'school': 'city_school_dist_rating',
+    'price_residential': 'z_dennis_c_price_pei where SiteCat1 = "Residential"',
+    'price_commercial': 'z_dennis_c_price_pei where SiteCat1 = "Commercial"',
+    'price_industrial': 'z_dennis_c_price_pei where SiteCat1 = "Industrial"',
+    'price_institutional': 'z_dennis_c_price_pei where SiteCat1 = "Institutional"',
+    'price_government': 'z_dennis_c_price_pei where SiteCat1 = "Government"',
+    'price_agricultural': 'z_dennis_c_price_pei where SiteCat1 = "Agricultural"',
+    'price_utility': 'z_dennis_c_price_pei where SiteCat1 = "Utility"',
 };
 
 const hotspotSubTypes = {
+    'school': 'district_rating',
     'white': 'pei_white',
     'black': 'pei_black',
     'indigenous': 'pei_indigenous',
@@ -74,6 +94,8 @@ const hotspotSubTypes = {
     'warehouse_supply': 'warehouse_supply_pei',
     'watercraft_aircraft': 'watercraft_aircraft_pei',
     'other': 'other_pei',
+    'income_rating': 'score_fitted',
+    'diversity_rating': 'score_adjusted',
 };
 
 const areaTypes = {
@@ -87,14 +109,18 @@ app.post("/hotspots", (req, res) => {
 
     let sqlQuery = "select ";
 
-    if (hotspotSubType) {
+    if (hotspotSubTypes[hotspotSubType]) {
         sqlQuery += areaTypes[areaType] + ", " + hotspotSubTypes[hotspotSubType] + " as pei ";
     } else {
         sqlQuery += "* ";
     }
 
     if (areaTypes[areaType] == 'tract') {
-        sqlQuery += "from " + tractHotspotTables[hotspotType];
+        if (tractHotspotTables[hotspotType]) {
+            sqlQuery += "from " + tractHotspotTables[hotspotType];
+        } else if (tractHotspotTables[hotspotSubType]) {
+            sqlQuery += "from " + tractHotspotTables[hotspotSubType];
+        }
     } else if (areaTypes[areaType] == 'city') {
         sqlQuery += "from " + cityHotspotTables[hotspotType];
     }

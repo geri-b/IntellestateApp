@@ -91,7 +91,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         { source: 'my-data2', id: hoveredPolygon },
         { hover: true }
       );
-      e.originalEvent.target.style.cursor = 'pointer';
+      // e.originalEvent.target.style.cursor = 'pointer';
     }
     // const features = event.target.queryRenderedFeatures(event.point, {layers: ['tract-fills'],});
     // if (features && features.length) {
@@ -116,7 +116,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
       );
     }
     hoveredPolygon = null;
-    e.originalEvent.target.style.cursor = '';
+    // e.originalEvent.target.style.cursor = '';
   }
 
   const [openMapMenu, setOpenMapMenu] = useState('closed');
@@ -151,9 +151,21 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
     }
   }
 
+  const [hotspotArea, setHotspotArea] = useState('tract');
+  const [hotspotType, setHotspotType] = useState('rating');
+  const [cityHotspotType, setCityHotspotType] = useState('crime');
+  const [hotspotSubType, setHotspotSubType] = useState('');
+
+  const onUpdateHotspots = () => {
+    if (hotspotArea === 'tract') {
+      setHotspots(hotspotArea, hotspotType, hotspotSubType);
+    } else if (hotspotArea === 'city') {
+      setHotspots(hotspotArea, cityHotspotType, cityHotspotType);
+    }
+  }
+
   return (
-    <div style={{ width: "100%" }}>
-      <h3 style={{margin: '10px 0 0 0'}}>Advanced Location Details</h3>
+    <div style={{ width: "100%", paddingTop: '10px' }}>
       <div id="hotspot-scale">
         <div id="hotspot-scale-label-low">Low Quantity</div>
         <div id="hotspot-scale-label-high">High Quantity</div>
@@ -200,6 +212,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                 id='show-recommended-properties'
                 name='recommended-properties'
                 label='Recommended Properties'
+                className="map-control-switch"
                 style={{margin: '0', padding: 0, alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left'}}
                 onChange={changeShowRecommendedProperties}
                 defaultChecked={true}
@@ -212,52 +225,138 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                 id='show-hotspots'
                 name='hotspots'
                 label='Hotspots'
+                className="map-control-switch"
                 style={{margin: '0', padding: 0, alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left'}}
                 onChange={changeShowHotspots}
                 defaultChecked={true}
               />
-              <Form.Select aria-label="Hotspot Area Type" size="sm" defaultValue='tract'>
+              <Form.Select aria-label="Hotspot Area Type" size="sm" defaultValue='tract' onChange={(e) => {setHotspotArea(e.target.value)}}>
                 <option value='tract'>Census Tract</option>
                 <option value='city'>City</option>
               </Form.Select>
-              <Col>
+              <Col style={{display: 'grid', gap: '5px'}}>
                 <b><u>Hotspot Type</u></b>
-                <Row>
-                  <Col style={{display: 'flex', alignContent: 'center', alignItems: 'center'}}>
+                <Row className={hotspotArea === 'city' ? '' : 'hide'}>
+                  <Form.Select aria-label="City Hotspot Types" size="sm" onChange={(e) => {setCityHotspotType(e.target.value)}}>
+                    <option value='crime'>Crime Rating</option>
+                    <option value='school'>School Rating</option>
+                    <option value='price_rating_residential'>Price Rating - Residential</option>
+                    <option value='price_rating_commercial'>Price Rating - Commercial</option>
+                    <option value='price_rating_industrial'>Price Rating - Industrial</option>
+                    <option value='price_rating_institutional'>Price Rating - Institutional</option>
+                    <option value='price_rating_government'>Price Rating - Government</option>
+                    <option value='price_rating_agricultural'>Price Rating - Agricultural</option>
+                    <option value='price_rating_utility'>Price Rating - Utility</option>
+                    <option value='price_residential'>Price - Residential</option>
+                    <option value='price_commercial'>Price - Commercial</option>
+                    <option value='price_industrial'>Price - Industrial</option>
+                    <option value='price_institutional'>Price - Institutional</option>
+                    <option value='price_government'>Price - Government</option>
+                    <option value='price_agricultural'>Price - Agricultural</option>
+                    <option value='price_utility'>Price - Utility</option>
+                  </Form.Select>
+                </Row>
+                <Row className={hotspotArea === 'tract' ? '' : 'hide'}>
+                  <Col className="map-radio-container">
                     <Form.Check
                       type="radio"
-                      label='General'
                       name="tract-hotspot-types"
-                      style={{textAlign: 'left'}}
+                      value={'general'}
+                      className="map-control-radio"
+                      style={{textAlign: 'left', alignContent: 'center', alignItems: 'center'}}
+                      onClick={(e) => {setHotspotType(e.target.value)}}
                     ></Form.Check>
-                  </Col>
-                  <Col>
-                    <Form.Select aria-label="General Hotspots" size="sm" defaultValue='price'>
-                      <option value='price'>Price</option>
+                    <Form.Select aria-label="General Hotspots" size="sm" disabled={hotspotType !== 'general'} onChange={(e) => {setHotspotSubType(e.target.value)}}>
+                      <option style={{display: 'none'}}>General</option>
                       <option value='income'>Income Level</option>
                       <option value='density'>Building Density</option>
+                      <option value='price_residential'>Price - Residential</option>
+                      <option value='price_commercial'>Price - Commercial</option>
+                      <option value='price_industrial'>Price - Industrial</option>
+                      <option value='price_institutional'>Price - Institutional</option>
+                      <option value='price_government'>Price - Government</option>
+                      <option value='price_agricultural'>Price - Agricultural</option>
+                      <option value='price_utility'>Price - Utility</option>
                     </Form.Select>
                   </Col>
                 </Row>
-                <Form.Check
-                  type="radio"
-                  label='Businesses'
-                  name="tract-hotspot-types"
-                  style={{textAlign: 'left'}}
-                ></Form.Check>
-                <Form.Check
-                  type="radio"
-                  label='Ethnicities'
-                  name="tract-hotspot-types"
-                  style={{textAlign: 'left'}}
-                ></Form.Check>
-                <Form.Check
-                  type="radio"
-                  label='Ratings'
-                  name="tract-hotspot-types"
-                  style={{textAlign: 'left'}}
-                ></Form.Check>
+                <Row className={hotspotArea === 'tract' ? '' : 'hide'}>
+                  <Col className="map-radio-container">
+                    <Form.Check
+                      type="radio"
+                      name="tract-hotspot-types"
+                      value={'com_luc'}
+                      className="map-control-radio"
+                      style={{textAlign: 'left', alignContent: 'center', alignItems: 'center'}}
+                      onClick={(e) => {setHotspotType(e.target.value)}}
+                    ></Form.Check>
+                    <Form.Select aria-label="Business Hotspots" size="sm" disabled={hotspotType !== 'com_luc'} onChange={(e) => {setHotspotSubType(e.target.value)}}>
+                      <option style={{display: 'none'}}>Business</option>
+                      <option value='vacant'>Vacant</option>
+                      <option value='living'>Living</option>
+                      <option value='retail'>Retail</option>
+                      <option value='food'>Food</option>
+                      <option value='life_services'>Life Services</option>
+                      <option value='office'>Office</option>
+                      <option value='automotive'>Automotive</option>
+                      <option value='entertainment_sports'>Sports & Entertainment</option>
+                      <option value='warehouse_supply'>Warehouses & Supply</option>
+                      <option value='watercraft_aircraft'>Watercraft & Aircraft</option>
+                      <option value='other'>Other</option>
+                    </Form.Select>
+                  </Col>
+                </Row>
+                <Row className={hotspotArea === 'tract' ? '' : 'hide'}>
+                  <Col className="map-radio-container">
+                    <Form.Check
+                      type="radio"
+                      name="tract-hotspot-types"
+                      value={'races'}
+                      className="map-control-radio"
+                      style={{textAlign: 'left', alignContent: 'center', alignItems: 'center'}}
+                      onClick={(e) => {setHotspotType(e.target.value)}}
+                    ></Form.Check>
+                    <Form.Select aria-label="Race / Ethnicity Hotspots" size="sm" disabled={hotspotType !== 'races'} onChange={(e) => {setHotspotSubType(e.target.value)}}>
+                      <option style={{display: 'none'}}>Race / Ethnicity</option>
+                      <option value='white'>% White</option>
+                      <option value='black'>% Black</option>
+                      <option value='asian'>% Asian</option>
+                      <option value='indigenous'>% Indigenous</option>
+                      <option value='pacific'>% Pacific</option>
+                      <option value='hispanic'>% Hispanic</option>
+                    </Form.Select>
+                  </Col>
+                </Row>
+                <Row className={hotspotArea === 'tract' ? '' : 'hide'}>
+                  <Col className="map-radio-container">
+                    <Form.Check
+                      type="radio"
+                      name="tract-hotspot-types"
+                      value={'rating'}
+                      className="map-control-radio"
+                      style={{textAlign: 'left', alignContent: 'center', alignItems: 'center'}}
+                      onClick={(e) => {setHotspotType(e.target.value)}}
+                      defaultChecked={true}
+                    ></Form.Check>
+                    <Form.Select aria-label="Ratings" size="sm" defaultValue='price_rating_residential' disabled={hotspotType !== 'rating'} onChange={(e) => {setHotspotSubType(e.target.value)}}>
+                      <option value='income_rating'>Income Rating</option>
+                      <option value='diversity_rating'>Diversity Rating</option>
+                      <option value='price_rating_residential'>Price Rating - Residential</option>
+                      <option value='price_rating_commercial'>Price Rating - Commercial</option>
+                      <option value='price_rating_industrial'>Price Rating - Industrial</option>
+                      <option value='price_rating_institutional'>Price Rating - Institutional</option>
+                      <option value='price_rating_government'>Price Rating - Government</option>
+                      <option value='price_rating_agricultural'>Price Rating - Agricultural</option>
+                      <option value='price_rating_utility'>Price Rating - Utility</option>
+                    </Form.Select>
+                  </Col>
+                </Row>
               </Col>
+            </Row>
+            <Row style={{margin: 0, justifyContent: 'center', marginTop: '5px'}}>
+              <Button size="sm" type="primary" style={{width: 'fit-content'}} onClick={onUpdateHotspots}>
+                Update Hotspots
+              </Button>
             </Row>
             <hr style={{margin: '.5rem 0'}}></hr>
             <Row style={{margin: 0}}>
@@ -266,6 +365,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                 id='show-nearby-property-types'
                 name='nearby-property-types'
                 label='Nearby Property Types'
+                className="map-control-switch"
                 style={{margin: '0', padding: 0, alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left'}}
                 // onChange={changeShowHotspots}
                 defaultChecked={true}
@@ -352,9 +452,9 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         ></Marker>
       </Map>
       <div style={{margin: '5px 0 0 0', display: property.FULL_ADDR == null ? 'none' : 'inline-block'}}>{property.FULL_ADDR}</div><br></br>
-      <Button style={{margin: '5px'}} onClick={() => setShowAdvancedMap(true)}>Advanced Map</Button>
+      {/* <Button style={{margin: '5px'}} onClick={() => setShowAdvancedMap(true)}>Advanced Map</Button>
       <Button style={{margin: '5px'}} onClick={() => setHotspots('tract', 'income')}>Show Tract Hotspots</Button>
-      <Button style={{margin: '5px'}} onClick={() => setHotspots('city', 'crime')}>Show City Hotspots</Button>
+      <Button style={{margin: '5px'}} onClick={() => setHotspots('city', 'crime')}>Show City Hotspots</Button> */}
       <Modal
         show={showAdvancedMap}
         onHide={handleModalClose}
@@ -416,10 +516,8 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           </Row>
         </Modal.Body>
       </Modal>
-      <br></br>
-      <br></br>
       <Row>
-        <Col md={4}>
+        <Col md={6}>
           <Plot 
             var data = {[{
             
@@ -450,7 +548,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                 '#33E6FF'
               ]}
             }]}
-            layout = {{automargin: true, autosize: false, width:"25%", height:"25%",  title: 'Area Industry Distribution', showlegend: false, textinfo: 'none', automargin: false}}
+            layout = {{automargin: true, autosize: false, width:"25%", height:"25%",  title: 'Area Industry Distribution', showlegend: false, textinfo: 'none'}}
             config={{ responsive: true }}
             style={{width: "50%", aspectRatio: "5 / 4" }}
           
@@ -489,7 +587,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
               values: [property.i_percent_low, property.i_percent_med, property.i_percent_high],
               labels: ['Less than 15k per year','15k - 40k per year', 'More than 40k per year'],
               type: 'pie',
-              marker: {colors: ['#f29eab','#d9463e', '#74c365']}
+              marker: {colors: ['#d9463e','#d9d93e', '#4ec94e']}
             }]}
             layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Income Distribution'}}
             config={{ responsive: true }}
