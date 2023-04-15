@@ -471,3 +471,40 @@ Filter Tools
   display: flex;
   align-items: center;
 } */
+
+.map-radio-container {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  width: 20px;
+  gap: 5px;
+  padding: 0 5px !important;
+}
+
+.map-control-radio {
+  display: grid !important;
+  grid-auto-flow: column;
+  align-items: center;
+  align-content: center;
+  margin-bottom: 0 !important;
+}
+
+.map-control-radio .form-check-input {
+  margin-top: 0;
+}
+
+.map-control-radio .form-check-label {
+  display: flex;
+  align-items: center;
+}
+
+.map-control-switch > input, .map-control-switch > label {
+  cursor: pointer;
+}
+
+
+
+.property-ratings-row > .col {
+  border-radius: 6px;
+  padding-bottom: 5px;
+}

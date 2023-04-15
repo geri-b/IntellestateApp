@@ -208,7 +208,7 @@ function BrowsePageLayout() {
             }
           } else if (aType === 'city') {
             for (const cityData of data) {
-              if (cityData.city === newFeature.properties.name) {
+              if (cityData.city.toLowerCase() === newFeature.properties.name.toLowerCase()) {
                 newFeature.properties.hotspotValue = Math.round(Number(cityData.pei) * 100) / 10;
               }
             }
