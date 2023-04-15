@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import { Container } from 'react-bootstrap';
 import '../App.css';
-import SearchBar from './Searchbar';
 
 function HomepageCarousel() {
   const [index, setIndex] = useState(0);

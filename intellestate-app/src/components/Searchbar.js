@@ -8,10 +8,10 @@ function SearchBar() {
       top: '50%',
       left: '50%',
       zIndex: '1',
-      width: '400px'
+      width: '500px'
     }}>
-      <FormControl type="text" placeholder="Enter an address, or zipcode" className="mr-sm-2"/>
-        <Button variant="outline-info" className="my-2">Search</Button>
+      <FormControl type="text" placeholder="Enter an address or zipcode" className="mr-sm-2" style={{height: '40px'}}/>
+        <Button variant="outline-info" className="my-2" style= {{ background: "rgb(255,255,255,2)" }}>Search</Button>
     </Form >
   );
 }

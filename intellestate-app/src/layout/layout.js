@@ -19,7 +19,7 @@ function HomepageLayout() {
       <Row style={{display: 'flex', justifyContent: 'center'}}>
       <SearchBar/>
       </Row>
-      <Row style={{paddingTop: '250px'}}>
+      <Row style={{paddingTop: '150px', paddingBottom: '20px'}}>
         <Col className="d-flex justify-content-center align-items-center">
           <HPCard1 />
         </Col>
@@ -36,7 +36,3 @@ function HomepageLayout() {
 
 
 export default HomepageLayout;
-
-
-
-

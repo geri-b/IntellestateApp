@@ -1,16 +1,16 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import BrowsePageLayout from '../layout/BrowsPageLayout';
 
 function HPCard1() {
   return (
     <Card style={{ width: '22rem' }}>
       <Card.Body>
-        <Card.Title>Card Title</Card.Title>
-        <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+        <Card.Title>Business Hotspot Analysis</Card.Title>
+        <Card.Text style={{ fontStyle: "italic" }}>
+          Allowing you to gain insights into where different types of bussineses are prominent in Cuyahoga County.
         </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        <Button variant="primary" onClick={() => window.location.href = '/BrowsePageLayout'}>Explore</Button>
       </Card.Body>
     </Card>
   );
