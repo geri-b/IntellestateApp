@@ -125,34 +125,6 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
             </div>
             <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('price', property.p_rating)}</Row>
           </Col>
-          <Col style={{backgroundColor: ratingBackgroundColor(property.i_rating)}}>
-            <Row className="justify-content-center"><b>Income</b></Row>
-            <div className="circle-container">
-              <div
-                className="circle"
-                style={{
-                  backgroundColor: ratingColor(property.i_rating),
-                }}
-              >
-                {Math.round(property.i_rating * 100) / 10}
-              </div>
-            </div>
-            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('income', property.i_rating)}</Row>
-          </Col>
-          <Col style={{backgroundColor: ratingBackgroundColor(property.d_rating)}}>
-            <Row className="justify-content-center"><b>Diversity</b></Row>
-            <div className="circle-container">
-              <div
-                className="circle"
-                style={{
-                  backgroundColor: ratingColor(property.d_rating),
-                }}
-              >
-                {Math.round(property.d_rating * 100) / 10}
-              </div>
-            </div>
-            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('diversity', property.d_rating)}</Row>
-          </Col>
           <Col style={{backgroundColor: ratingBackgroundColor(property.c_rating)}}>
             <Row className="justify-content-center"><b>Crime</b></Row>
             <div className="circle-container">
@@ -180,6 +152,34 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
               </div>
             </div>
             <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('school', property.s_rating)}</Row>
+          </Col>
+          <Col style={{backgroundColor: ratingBackgroundColor(property.i_rating)}}>
+            <Row className="justify-content-center"><b>Income</b></Row>
+            <div className="circle-container">
+              <div
+                className="circle"
+                style={{
+                  backgroundColor: ratingColor(property.i_rating),
+                }}
+              >
+                {Math.round(property.i_rating * 100) / 10}
+              </div>
+            </div>
+            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('income', property.i_rating)}</Row>
+          </Col>
+          <Col style={{backgroundColor: ratingBackgroundColor(property.d_rating)}}>
+            <Row className="justify-content-center"><b>Diversity</b></Row>
+            <div className="circle-container">
+              <div
+                className="circle"
+                style={{
+                  backgroundColor: ratingColor(property.d_rating),
+                }}
+              >
+                {Math.round(property.d_rating * 100) / 10}
+              </div>
+            </div>
+            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('diversity', property.d_rating)}</Row>
           </Col>
         </Row>
         <div>

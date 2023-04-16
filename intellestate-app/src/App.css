@@ -210,9 +210,9 @@ Filter Tools
   justify-content: center;
 }
 
-.invert-icon {
+/* .invert-icon {
   opacity: 70%;
-}
+} */
 
 .maplibregl-marker:hover {
   z-index: 2;
@@ -356,10 +356,11 @@ Filter Tools
   height: 24px;
   background: rgb(0,128,240);
   background: linear-gradient(90deg, rgba(0,128,240,0.5) 0%, rgba(0,240,0,0.5) 25%, rgba(240,240,0,0.5) 50%, rgba(240,128,0,0.5) 75%, rgba(240,0,0,0.5) 100%);
-  margin: 5px 0 5px 0;
+  margin: 0 0 5px 0;
   border: 2px solid #007bff;
   border-radius: 4px;
   padding: 0 4px 0 4px;
+  gap: 5px;
 }
 
 #hotspot-scale > div {
@@ -373,11 +374,17 @@ Filter Tools
 #hotspot-scale-label-low {
   justify-content: left;
   color: #06a;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 #hotspot-scale-label-high {
   justify-content: right;
   color: #a00;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 
@@ -395,9 +402,10 @@ Filter Tools
   max-height: calc(100% - 10px);
   border: 2px solid #0d4ead;
   border-radius: 4px;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
   gap: 5px;
+  z-index: 5;
 }
 
 #map-menu-button-container {
@@ -500,6 +508,7 @@ Filter Tools
 
 .map-control-switch > input, .map-control-switch > label {
   cursor: pointer;
+  font-weight: bold;
 }
 
 

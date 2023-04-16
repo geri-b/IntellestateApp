@@ -230,7 +230,7 @@ function BrowsePageLayout() {
         <Col
           className="left-col"
           md={3}
-          style={{ height: "100%", overflowY: "auto", background: "#f8f9fa" }}
+          style={{ height: "100%", overflowY: "auto", background: "#f8f9fa", minWidth: 'min-content' }}
         >
           <FilterTools
             ref={filterToolsRef}
@@ -260,6 +260,7 @@ function BrowsePageLayout() {
             mapRef={mapRef}
             shapes={shapeValues}
             setHotspots={setHotspots}
+            geographicShapes={geographicShapes}
           />
         </Col>
         <Col md={3} style={{ minWidth: 'min-content', height: "100%", overflowY: "auto", background: "#f8f9fa", }}>

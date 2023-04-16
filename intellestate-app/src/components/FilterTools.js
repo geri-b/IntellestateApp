@@ -58,13 +58,20 @@ function FilterTools(props, ref) {
       crime: 1,
       school: 1,
     });
+    setInvertChecked({
+      price: false,
+      income: false,
+      diversity: false,
+      crime: false,
+      school: false,
+    });
   };
 
   const handleResetFilters = () => {
     resetFormValues();
     props.setResetData(true);
-    const data = [];
-    props.onDataUpdate(data);
+    // const data = [];
+    // props.onDataUpdate(data);
   };
 
   //load more pages hooks
@@ -251,6 +258,7 @@ function FilterTools(props, ref) {
       page: page,
       ratingWeights: ratingWeights,
       ratingWeightsValue: ratingWeightsValue,
+      invertChecked: invertChecked,
     };
 
     try {
@@ -281,6 +289,7 @@ function FilterTools(props, ref) {
       ...prevInvertChecked,
       [name]: !prevInvertChecked[name],
     }));
+    props.setResetData(true);
   };
 
   return (
@@ -315,7 +324,7 @@ function FilterTools(props, ref) {
           searchInProgress={props.searchInProgress}
         />
       </Row>
-      <Card className="mb-3">
+      <Card className="mb-3" style={{minWidth: 'min-content'}}>
         <Card.Header>Property Filters</Card.Header>
         <Card.Body>
           <Row className="my-2">
@@ -363,12 +372,12 @@ function FilterTools(props, ref) {
             <Card.Header>
               <h5>Recommendation Weights</h5>
             </Card.Header>
-            <Card.Body>
-              <p>
+            <Card.Body style={{display: 'grid', gap: '5px', overflow: 'auto'}}>
+              <div>
                 <em>
                   Select the attributes you're looking for. If one matters more to you, increase its weight. Don't like our default scoring? Toggle inversion to look for properties with a lower score instead!
                 </em>
-              </p>
+              </div>
               <Checkbox
                 label="Price"
                 name="price"
@@ -378,26 +387,6 @@ function FilterTools(props, ref) {
                 onWeightChange={handleRatingWeightInputChange}
                 invertChecked={invertChecked.price}
                 onInvertClick={() => handleInvertClick("price")}
-              />
-              <Checkbox
-                label="Income"
-                name="income"
-                checked={ratingWeights.income}
-                onChange={handleRatingWeightCheckboxChange}
-                weight={ratingWeightsValue.income}
-                onWeightChange={handleRatingWeightInputChange}
-                invertChecked={invertChecked.income}
-                onInvertClick={() => handleInvertClick("income")}
-              />
-              <Checkbox
-                label="Diversity"
-                name="diversity"
-                checked={ratingWeights.diversity}
-                onChange={handleRatingWeightCheckboxChange}
-                weight={ratingWeightsValue.diversity}
-                onWeightChange={handleRatingWeightInputChange}
-                invertChecked={invertChecked.diversity}
-                onInvertClick={() => handleInvertClick("diversity")}
               />
               <Checkbox
                 label="Crime"
@@ -418,6 +407,26 @@ function FilterTools(props, ref) {
                 onWeightChange={handleRatingWeightInputChange}
                 invertChecked={invertChecked.school}
                 onInvertClick={() => handleInvertClick("school")}
+              />
+              <Checkbox
+                label="Income"
+                name="income"
+                checked={ratingWeights.income}
+                onChange={handleRatingWeightCheckboxChange}
+                weight={ratingWeightsValue.income}
+                onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.income}
+                onInvertClick={() => handleInvertClick("income")}
+              />
+              <Checkbox
+                label="Diversity"
+                name="diversity"
+                checked={ratingWeights.diversity}
+                onChange={handleRatingWeightCheckboxChange}
+                weight={ratingWeightsValue.diversity}
+                onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.diversity}
+                onInvertClick={() => handleInvertClick("diversity")}
               />
             </Card.Body>
           </Card>
