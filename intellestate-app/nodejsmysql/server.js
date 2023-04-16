@@ -73,6 +73,13 @@ const cityHotspotTables = {
     'price_government': 'z_dennis_c_price_pei where SiteCat1 = "Government"',
     'price_agricultural': 'z_dennis_c_price_pei where SiteCat1 = "Agricultural"',
     'price_utility': 'z_dennis_c_price_pei where SiteCat1 = "Utility"',
+    'price_rating_residential': 'z_dennis_c_price_rating_pei where SiteCat1 = "Residential"',
+    'price_rating_commercial': 'z_dennis_c_price_rating_pei where SiteCat1 = "Commercial"',
+    'price_rating_industrial': 'z_dennis_c_price_rating_pei where SiteCat1 = "Industrial"',
+    'price_rating_institutional': 'z_dennis_c_price_rating_pei where SiteCat1 = "Institutional"',
+    'price_rating_government': 'z_dennis_c_price_rating_pei where SiteCat1 = "Government"',
+    'price_rating_agricultural': 'z_dennis_c_price_rating_pei where SiteCat1 = "Agricultural"',
+    'price_rating_utility': 'z_dennis_c_price_rating_pei where SiteCat1 = "Utility"',
 };
 
 const hotspotSubTypes = {
@@ -138,7 +145,7 @@ app.post("/hotspots", (req, res) => {
 });
 
 app.post("/search", (req, res) => {
-    const { city, ZIPCODE, STREET, streetNum, suffixName, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes, page = 1, ratingWeights, ratingWeightsValue } = req.body;
+    const { city, ZIPCODE, STREET, streetNum, suffixName, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes, page = 1, ratingWeights, ratingWeightsValue, invertChecked } = req.body;
     const limit = 50;
     const offset = (page - 1) * limit;
 
@@ -151,7 +158,12 @@ app.post("/search", (req, res) => {
 
         selectedWeights.forEach((weight, index) => {
             const ratingKey = weight[0] + "_rating"; // e.g., p_rating, i_rating, etc.
-            sqlQuery += `${index === 0 ? '' : ' + '}${ratingWeightsValue[weight]} * IFNULL(${ratingKey}, 0)`;
+            sqlQuery += `${index === 0 ? '' : ' + '}${ratingWeightsValue[weight]} * (`;
+            if (invertChecked[weight]) {
+                sqlQuery += `1 - IFNULL(${ratingKey}, 1))`;
+            } else {
+                sqlQuery += `IFNULL(${ratingKey}, 0))`;
+            }
             totalWeightDiv += ratingWeightsValue[weight];
         });
 
