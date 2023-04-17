@@ -9,6 +9,7 @@ const ZipcodeSearchBox = ({zipcodeName, onzipcodeNameChange}) => {
                 placeholder="ZIP"
                 value={zipcodeName}
                 onChange={onzipcodeNameChange}
+                style={{padding: '3px 8px'}}
             />
         </Form.Group>
     );

@@ -11,7 +11,7 @@ function Checkbox({ invertChecked, onInvertClick, label, name, checked, onChange
 
     return (
         <div className="form-check d-flex align-items-center" style={{margin: 0, gap: '5px'}}>
-            <Col className="d-flex justify-content-start">
+            <Col className="d-flex justify-content-start" style={{alignItems: 'center'}}>
                 <input
                     className="form-check-input"
                     type="checkbox"
@@ -19,6 +19,7 @@ function Checkbox({ invertChecked, onInvertClick, label, name, checked, onChange
                     id={name}
                     checked={checked}
                     onChange={onChange}
+                    style={{marginTop: 0}}
                 />
 
                 <label className="form-check" htmlFor={name}>
@@ -43,6 +44,7 @@ function Checkbox({ invertChecked, onInvertClick, label, name, checked, onChange
                 active={invertChecked}
                 onClick={onInvertClick}
                 style={invertIconStyle}
+                title='Invert Ranking'
             >
                 <img className="invert-icon" src={invertIcon} style={{width: '20px', height: '20px', filter: invertChecked ? 'brightness(0) invert(1)' : ''}} alt='Invert Ranking' />
             </ToggleButton>
