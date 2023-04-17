@@ -6,7 +6,7 @@ import graphIcon from '../images/BrowsePage/BarGraphIcon.png'
 
 function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
   function ratingColor(rating) {
-    if (rating === null) return "#ddd";
+    if (rating === null) return "#bbb";
     else if (rating >= 0.8) return "#0d0";
     else if (rating >= 0.6) return "#9d0";
     else if (rating >= 0.4) return "#dd0";
@@ -15,12 +15,12 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
   }
 
   function ratingBackgroundColor(rating) {
-    if (rating === null) return "#efefef";
-    else if (rating >= 0.8) return "#e0ffe0";
-    else if (rating >= 0.6) return "#efffe0";
-    else if (rating >= 0.4) return "#ffffd0";
-    else if (rating >= 0.2) return "#ffefe0";
-    else if (rating >= 0) return "#ffe0e0";
+    if (rating === null) return "#e0e0e0";
+    else if (rating >= 0.8) return "#d0ffd0";
+    else if (rating >= 0.6) return "#efffc8";
+    else if (rating >= 0.4) return "#ffffc0";
+    else if (rating >= 0.2) return "#ffdfd0";
+    else if (rating >= 0) return "#ffd0d0";
   }
 
   function ratingDescription(ratingName, rating) {
@@ -64,6 +64,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
         <Button
           variant='light'
           className="btn shadow-none show-more"
+          title='Show Detailed Statistics'
           onClick={(e) => {
             e.stopPropagation();
             onButtonClick(property);

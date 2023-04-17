@@ -6,7 +6,7 @@ function ConfirmSearchButton({onSearchClick, searchInProgress}) {
   return (
     <>
       <Button 
-        style={{maxWidth: '200px'}} 
+        style={{width: '100%'}} 
         variant="primary" 
         onClick={onSearchClick}
         disabled={searchInProgress} // Disable the button when search is in progress

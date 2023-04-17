@@ -293,91 +293,32 @@ function FilterTools(props, ref) {
   };
 
   return (
-    <Container style={{ margin: 0 }}>
-      <h3 className="text-center" style={{ margin: '10px 0 0 0' }}>Search Properties</h3>
-      <Button className='my-2' style={{ maxWidth: '200px' }} onClick={handleResetFilters}> Reset Filters</Button>
-      <Card className="mb-3">
-        <Card.Header>Location Filters</Card.Header>
-        <Card.Body>
-          <Row className="my-2">
-            <Col xs={12} className="my-2">
-              <CitySearchBox cityName={cityName} onCityNameChange={handleCityNameChange} />
-            </Col>
-            <Col xs={12} className="my-2">
-              <ZipcodeSearchBox zipcodeName={zipcodeName} onzipcodeNameChange={handlezipcodeNameChange} />
-            </Col>
-            <Col xs={12} className="my-2">
-              <StreetNameSearchBox streetName={streetName} onstreetNameChange={handlestreetNameChange} />
-            </Col>
-            <Col xs={12} className="my-2">
-              <StreetNumBox streetNum={streetNum} onStreetNumChange={handlestreetNumChange} />
-            </Col>
-            <Col xs={12} className="my-2">
-              <SuffixSearchBox suffixName={suffixName} onsuffixNameChange={handlesSuffixfNameChange} />
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
-      <Row className='justify-content-center my-3'>
-        <ConfirmSearchButton
-          onSearchClick={() => { setCurrentPage(1); handleSubmit(1); }}
-          searchInProgress={props.searchInProgress}
-        />
-      </Row>
-      <Card className="mb-3" style={{minWidth: 'min-content'}}>
-        <Card.Header>Property Filters</Card.Header>
-        <Card.Body>
-          <Row className="my-2">
-            <Col xs={12} className="my-2">
-              <PropertyTypeDropdown
-                propertyTypes={propertyTypes}
-                onCheckboxChange={handlePropertyTypeCheckboxChange}
-              />
-
-            </Col>
-            <Col xs={12} className="my-2">
-              <PriceRangeDropdown
-                minPrice={minPrice}
-                maxPrice={maxPrice}
-                onMinPriceChange={handleMinPriceChange}
-                onMaxPriceChange={handleMaxPriceChange}
-                onApplyClick={handlePriceApplyClick}
-              />
-            </Col>
-            <Col xs={12} className="my-2">
-              <BuildingSQFT
-                minSQFT={minBuildingSQFT}
-                maxSQFT={maxBuildingSQFT}
-                onMinSQFTChange={handleMinBuildingSQFTChange}
-                onMaxSQFTChange={handleMaxBuildingSQFTChange}
-                onApplyClick={handleBuildingApplyClick}
-              />
-            </Col>
-            <Col xs={12} className="my-2">
-              <LandSQFTDropdown
-                minSQFT={minSQFT}
-                maxSQFT={maxSQFT}
-                onMinSQFTChange={handleMinSQFTChange}
-                onMaxSQFTChange={handleMaxSQFTChange}
-                onApplyClick={handleApplyClick}
-              />
-            </Col>
-          </Row>
-        </Card.Body>
-      </Card>
-
-      <Row className="my-2">
-        <Col xs={12} className="my-2">
-          <Card className="mb-3">
+    <Container style={{ margin: 0, display: 'grid', gap: '10px' }}>
+      <h3 className="text-center" style={{ margin: '10px 0 0 0', color: 'black' }}>Search Properties</h3>
+      <Row>
+        <Col xs={12}>
+          <Card>
             <Card.Header>
-              <h5>Recommendation Weights</h5>
+              Recommendation Weights
             </Card.Header>
-            <Card.Body style={{display: 'grid', gap: '5px', overflow: 'auto'}}>
+            <Card.Body style={{display: 'grid', gap: '5px', overflow: 'auto', padding: '5px 1rem 10px 1rem'}}>
               <div>
                 <em>
-                  Select the attributes you're looking for. If one matters more to you, increase its weight. Don't like our default scoring? Toggle inversion to look for properties with a lower score instead!
+                  Which categories do you prioritize most?
+                  {/* Select the attributes you're looking for. If one matters more to you, increase its weight. Don't like our default scoring? Toggle inversion to look for properties with a lower score instead! */}
                 </em>
               </div>
+              {/* <Row>
+                <Col>
+                  Category
+                </Col>
+                <Col>
+                  Weight
+                </Col>
+                <Col>
+                  Invert
+                </Col>
+              </Row> */}
               <Checkbox
                 label="Price"
                 name="price"
@@ -432,6 +373,80 @@ function FilterTools(props, ref) {
           </Card>
         </Col>
       </Row>
+      <Row className='justify-content-center' style={{margin: 0, gap: '10px', padding: '0 5px'}}>
+        <Col style={{padding: 0}}>
+          <Button style={{ width: '100%' }} onClick={handleResetFilters} variant='secondary'> Reset Filters</Button>
+        </Col>
+        <Col style={{padding: 0}}>
+          <ConfirmSearchButton
+            onSearchClick={() => { setCurrentPage(1); handleSubmit(1); }}
+            searchInProgress={props.searchInProgress}
+          />
+        </Col>
+      </Row>
+      <Card>
+        <Card.Header>Location Filters</Card.Header>
+        <Card.Body style={{display: 'grid', gap: '5px', overflow: 'auto', padding: '1rem 1rem'}}>
+          <Row style={{margin: 0, rowGap: '10px'}}>
+            <Col xs={8} style={{padding: '0 5px 0 0'}}>
+              <CitySearchBox cityName={cityName} onCityNameChange={handleCityNameChange} />
+            </Col>
+            <Col xs={4} style={{padding: 0}}>
+              <ZipcodeSearchBox zipcodeName={zipcodeName} onzipcodeNameChange={handlezipcodeNameChange} />
+            </Col>
+            <Col xs={3} style={{padding: 0}}>
+              <StreetNumBox streetNum={streetNum} onStreetNumChange={handlestreetNumChange} />
+            </Col>
+            <Col xs={7} style={{padding: '0 5px 0 5px'}}>
+              <StreetNameSearchBox streetName={streetName} onstreetNameChange={handlestreetNameChange} />
+            </Col>
+            <Col xs={2} style={{padding: 0}}>
+              <SuffixSearchBox suffixName={suffixName} onsuffixNameChange={handlesSuffixfNameChange} />
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+      <Card style={{minWidth: 'min-content'}}>
+        <Card.Header>Property Filters</Card.Header>
+        <Card.Body>
+          <Row style={{margin: 0, gap: '10px'}}>
+            <Col xs={12}>
+              <PropertyTypeDropdown
+                propertyTypes={propertyTypes}
+                onCheckboxChange={handlePropertyTypeCheckboxChange}
+              />
+
+            </Col>
+            <Col xs={12}>
+              <PriceRangeDropdown
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                onMinPriceChange={handleMinPriceChange}
+                onMaxPriceChange={handleMaxPriceChange}
+                onApplyClick={handlePriceApplyClick}
+              />
+            </Col>
+            <Col xs={12}>
+              <BuildingSQFT
+                minSQFT={minBuildingSQFT}
+                maxSQFT={maxBuildingSQFT}
+                onMinSQFTChange={handleMinBuildingSQFTChange}
+                onMaxSQFTChange={handleMaxBuildingSQFTChange}
+                onApplyClick={handleBuildingApplyClick}
+              />
+            </Col>
+            <Col xs={12}>
+              <LandSQFTDropdown
+                minSQFT={minSQFT}
+                maxSQFT={maxSQFT}
+                onMinSQFTChange={handleMinSQFTChange}
+                onMaxSQFTChange={handleMaxSQFTChange}
+                onApplyClick={handleApplyClick}
+              />
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
     </Container>
   );
 }

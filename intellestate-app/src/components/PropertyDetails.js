@@ -194,9 +194,11 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
 
   return (
     <div style={{ width: "100%", paddingTop: '15px' }}>
-      <div id="hotspot-scale" style={{opacity: showHotspots === 'visible' ? '' : '0'}}>
-        <div id="hotspot-scale-label-low">{hotspotScaleLabels[0]}</div>
-        <div id="hotspot-scale-label-high">{hotspotScaleLabels[1]}</div>
+      <div style={{width: '100%', height: 'max-content', background: 'white', borderRadius: '4px'}}>
+        <div id="hotspot-scale" style={{opacity: showHotspots === 'visible' ? '' : '0'}}>
+          <div id="hotspot-scale-label-low">{hotspotScaleLabels[0]}</div>
+          <div id="hotspot-scale-label-high">{hotspotScaleLabels[1]}</div>
+        </div>
       </div>
       <Map
         ref={mapRef}
@@ -366,6 +368,47 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
       </Modal>
       <div style={{display: isNaN(property.PARCELPIN) ? 'none' : ''}}>
         <Row>
+          <Col md={4}>
+            <Plot 
+              var data = {[{
+                values: [property.i_percent_low, property.i_percent_med, property.i_percent_high],
+                labels: ['Less than $15k per year','$15k - $40k per year', 'More than $40k per year'],
+                type: 'pie',
+                marker: {colors: ['#d9463e','#d9d93e', '#4ec94e']}
+              }]}
+              layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Neighborhood Income'}}
+              config={{ responsive: true }}
+              style={{width: "50%", aspectRatio: "5 / 4" }}
+            
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={4}>
+            <Plot 
+              var data = {[{
+                values: [property.d_white, property.d_black, property.d_asian, property.d_indigenous, property.d_pacific],
+                // values: [.50, .50],
+                labels: ['White', 'Black', 'Asian', 'Indigenous', 'Pacific'],
+                type: 'pie',
+                marker: {colors: [
+                  '#4444AA',
+                  '#DDDD44',
+                  '#44AA44',
+                  '#AA44AA',
+                  '#AA4444'
+                ]}
+              }]}
+              layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Local Diversity'}}
+              config={{ responsive: true }}
+              style={{width: "50%", aspectRatio: "5 / 4" }}
+
+            />
+          </Col>
+        </Row>
+        <br></br>
+        <br></br>
+        <Row>
           <Col md={6}>
             <Plot 
               var data = {[{
@@ -398,47 +441,6 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                 ]}
               }]}
               layout = {{automargin: true, autosize: false, width:"25%", height:"25%",  title: 'Area Industry Distribution', showlegend: false, textinfo: 'none'}}
-              config={{ responsive: true }}
-              style={{width: "50%", aspectRatio: "5 / 4" }}
-            
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={4}>
-            <Plot 
-              var data = {[{
-                values: [property.d_white, property.d_black, property.d_asian, property.d_indegenous, property.d_pacific],
-                // values: [.50, .50],
-                labels: ['White', 'Black', 'Asian', 'Indigenous', 'Pacific'],
-                type: 'pie',
-                marker: {colors: [
-                  '#4444AA',
-                  '#DDDD44',
-                  '#44AA44',
-                  '#AA44AA',
-                  '#AA4444'
-                ]}
-              }]}
-              layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Diversity Distribution'}}
-              config={{ responsive: true }}
-              style={{width: "50%", aspectRatio: "5 / 4" }}
-
-            />
-          </Col>
-        </Row>
-        <br></br>
-        <br></br>
-        <Row>
-          <Col md={4}>
-            <Plot 
-              var data = {[{
-                values: [property.i_percent_low, property.i_percent_med, property.i_percent_high],
-                labels: ['Less than 15k per year','15k - 40k per year', 'More than 40k per year'],
-                type: 'pie',
-                marker: {colors: ['#d9463e','#d9d93e', '#4ec94e']}
-              }]}
-              layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Neighborhood Income'}}
               config={{ responsive: true }}
               style={{width: "50%", aspectRatio: "5 / 4" }}
             

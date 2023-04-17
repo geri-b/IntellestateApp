@@ -6,9 +6,10 @@ const SuffixSearchBox = ({suffixName, onsuffixNameChange}) => {
         <Form.Group controlId="suffixName">
             <Form.Control
                 type="text"
-                placeholder="Suffix"
+                placeholder="Sfx"
                 value={suffixName}
                 onChange={onsuffixNameChange}
+                style={{padding: '3px 8px'}}
             />
         </Form.Group>
     );

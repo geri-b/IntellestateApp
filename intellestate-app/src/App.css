@@ -2,6 +2,8 @@
   text-align: center;
   height: 100vh;
   overflow: hidden;
+  display: grid;
+  grid-template-rows: 57px auto;
 }
 
 
@@ -65,7 +67,7 @@
 
 /* Navbar */
 .navbar {
-  padding: 8px 10px 8px 10px !important;
+  padding: 8px 10px 8px 15px !important;
 }
 
 /*
