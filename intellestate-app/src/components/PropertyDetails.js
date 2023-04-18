@@ -3,9 +3,10 @@ import Map, { Layer, Source, Marker, Popup } from 'react-map-gl';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useState } from "react";
-import { Button, Col, Modal, Row, Form } from "react-bootstrap";
+import { Col, Modal, Row } from "react-bootstrap";
+import MapMenu from "./MapMenu";
 
-function PropertyDetails({ properties, property, showDetails, popupOpen, setPopupOpen, mapRef, shapes, setHotspots }) {
+function PropertyDetails({ properties, property, showDetails, popupOpen, setPopupOpen, mapRef, shapes, setHotspots, geographicShapes }) {
 
   const [mapState, setMapState] = useState('');
 
@@ -91,7 +92,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         { source: 'my-data2', id: hoveredPolygon },
         { hover: true }
       );
-      e.originalEvent.target.style.cursor = 'pointer';
+      // e.originalEvent.target.style.cursor = 'pointer';
     }
     // const features = event.target.queryRenderedFeatures(event.point, {layers: ['tract-fills'],});
     // if (features && features.length) {
@@ -116,17 +117,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
       );
     }
     hoveredPolygon = null;
-    e.originalEvent.target.style.cursor = '';
-  }
-
-  const [openMapMenu, setOpenMapMenu] = useState('closed');
-
-  const changeOpenMapMenuState = (e) => {
-    if (e.target.checked) {
-      setOpenMapMenu('open');
-    } else {
-      setOpenMapMenu('closed');
-    }
+    // e.originalEvent.target.style.cursor = '';
   }
 
   const [showRecommendedProperties, setShowRecommendedProperties] = useState('');
@@ -151,12 +142,63 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
     }
   }
 
+  const hotspotScaleDict = {
+    'crime': ['Low Crime', 'High Crime'],
+    'school': ['Low District Achievement Score', 'High District Achievement Score'],
+    'price_rating_residential': ['Bad Price Rating', 'Good Price Rating'],
+    'price_rating_commercial': ['Bad Price Rating', 'Good Price Rating'],
+    'price_rating_industrial': ['Bad Price Rating', 'Good Price Rating'],
+    'price_rating_institutional': ['Bad Price Rating', 'Good Price Rating'],
+    'price_rating_government': ['Bad Price Rating', 'Good Price Rating'],
+    'price_rating_agricultural': ['Bad Price Rating', 'Good Price Rating'],
+    'price_rating_utility': ['Bad Price Rating', 'Good Price Rating'],
+    'price_residential': ['Low Residential Price', 'High Residential Price'],
+    'price_commercial': ['Low Commercial Price', 'High Commercial Price'],
+    'price_industrial': ['Low Industrial Price', 'High Industrial Price'],
+    'price_institutional': ['Low Institutional Price', 'High Institutional Price'],
+    'price_government': ['Low Government Price', 'High Government Price'],
+    'price_agricultural': ['Low Agricultural Price', 'High Agricultural Price'],
+    'price_utility': ['Low Utility Property Price', 'High Utility Property Price'],
+    'income': ['Low Income Area', 'High Income Area'],
+    'density': ['Low Building Denisty', 'High Building Density'],
+    'vacant': ['Few Properties', 'Many Properties'],
+    'living': ['Few Properties', 'Many Properties'],
+    'retail': ['Few Properties', 'Many Properties'],
+    'food': ['Few Properties', 'Many Properties'],
+    'life_services': ['Few Properties', 'Many Properties'],
+    'office': ['Few Properties', 'Many Properties'],
+    'automotive': ['Few Properties', 'Many Properties'],
+    'entertainment_sports': ['Few Properties', 'Many Properties'],
+    'warehouse_supply': ['Few Properties', 'Many Properties'],
+    'watercraft_aircraft': ['Few Properties', 'Many Properties'],
+    'other': ['Few Properties', 'Many Properties'],
+    'white': ['Low Percentage Area', 'High Percentage Area'],
+    'black': ['Low Percentage Area', 'High Percentage Area'],
+    'asian': ['Low Percentage Area', 'High Percentage Area'],
+    'indigenous': ['Low Percentage Area', 'High Percentage Area'],
+    'pacific': ['Low Percentage Area', 'High Percentage Area'],
+    'hispanic': ['Low Percentage Area', 'High Percentage Area'],
+    'income_rating': ['Low Income Rating', 'High Income Rating'],
+    'diversity_rating': ['Low Diversity Area', 'High Diversity Area'],
+  };
+
+  const [hotspotScaleLabels, setHotspotScaleLabels] = useState(['Low', 'High'])
+  const onSetHotspots = (hArea, hType, hSubType) => {
+    if (hotspotScaleDict[hSubType]) {
+      setHotspots(hArea, hType, hSubType);
+      if (hotspotScaleDict[hSubType] !== hotspotScaleLabels) {
+        setHotspotScaleLabels(hotspotScaleDict[hSubType]);
+      }
+    }
+  }
+
   return (
-    <div style={{ width: "100%" }}>
-      <h3 style={{margin: '10px 0 0 0'}}>Advanced Location Details</h3>
-      <div id="hotspot-scale">
-        <div id="hotspot-scale-label-low">Low Quantity</div>
-        <div id="hotspot-scale-label-high">High Quantity</div>
+    <div style={{ width: "100%", paddingTop: '15px' }}>
+      <div style={{width: '100%', height: 'max-content', background: 'white', borderRadius: '4px'}}>
+        <div id="hotspot-scale" style={{opacity: showHotspots === 'visible' ? '' : '0'}}>
+          <div id="hotspot-scale-label-low">{hotspotScaleLabels[0]}</div>
+          <div id="hotspot-scale-label-high">{hotspotScaleLabels[1]}</div>
+        </div>
       </div>
       <Map
         ref={mapRef}
@@ -175,104 +217,12 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         onMouseLeave={onLeave}
         interactiveLayerIds={['tract-fills']}
       >
-        <div id="map-menu-container">
-          <div style={{height: 'fit-content', borderBottom: openMapMenu === 'open' ? '2px solid #0d4ead' : '', paddingBottom: openMapMenu === 'open'? '5px' : '0px', display: 'grid', gridAutoFlow: 'column', gridTemplateColumns: openMapMenu === 'open' ? 'min-content 1fr' : '1fr', gap: '10px'}}>
-            <div id="map-menu-button-container">
-              <input
-                id="map-menu-button"
-                type="checkbox"
-                onChange={changeOpenMapMenuState}
-              />
-              <label htmlFor="map-menu-button" id="map-menu-line-container">
-                <div id="l1" className="map-menu-line"></div>
-                <div id="l2" className="map-menu-line"></div>
-                <div id="l3" className="map-menu-line"></div>
-              </label>
-            </div>
-            <div style={{display: 'flex', margin: 0, alignItems: 'center', fontSize: '21px', color: '#0d4ead'}} className={openMapMenu === 'open' ? 'justify-content-center' : 'hide'}>
-              Map Controls
-            </div>
-          </div>
-          <Col className={openMapMenu === 'open' ? '' : 'hide'} style={{padding: '0 5px'}}>
-            <Row style={{margin: 0}}>
-              <Form.Check
-                type="switch"
-                id='show-recommended-properties'
-                name='recommended-properties'
-                label='Recommended Properties'
-                style={{margin: '0', padding: 0, alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left'}}
-                onChange={changeShowRecommendedProperties}
-                defaultChecked={true}
-              />
-            </Row>
-            <hr style={{margin: '.5rem 0'}}></hr>
-            <Row style={{margin: 0, gap: '5px'}}>
-              <Form.Check
-                type="switch"
-                id='show-hotspots'
-                name='hotspots'
-                label='Hotspots'
-                style={{margin: '0', padding: 0, alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left'}}
-                onChange={changeShowHotspots}
-                defaultChecked={true}
-              />
-              <Form.Select aria-label="Hotspot Area Type" size="sm" defaultValue='tract'>
-                <option value='tract'>Census Tract</option>
-                <option value='city'>City</option>
-              </Form.Select>
-              <Col>
-                <b><u>Hotspot Type</u></b>
-                <Row>
-                  <Col style={{display: 'flex', alignContent: 'center', alignItems: 'center'}}>
-                    <Form.Check
-                      type="radio"
-                      label='General'
-                      name="tract-hotspot-types"
-                      style={{textAlign: 'left'}}
-                    ></Form.Check>
-                  </Col>
-                  <Col>
-                    <Form.Select aria-label="General Hotspots" size="sm" defaultValue='price'>
-                      <option value='price'>Price</option>
-                      <option value='income'>Income Level</option>
-                      <option value='density'>Building Density</option>
-                    </Form.Select>
-                  </Col>
-                </Row>
-                <Form.Check
-                  type="radio"
-                  label='Businesses'
-                  name="tract-hotspot-types"
-                  style={{textAlign: 'left'}}
-                ></Form.Check>
-                <Form.Check
-                  type="radio"
-                  label='Ethnicities'
-                  name="tract-hotspot-types"
-                  style={{textAlign: 'left'}}
-                ></Form.Check>
-                <Form.Check
-                  type="radio"
-                  label='Ratings'
-                  name="tract-hotspot-types"
-                  style={{textAlign: 'left'}}
-                ></Form.Check>
-              </Col>
-            </Row>
-            <hr style={{margin: '.5rem 0'}}></hr>
-            <Row style={{margin: 0}}>
-              <Form.Check
-                type="switch"
-                id='show-nearby-property-types'
-                name='nearby-property-types'
-                label='Nearby Property Types'
-                style={{margin: '0', padding: 0, alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left'}}
-                // onChange={changeShowHotspots}
-                defaultChecked={true}
-              />
-            </Row>
-          </Col>
-        </div>
+        <MapMenu
+          setHotspots={onSetHotspots}
+          changeShowHotspots={changeShowHotspots}
+          changeShowRecommendedProperties={changeShowRecommendedProperties}
+          geographicShapes={geographicShapes}
+        ></MapMenu>
         {
         <Source key={new Date().getTime()} id="my-data" type="geojson" data={shapes}>
           <Layer {...{
@@ -352,9 +302,9 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         ></Marker>
       </Map>
       <div style={{margin: '5px 0 0 0', display: property.FULL_ADDR == null ? 'none' : 'inline-block'}}>{property.FULL_ADDR}</div><br></br>
-      <Button style={{margin: '5px'}} onClick={() => setShowAdvancedMap(true)}>Advanced Map</Button>
+      {/* <Button style={{margin: '5px'}} onClick={() => setShowAdvancedMap(true)}>Advanced Map</Button>
       <Button style={{margin: '5px'}} onClick={() => setHotspots('tract', 'income')}>Show Tract Hotspots</Button>
-      <Button style={{margin: '5px'}} onClick={() => setHotspots('city', 'crime')}>Show City Hotspots</Button>
+      <Button style={{margin: '5px'}} onClick={() => setHotspots('city', 'crime')}>Show City Hotspots</Button> */}
       <Modal
         show={showAdvancedMap}
         onHide={handleModalClose}
@@ -416,104 +366,104 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           </Row>
         </Modal.Body>
       </Modal>
-      <br></br>
-      <br></br>
-      <Row>
-        <Col md={4}>
-          <Plot 
-            var data = {[{
+      <div style={{display: isNaN(property.PARCELPIN) ? 'none' : ''}}>
+        <Row>
+          <Col md={4}>
+            <Plot 
+              var data = {[{
+                values: [property.i_percent_low, property.i_percent_med, property.i_percent_high],
+                labels: ['Less than $15k per year','$15k - $40k per year', 'More than $40k per year'],
+                type: 'pie',
+                marker: {colors: ['#d9463e','#d9d93e', '#4ec94e']}
+              }]}
+              layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Neighborhood Income'}}
+              config={{ responsive: true }}
+              style={{width: "50%", aspectRatio: "5 / 4" }}
             
-              // make function and set data equal to something set data = to function that returns whole data object with use state
-              values: [property.ind_farm, property.ind_mining, property.ind_utility, property.ind_construction, property.ind_manufacture, property.ind_wholesale, property.ind_retail, property.ind_transport, property.ind_it, property.ind_finance, property.ind_real_estate, property.ind_science, property.ind_management, property.ind_waste, property.ind_education, property.ind_health_care, property.ind_entertain, property.ind_food_service, property.ind_other, property.ind_public_admin],
-              labels: ['Farming', 'Mining', 'Utility', 'Construction', 'Manufacturing', 'Wholesale', 'Retail', 'Transport', 'Information Technology', 'Finance', 'Real Estate', 'Science', 'Management', 'Waste Management', 'Education', 'Health Care', 'Entertainment', 'Food Service', 'Other', 'Public Administration'],
-              type: 'pie',
-              marker: {colors: [
-                '#e71d43',
-                '#ff3700',
-                '#ff6e00',
-                '#ffa500',
-                '#ffc300',
-                '#ffe100',
-                '#aad500',
-                '#55aa00',
-                '#008000',
-                '#005555',
-                '#002baa',
-                '#0000ff',
-                '#1900d5',
-                '#3200ac',
-                '#4b0082',
-                '#812ba6',
-                '#b857ca',
-                '#d03a87',
-                '#A0A4A5',
-                '#33E6FF'
-              ]}
-            }]}
-            layout = {{automargin: true, autosize: false, width:"25%", height:"25%",  title: 'Area Industry Distribution', showlegend: false, textinfo: 'none', automargin: false}}
-            config={{ responsive: true }}
-            style={{width: "50%", aspectRatio: "5 / 4" }}
-          
-          />
-        </Col>
-        </Row>
-        <Row>
-        <Col md={4}>
-          <Plot 
-            var data = {[{
-              values: [property.d_white, property.d_black, property.d_asian, property.d_indegenous, property.d_pacific],
-              // values: [.50, .50],
-              labels: ['White', 'Black', 'Asian', 'Indigenous', 'Pacific'],
-              type: 'pie',
-              marker: {colors: [
-                '#4444AA',
-                '#DDDD44',
-                '#44AA44',
-                '#AA44AA',
-                '#AA4444'
-              ]}
-            }]}
-            layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Diversity Distribution'}}
-            config={{ responsive: true }}
-            style={{width: "50%", aspectRatio: "5 / 4" }}
-
-          />
-        </Col>
-        </Row>
-        <br></br>
-        <br></br>
-        <Row>
-        <Col md={4}>
-          <Plot 
-            var data = {[{
-              values: [property.i_percent_low, property.i_percent_med, property.i_percent_high],
-              labels: ['Less than 15k per year','15k - 40k per year', 'More than 40k per year'],
-              type: 'pie',
-              marker: {colors: ['#f29eab','#d9463e', '#74c365']}
-            }]}
-            layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Income Distribution'}}
-            config={{ responsive: true }}
-            style={{width: "50%", aspectRatio: "5 / 4" }}
-          
-          />
-        </Col>
-        </Row>
-        <Row>
-        <Col>
-          <Plot
-
-            data = {[{
-              r: [property.comm_vacant, property.comm_living, property.comm_retail, property.comm_food, property.comm_life_services, property.comm_office, property.comm_automotive, property.comm_entertainment_sports, property.comm_warehouse_supply, property.comm_watercraft_aircraft, property.comm_other],
-              theta: ['Vacant','Living','Retail', 'Food', 'Life Services', 'Office', 'Automotive','Entertainment', 'Warehouse', 'Aircraft', 'Other'],
-              type: "scatterpolar",
-              fill: 'toself'
-            }]}
-            layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Number of Commercial Parcels'}}
-            config={{ responsive: true }}
-            style={{width: "50%", aspectRatio: "5 / 4" }}
             />
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={4}>
+            <Plot 
+              var data = {[{
+                values: [property.d_white, property.d_black, property.d_asian, property.d_indigenous, property.d_pacific],
+                // values: [.50, .50],
+                labels: ['White', 'Black', 'Asian', 'Indigenous', 'Pacific'],
+                type: 'pie',
+                marker: {colors: [
+                  '#4444AA',
+                  '#DDDD44',
+                  '#44AA44',
+                  '#AA44AA',
+                  '#AA4444'
+                ]}
+              }]}
+              layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Local Diversity'}}
+              config={{ responsive: true }}
+              style={{width: "50%", aspectRatio: "5 / 4" }}
+
+            />
+          </Col>
+        </Row>
+        <br></br>
+        <br></br>
+        <Row>
+          <Col md={6}>
+            <Plot 
+              var data = {[{
+              
+                // make function and set data equal to something set data = to function that returns whole data object with use state
+                values: [property.ind_farm, property.ind_mining, property.ind_utility, property.ind_construction, property.ind_manufacture, property.ind_wholesale, property.ind_retail, property.ind_transport, property.ind_it, property.ind_finance, property.ind_real_estate, property.ind_science, property.ind_management, property.ind_waste, property.ind_education, property.ind_health_care, property.ind_entertain, property.ind_food_service, property.ind_other, property.ind_public_admin],
+                labels: ['Farming', 'Mining', 'Utility', 'Construction', 'Manufacturing', 'Wholesale', 'Retail', 'Transport', 'Information Technology', 'Finance', 'Real Estate', 'Science', 'Management', 'Waste Management', 'Education', 'Health Care', 'Entertainment', 'Food Service', 'Other', 'Public Administration'],
+                type: 'pie',
+                marker: {colors: [
+                  '#e71d43',
+                  '#ff3700',
+                  '#ff6e00',
+                  '#ffa500',
+                  '#ffc300',
+                  '#ffe100',
+                  '#aad500',
+                  '#55aa00',
+                  '#008000',
+                  '#005555',
+                  '#002baa',
+                  '#0000ff',
+                  '#1900d5',
+                  '#3200ac',
+                  '#4b0082',
+                  '#812ba6',
+                  '#b857ca',
+                  '#d03a87',
+                  '#A0A4A5',
+                  '#33E6FF'
+                ]}
+              }]}
+              layout = {{automargin: true, autosize: false, width:"25%", height:"25%",  title: 'Area Industry Distribution', showlegend: false, textinfo: 'none'}}
+              config={{ responsive: true }}
+              style={{width: "50%", aspectRatio: "5 / 4" }}
+            
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Plot
+
+              data = {[{
+                r: [property.comm_vacant, property.comm_living, property.comm_retail, property.comm_food, property.comm_life_services, property.comm_office, property.comm_automotive, property.comm_entertainment_sports, property.comm_warehouse_supply, property.comm_watercraft_aircraft, property.comm_other],
+                theta: ['Vacant','Living','Retail', 'Food', 'Life Services', 'Office', 'Automotive','Entertainment', 'Warehouse', 'Aircraft', 'Other'],
+                type: "scatterpolar",
+                fill: 'toself'
+              }]}
+              layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Number of Commercial Parcels'}}
+              config={{ responsive: true }}
+              style={{width: "50%", aspectRatio: "5 / 4" }}
+              />
+          </Col>
+        </Row>
+      </div>
     </div>
   );
 }

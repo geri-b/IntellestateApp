@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form } from "react-bootstrap";
 
 const CitySearchBox = ({cityName, onCityNameChange}) => {
@@ -10,6 +10,7 @@ const CitySearchBox = ({cityName, onCityNameChange}) => {
                 placeholder="City"
                 value={cityName}
                 onChange={onCityNameChange}
+                style={{padding: '3px 8px'}}
             />
         </Form.Group>
     );

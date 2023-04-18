@@ -6,12 +6,21 @@ import graphIcon from '../images/BrowsePage/BarGraphIcon.png'
 
 function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
   function ratingColor(rating) {
-    if (rating === null) return "#ddd";
+    if (rating === null) return "#bbb";
     else if (rating >= 0.8) return "#0d0";
     else if (rating >= 0.6) return "#9d0";
     else if (rating >= 0.4) return "#dd0";
     else if (rating >= 0.2) return "#d70";
     else if (rating >= 0) return "#d00";
+  }
+
+  function ratingBackgroundColor(rating) {
+    if (rating === null) return "#e0e0e0";
+    else if (rating >= 0.8) return "#d0ffd0";
+    else if (rating >= 0.6) return "#efffc8";
+    else if (rating >= 0.4) return "#ffffc0";
+    else if (rating >= 0.2) return "#ffdfd0";
+    else if (rating >= 0) return "#ffd0d0";
   }
 
   function ratingDescription(ratingName, rating) {
@@ -55,6 +64,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
         <Button
           variant='light'
           className="btn shadow-none show-more"
+          title='Show Detailed Statistics'
           onClick={(e) => {
             e.stopPropagation();
             onButtonClick(property);
@@ -68,7 +78,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
         onClick={() => onBodyClick(property)}
         onMouseEnter={() => setBodyHover(true)}
         onMouseLeave={() => setBodyHover(false)}
-        style={{ backgroundColor: bodyHover ? '#f8f9fa' : 'white', cursor: bodyHover ? 'pointer' : 'default' }}
+        style={{ backgroundColor: bodyHover ? '#f8f9fa' : 'white', cursor: bodyHover ? 'pointer' : 'default', display: 'grid', padding: '5px 5px 1rem 5px' }}
 
       >
         <Row style={{padding: '0 0 0px 0'}}>
@@ -76,13 +86,13 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
             ~${property.GCERT3}
           </Col>
           <Col className='col fw-bold'>
-            {property.TOTAL_RES_AREA + property.TOTAL_COM_AREA} sq.
+            {property.TOTAL_RES_AREA + property.TOTAL_COM_AREA} sqft.
           </Col>
           <Col className='col fw-bold'>
             {property.COM_BLDG_CNT === '0' ? property.RES_BLDG_COUNT : property.COM_BLDG_CNT} Bldg.
           </Col>
           <Col className='col fw-bold'>
-            {property.SiteCat1}
+            {property.SiteCat1 === '' ? 'N/A' : property.SiteCat1}
           </Col>
           {/* <Col className="col fw-bold" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{padding: 0}}>
             <Row className="justify-content-center align-items-center">
@@ -101,9 +111,9 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
             </Row>
           </Col> */}
         </Row>
-        <Row className='card-body-row' style={{ gap: "5px", padding: '5px 0 5px 0', margin: 0 }}>
-          <Col>
-            <Row className="justify-content-center">Price:</Row>
+        <Row className='card-body-row property-ratings-row' style={{ gap: "5px", margin: '5px 0' }}>
+          <Col style={{backgroundColor: ratingBackgroundColor(property.p_rating)}}>
+            <Row className="justify-content-center"><b>Price</b></Row>
             <div className="circle-container">
               <div
                 className="circle"
@@ -116,36 +126,8 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
             </div>
             <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('price', property.p_rating)}</Row>
           </Col>
-          <Col>
-            <Row className="justify-content-center">Income:</Row>
-            <div className="circle-container">
-              <div
-                className="circle"
-                style={{
-                  backgroundColor: ratingColor(property.i_rating),
-                }}
-              >
-                {Math.round(property.i_rating * 100) / 10}
-              </div>
-            </div>
-            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('income', property.i_rating)}</Row>
-          </Col>
-          <Col>
-            <Row className="justify-content-center">Diversity</Row>
-            <div className="circle-container">
-              <div
-                className="circle"
-                style={{
-                  backgroundColor: ratingColor(property.d_rating),
-                }}
-              >
-                {Math.round(property.d_rating * 100) / 10}
-              </div>
-            </div>
-            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('diversity', property.d_rating)}</Row>
-          </Col>
-          <Col>
-            <Row className="justify-content-center">Crime</Row>
+          <Col style={{backgroundColor: ratingBackgroundColor(property.c_rating)}}>
+            <Row className="justify-content-center"><b>Crime</b></Row>
             <div className="circle-container">
               <div
                 className="circle"
@@ -158,8 +140,8 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
             </div>
             <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('crime', property.c_rating)}</Row>
           </Col>
-          <Col>
-            <Row className="justify-content-center">School</Row>
+          <Col style={{backgroundColor: ratingBackgroundColor(property.s_rating)}}>
+            <Row className="justify-content-center"><b style={{padding: 0}}>School</b></Row>
             <div className="circle-container">
               <div
                 className="circle"
@@ -172,15 +154,45 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
             </div>
             <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('school', property.s_rating)}</Row>
           </Col>
+          <Col style={{backgroundColor: ratingBackgroundColor(property.i_rating)}}>
+            <Row className="justify-content-center"><b>Income</b></Row>
+            <div className="circle-container">
+              <div
+                className="circle"
+                style={{
+                  backgroundColor: ratingColor(property.i_rating),
+                }}
+              >
+                {Math.round(property.i_rating * 100) / 10}
+              </div>
+            </div>
+            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('income', property.i_rating)}</Row>
+          </Col>
+          <Col style={{backgroundColor: ratingBackgroundColor(property.d_rating)}}>
+            <Row className="justify-content-center"><b>Diversity</b></Row>
+            <div className="circle-container">
+              <div
+                className="circle"
+                style={{
+                  backgroundColor: ratingColor(property.d_rating),
+                }}
+              >
+                {Math.round(property.d_rating * 100) / 10}
+              </div>
+            </div>
+            <Row className="justify-content-center" style={{fontSize: '12px', margin: 0}}>{ratingDescription('diversity', property.d_rating)}</Row>
+          </Col>
         </Row>
-        <Row style={{margin: '-5px 0 0 -1rem', position: 'absolute', color: '#888', width: '100%'}}>
+        <div>
+        <Row style={{margin: '-4px 0 0 0', position: 'absolute', color: '#888', width: '100%'}}>
           {/* <Col style={{padding: 0, fontSize: '12px'}}>
             Compared to City
           </Col> */}
           <Col style={{padding: 0, fontSize: '12px'}}>
-            *Compared to Cuyahoga County Average
+            *Compared to the Cuyahoga County average.
           </Col>
         </Row>
+        </div>
         <Row>
           {property.showExtraInfo && (
             <Card.Body>

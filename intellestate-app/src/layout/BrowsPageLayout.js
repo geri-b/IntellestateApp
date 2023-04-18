@@ -208,7 +208,7 @@ function BrowsePageLayout() {
             }
           } else if (aType === 'city') {
             for (const cityData of data) {
-              if (cityData.city === newFeature.properties.name) {
+              if (cityData.city.toLowerCase() === newFeature.properties.name.toLowerCase()) {
                 newFeature.properties.hotspotValue = Math.round(Number(cityData.pei) * 100) / 10;
               }
             }
@@ -225,12 +225,12 @@ function BrowsePageLayout() {
   }
 
   return (
-    <Container fluid style={{ height: "calc(100% - 57.8px)" }}>
+    <Container fluid style={{ height: "100%", overflow: 'hidden' }}>
       <Row style={{ height: "100%", overflowY: "auto" }}>
         <Col
           className="left-col"
           md={3}
-          style={{ height: "100%", overflowY: "auto", background: "#f8f9fa" }}
+          style={{ height: "100%", overflowY: "auto", background: "#f8f9fa", minWidth: 'min-content' }} // bg #f8f9fa or linear-gradient(180deg, #059 0%, #509 100%)
         >
           <FilterTools
             ref={filterToolsRef}
@@ -260,9 +260,10 @@ function BrowsePageLayout() {
             mapRef={mapRef}
             shapes={shapeValues}
             setHotspots={setHotspots}
+            geographicShapes={geographicShapes}
           />
         </Col>
-        <Col md={3} style={{ minWidth: 'min-content', height: "100%", overflowY: "auto", background: "#f8f9fa", }}>
+        <Col md={3} style={{ minWidth: 'min-content', height: "100%", overflowY: "auto", background: "#f8f9fa" }}> {/*linear-gradient(0deg, #059 0%, #0d8 100%) */}
           <h3 style={{margin: '10px 0 0 0'}}>Recommended Matches</h3> (Based on 5 rating categories)
           <div
             className={propertiesData.length === 0 ? '' : 'hide'}

@@ -6,9 +6,10 @@ const StreetNumBox = ({streetNum, onStreetNumChange}) => {
         <Form.Group controlId="streetNum">
             <Form.Control
                 type="text"
-                placeholder="Street number"
+                placeholder="Num"
                 value={streetNum}
                 onChange={onStreetNumChange}
+                style={{padding: '3px 8px'}}
             />
         </Form.Group>
     );
