@@ -1,10 +1,11 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import logo from '../images/logo/logo.png';
+
 
 function Navibar({ handlePageChange }) {
     return (
-        <Navbar bg="light" expand="lg" style={{borderBottom: '1px solid lightgrey'}}>
-            <Navbar.Brand href="#home">Intellestate</Navbar.Brand>
+        <Navbar bg="white" expand="lg" style={{borderBottom: '1px solid lightgrey'}}>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
@@ -15,6 +16,15 @@ function Navibar({ handlePageChange }) {
                         Browse Properties
                     </Nav.Link>
                 </Nav>
+                <Navbar.Brand href="#home">
+                        <img
+                        src= {logo}
+                        width="200"
+                        height="30"
+                        className="d-inline-block align-top mx-auto"
+                        alt="Intellestate Logo"
+                        />
+                    </Navbar.Brand>
             </Navbar.Collapse>
         </Navbar>
     );

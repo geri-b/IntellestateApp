@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import { Container } from 'react-bootstrap';
 import '../App.css';
-import SearchBar from './Searchbar';
 
 function HomepageCarousel() {
   const [index, setIndex] = useState(0);
@@ -14,7 +13,7 @@ function HomepageCarousel() {
   };
 
   return (
-    <Container className="carousel-container" fluid>
+    <Container className="carousel-container" fluid style={{padding: 0}}>
       <Carousel className='carousel-custom' activeIndex={index} onSelect={handleSelect}>
         <Carousel.Item>
           <img
