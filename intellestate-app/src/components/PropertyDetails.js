@@ -51,7 +51,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
   };
 
   let hoveredPolygon = null;
-  
+
   const layerStyle2 = {
     id: 'tract-labels',
     type: 'symbol',
@@ -194,8 +194,8 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
 
   return (
     <div style={{ width: "100%" }}>
-      <div style={{width: '100%', height: 'max-content', background: 'white', borderRadius: '4px'}}>
-        <div id="hotspot-scale" style={{opacity: showHotspots === 'visible' ? '' : '0'}}>
+      <div style={{ width: '100%', height: 'max-content', background: 'white', borderRadius: '4px' }}>
+        <div id="hotspot-scale" style={{ opacity: showHotspots === 'visible' ? '' : '0' }}>
           <div id="hotspot-scale-label-low">{hotspotScaleLabels[0]}</div>
           <div id="hotspot-scale-label-high">{hotspotScaleLabels[1]}</div>
         </div>
@@ -224,57 +224,57 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           geographicShapes={geographicShapes}
         ></MapMenu>
         {
-        <Source key={new Date().getTime()} id="my-data" type="geojson" data={shapes}>
-          <Layer {...{
-            id: 'tract-fills',
-            type: 'fill',
-            layout: {
-              'visibility': showHotspots
-            },
-            paint: {
-              'fill-color': {
-                'property': 'hotspotValue',
-                'stops': [
-                  [-1, '#888'],
-                  [0, '#08f'],
-                  [2.5, '#0f0'],
-                  [5, '#ff0'],
-                  [7.5, '#f80'],
-                  [10, '#f00'],
-                ]
+          <Source key={new Date().getTime()} id="my-data" type="geojson" data={shapes}>
+            <Layer {...{
+              id: 'tract-fills',
+              type: 'fill',
+              layout: {
+                'visibility': showHotspots
               },
-              'fill-opacity': [
-                'case',
-                ['boolean', ['feature-state', 'hover'], false],
-                .5,
-                .25
-              ],
-              'fill-outline-color': {
-                'property': 'hotspotValue',
-                'stops': [
-                  [-1, '#888'],
-                  [0, '#06a'],
-                  [2.5, '#0a0'],
-                  [5, '#aa0'],
-                  [7.5, '#a60'],
-                  [10, '#a00'],
-                ]
-              },
-            }
-          }}></Layer>
-        </Source>
+              paint: {
+                'fill-color': {
+                  'property': 'hotspotValue',
+                  'stops': [
+                    [-1, '#888'],
+                    [0, '#08f'],
+                    [2.5, '#0f0'],
+                    [5, '#ff0'],
+                    [7.5, '#f80'],
+                    [10, '#f00'],
+                  ]
+                },
+                'fill-opacity': [
+                  'case',
+                  ['boolean', ['feature-state', 'hover'], false],
+                  .5,
+                  .25
+                ],
+                'fill-outline-color': {
+                  'property': 'hotspotValue',
+                  'stops': [
+                    [-1, '#888'],
+                    [0, '#06a'],
+                    [2.5, '#0a0'],
+                    [5, '#aa0'],
+                    [7.5, '#a60'],
+                    [10, '#a00'],
+                  ]
+                },
+              }
+            }}></Layer>
+          </Source>
         }
         <Source key={new Date().getTime() + 1} id="my-data2" type="geojson" data={shapes}>
           <Layer {...layerStyle2}></Layer>
         </Source>
         {properties.map(prop => (
-          <div key={prop.PARCELPIN} style={{display: 'none'}}>
+          <div key={prop.PARCELPIN} style={{ display: 'none' }}>
             <Marker
               latitude={prop.AVG_LAT}
               longitude={prop.AVG_LONG}
               color={markerColor[prop.SiteCat1 === '' ? 'Other' : prop.SiteCat1]}
-              onClick={() => {setPopupOpen(prop.PARCELPIN); showDetails(prop)}}
-              style={{display: showRecommendedProperties}}
+              onClick={() => { setPopupOpen(prop.PARCELPIN); showDetails(prop) }}
+              style={{ display: showRecommendedProperties }}
             ></Marker>
             {popupOpen === prop.PARCELPIN && (
               <Popup
@@ -301,7 +301,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           onClick={() => setPopupOpen(property.PARCELPIN)}
         ></Marker>
       </Map>
-      <div style={{margin: '5px 0 0 0', display: property.FULL_ADDR == null ? 'none' : 'inline-block'}}>{property.FULL_ADDR}</div><br></br>
+      <div style={{ margin: '5px 0 0 0', display: property.FULL_ADDR == null ? 'none' : 'inline-block' }}>{property.FULL_ADDR}</div><br></br>
       {/* <Button style={{margin: '5px'}} onClick={() => setShowAdvancedMap(true)}>Advanced Map</Button>
       <Button style={{margin: '5px'}} onClick={() => setHotspots('tract', 'income')}>Show Tract Hotspots</Button>
       <Button style={{margin: '5px'}} onClick={() => setHotspots('city', 'crime')}>Show City Hotspots</Button> */}
@@ -318,7 +318,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Row style={{height: '100%', rowGap: '5px'}}>
+          <Row style={{ height: '100%', rowGap: '5px' }}>
             <Col md={6} lg={6}>
               <Map
                 initialViewState={{
@@ -326,7 +326,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                   latitude: 41.5,
                   zoom: 9,
                 }}
-                style={{border: '2px solid lightgrey', borderRadius: '8px'}}
+                style={{ border: '2px solid lightgrey', borderRadius: '8px' }}
                 mapLib={maplibregl}
                 mapStyle="https://api.maptiler.com/maps/streets-v2/style.json?key=nmF5UJHGt6DxUo6Ooheo"
                 type="vector"
@@ -336,7 +336,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                   latitude={isNaN(property.AVG_LAT) ? 0 : property.AVG_LAT}
                   longitude={isNaN(property.AVG_LONG) ? 0 : property.AVG_LONG}
                   color="red"
-                  style={{zIndex: 1, display: isNaN(property.PARCELPIN) ? 'none' : ''}}
+                  style={{ zIndex: 1, display: isNaN(property.PARCELPIN) ? 'none' : '' }}
                   onClick={() => setAdvancedPopupOpen(property.PARCELPIN)}
                 ></Marker>
                 {advancedPopupOpen === property.PARCELPIN && (
@@ -366,102 +366,102 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           </Row>
         </Modal.Body>
       </Modal>
-      <div style={{display: isNaN(property.PARCELPIN) ? 'none' : ''}}>
-        <Row style={{margin: 0, padding: 0}}>
-          <Col md={4}>
-            <Plot 
-              var data = {[{
-                values: [property.i_percent_low, property.i_percent_med, property.i_percent_high],
-                labels: ['Less than $15k per year','$15k - $40k per year', 'More than $40k per year'],
-                type: 'pie',
-                marker: {colors: ['#d9463e','#d9d93e', '#4ec94e']}
-              }]}
-              layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Neighborhood Income'}}
-              config={{ responsive: true }}
-              style={{width: "50%", aspectRatio: "5 / 4" }}
-            
-            />
-          </Col>
-        </Row>
-        <Row style={{margin: 0, padding: 0}}>
-          <Col md={4}>
-            <Plot 
-              var data = {[{
-                values: [property.d_white, property.d_black, property.d_asian, property.d_indigenous, property.d_pacific],
-                // values: [.50, .50],
-                labels: ['White', 'Black', 'Asian', 'Indigenous', 'Pacific'],
-                type: 'pie',
-                marker: {colors: [
-                  '#4444AA',
-                  '#DDDD44',
-                  '#44AA44',
-                  '#AA44AA',
-                  '#AA4444'
-                ]}
-              }]}
-              layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Local Diversity'}}
-              config={{ responsive: true }}
-              style={{width: "50%", aspectRatio: "5 / 4" }}
+      <div style={{ display: isNaN(property.PARCELPIN) ? 'none' : '' }}>
+        <Row style={{ margin: 0, padding: 0 }}>
+          <Row>
+            <Col>
+              <Plot
+                var data={[{
+                  values: [property.i_percent_low, property.i_percent_med, property.i_percent_high],
+                  labels: ['Less than $15k per year', '$15k - $40k per year', 'More than $40k per year'],
+                  type: 'pie',
+                  marker: { colors: ['#d9463e', '#d9d93e', '#4ec94e'] }
+                }]}
+                layout={{ automargin: true, autosize: false, width: 300, height: 300, showlegend: false, title: 'Neighborhood Income', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)" }}
+                config={{ responsive: true }}
+                style={{ width: "50%", aspectRatio: "5 / 4" }}
 
-            />
-          </Col>
-        </Row>
-        <br></br>
-        <br></br>
-        <Row style={{margin: 0, padding: 0}}>
-          <Col md={6}>
-            <Plot 
-              var data = {[{
-              
-                // make function and set data equal to something set data = to function that returns whole data object with use state
-                values: [property.ind_farm, property.ind_mining, property.ind_utility, property.ind_construction, property.ind_manufacture, property.ind_wholesale, property.ind_retail, property.ind_transport, property.ind_it, property.ind_finance, property.ind_real_estate, property.ind_science, property.ind_management, property.ind_waste, property.ind_education, property.ind_health_care, property.ind_entertain, property.ind_food_service, property.ind_other, property.ind_public_admin],
-                labels: ['Farming', 'Mining', 'Utility', 'Construction', 'Manufacturing', 'Wholesale', 'Retail', 'Transport', 'Information Technology', 'Finance', 'Real Estate', 'Science', 'Management', 'Waste Management', 'Education', 'Health Care', 'Entertainment', 'Food Service', 'Other', 'Public Administration'],
-                type: 'pie',
-                marker: {colors: [
-                  '#e71d43',
-                  '#ff3700',
-                  '#ff6e00',
-                  '#ffa500',
-                  '#ffc300',
-                  '#ffe100',
-                  '#aad500',
-                  '#55aa00',
-                  '#008000',
-                  '#005555',
-                  '#002baa',
-                  '#0000ff',
-                  '#1900d5',
-                  '#3200ac',
-                  '#4b0082',
-                  '#812ba6',
-                  '#b857ca',
-                  '#d03a87',
-                  '#A0A4A5',
-                  '#33E6FF'
-                ]}
-              }]}
-              layout = {{automargin: true, autosize: false, width:"25%", height:"25%",  title: 'Area Industry Distribution', showlegend: false, textinfo: 'none'}}
-              config={{ responsive: true }}
-              style={{width: "50%", aspectRatio: "5 / 4" }}
-            
-            />
-          </Col>
-        </Row>
-        <Row style={{margin: 0, padding: 0}}>
-          <Col>
-            <Plot
-
-              data = {[{
-                r: [property.comm_vacant, property.comm_living, property.comm_retail, property.comm_food, property.comm_life_services, property.comm_office, property.comm_automotive, property.comm_entertainment_sports, property.comm_warehouse_supply, property.comm_watercraft_aircraft, property.comm_other],
-                theta: ['Vacant','Living','Retail', 'Food', 'Life Services', 'Office', 'Automotive','Entertainment', 'Warehouse', 'Aircraft', 'Other'],
-                type: "scatterpolar",
-                fill: 'toself'
-              }]}
-              layout = {{automargin: true, autosize: false, width:"25%", height:"25%", showlegend: false, title: 'Number of Commercial Parcels'}}
-              config={{ responsive: true }}
-              style={{width: "50%", aspectRatio: "5 / 4" }}
               />
-          </Col>
+            </Col>
+
+
+            <Col>
+              <Plot
+                var data={[{
+                  values: [property.d_white, property.d_black, property.d_asian, property.d_indigenous, property.d_pacific],
+                  // values: [.50, .50],
+                  labels: ['White', 'Black', 'Asian', 'Indigenous', 'Pacific'],
+                  type: 'pie',
+                  marker: {
+                    colors: [
+                      '#4444AA',
+                      '#DDDD44',
+                      '#44AA44',
+                      '#AA44AA',
+                      '#AA4444'
+                    ]
+                  }
+                }]}
+                layout={{ automargin: true, autosize: false, width: 300, height: 300, showlegend: false, title: 'Local Diversity', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)" }}
+                config={{ responsive: true }}
+                style={{ width: "50%", aspectRatio: "5 / 4" }}
+
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Plot
+                var data={[{
+
+                  // make function and set data equal to something set data = to function that returns whole data object with use state
+                  values: [property.ind_farm, property.ind_mining, property.ind_utility, property.ind_construction, property.ind_manufacture, property.ind_wholesale, property.ind_retail, property.ind_transport, property.ind_it, property.ind_finance, property.ind_real_estate, property.ind_science, property.ind_management, property.ind_waste, property.ind_education, property.ind_health_care, property.ind_entertain, property.ind_food_service, property.ind_other, property.ind_public_admin],
+                  labels: ['Farming', 'Mining', 'Utility', 'Construction', 'Manufacturing', 'Wholesale', 'Retail', 'Transport', 'Information Technology', 'Finance', 'Real Estate', 'Science', 'Management', 'Waste Management', 'Education', 'Health Care', 'Entertainment', 'Food Service', 'Other', 'Public Administration'],
+                  type: 'pie',
+                  marker: {
+                    colors: [
+                      '#e71d43',
+                      '#ff3700',
+                      '#ff6e00',
+                      '#ffa500',
+                      '#ffc300',
+                      '#ffe100',
+                      '#aad500',
+                      '#55aa00',
+                      '#008000',
+                      '#005555',
+                      '#002baa',
+                      '#0000ff',
+                      '#1900d5',
+                      '#3200ac',
+                      '#4b0082',
+                      '#812ba6',
+                      '#b857ca',
+                      '#d03a87',
+                      '#A0A4A5',
+                      '#33E6FF'
+                    ]
+                  }
+                }]}
+                layout={{ automargin: true, autosize: false, width: 300, height: 300, title: 'Area Industry Distribution', showlegend: false, textinfo: 'none', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)" }}
+                config={{ responsive: true }}
+                style={{ width: "50%", aspectRatio: "5 / 4" }}
+              />
+            </Col>
+            <Col>
+              <Plot
+                data={[{
+                  r: [property.comm_vacant, property.comm_living, property.comm_retail, property.comm_food, property.comm_life_services, property.comm_office, property.comm_automotive, property.comm_entertainment_sports, property.comm_warehouse_supply, property.comm_watercraft_aircraft, property.comm_other],
+                  theta: ['Vacant', 'Living', 'Retail', 'Food', 'Life Services', 'Office', 'Automotive', 'Entertainment', 'Warehouse', 'Aircraft', 'Other'],
+                  type: "scatterpolar",
+                  fill: 'toself'
+                }]}
+                layout={{ automargin: true, autosize: false, width: 300, height: 300, showlegend: false, title: 'Number of Commercial Parcels', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)" }}
+                config={{ responsive: true }}
+                style={{ width: "50%", aspectRatio: "5 / 4" }}
+              />
+            </Col>
+          </Row>
         </Row>
       </div>
     </div>
