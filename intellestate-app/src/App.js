@@ -13,9 +13,13 @@ function App() {
     console.log("Executed")
   }
 
+  const changePage = () => {
+    setCurrentPage('browse');
+  }
+
   let pageContent;
   if (currentPage === 'home') {
-    pageContent = <HomepageLayout />;
+    pageContent = <HomepageLayout changePage={changePage} />;
   }
   else if (currentPage === 'browse') {
     pageContent = <BrowsPageLayout />;

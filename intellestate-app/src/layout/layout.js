@@ -7,27 +7,27 @@ import HPCard2 from "../components/HPCard2";
 import HPCard3 from "../components/HPCard3";
 import SearchBar from "../components/Searchbar";
 
-function HomepageLayout() {
+function HomepageLayout({changePage}) {
 
   return (
-    <Container fluid='true' style={{overflowY: 'auto', height: 'calc(100% - 57.8px)'}}>
-      <Row>
-        <Col>
+    <Container fluid='true' style={{overflowY: 'auto', height: '100%'}}>
+      <Row style={{margin: 0, padding: 0}}>
+        <Col style={{padding: 0}}>
           <HomepageCarousel />
         </Col>
       </Row>
-      <Row style={{display: 'flex', justifyContent: 'center'}}>
+      <Row style={{display: 'flex', justifyContent: 'center', margin: 0, padding: 0}}>
       <SearchBar/>
       </Row>
-      <Row style={{paddingTop: '150px', paddingBottom: '20px'}}>
+      <Row style={{paddingTop: '150px', paddingBottom: '20px', margin: 0, paddingLeft: 0, paddingRight: 0}}>
         <Col className="d-flex justify-content-center align-items-center">
-          <HPCard1 />
+          <HPCard1 changePage={changePage} />
         </Col>
         <Col className="d-flex justify-content-center align-items-center">
-          <HPCard2 />
+          <HPCard2 changePage={changePage} />
         </Col>
         <Col className="d-flex justify-content-center align-items-center">
-          <HPCard3 />
+          <HPCard3 changePage={changePage} />
         </Col>
       </Row>
     </Container>

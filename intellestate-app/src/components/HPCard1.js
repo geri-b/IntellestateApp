@@ -1,8 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import BrowsePageLayout from '../layout/BrowsPageLayout';
 
-function HPCard1() {
+function HPCard1({changePage}) {
   return (
     <Card style={{ width: '22rem' }}>
       <Card.Body>
@@ -10,7 +9,7 @@ function HPCard1() {
         <Card.Text style={{ fontStyle: "italic" }}>
           Allowing you to gain insights into where different types of bussineses are prominent in Cuyahoga County.
         </Card.Text>
-        <Button variant="primary" onClick={() => window.location.href = '/BrowsePageLayout'}>Explore</Button>
+        <Button variant="primary" onClick={changePage}>Explore</Button>
       </Card.Body>
     </Card>
   );

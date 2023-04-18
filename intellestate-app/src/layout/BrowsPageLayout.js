@@ -230,7 +230,7 @@ function BrowsePageLayout() {
         <Col
           className="left-col"
           md={3}
-          style={{ height: "100%", overflowY: "auto", background: "#f8f9fa", minWidth: 'min-content' }} // bg #f8f9fa or linear-gradient(180deg, #059 0%, #509 100%)
+          style={{ height: "100%", overflowY: "auto", background: "linear-gradient(90deg, #123 0%, #203a60 100%)", minWidth: 'min-content' }} // bg #f8f9fa or linear-gradient(180deg, #059 0%, #509 100%)
         >
           <FilterTools
             ref={filterToolsRef}
@@ -248,26 +248,32 @@ function BrowsePageLayout() {
           className="right-col"
           style={{
             height: "100%",
-            overflowY: "auto",
+            overflowY: "hidden",
+            padding: '.75rem 0',
+            background: 'linear-gradient(90deg, #203a60  0%, #203a60 100%)'
+            // background: 'linear-gradient(90deg, #203a60 0%, white 10%, white 90%, #203a60 100%)'
           }}
         >
-          <PropertyDetails
-            properties={propertiesData}
-            property={selectedProperty}
-            showDetails={handleSetSelectedMarker}
-            popupOpen={mapPopupOpen}
-            setPopupOpen={setMapPopupOpen}
-            mapRef={mapRef}
-            shapes={shapeValues}
-            setHotspots={setHotspots}
-            geographicShapes={geographicShapes}
-          />
+          <Col style={{height: "100%", overflowY: "auto", background: 'white', padding: '5px', borderRadius: '6px'}}>
+            <PropertyDetails
+              properties={propertiesData}
+              property={selectedProperty}
+              showDetails={handleSetSelectedMarker}
+              popupOpen={mapPopupOpen}
+              setPopupOpen={setMapPopupOpen}
+              mapRef={mapRef}
+              shapes={shapeValues}
+              setHotspots={setHotspots}
+              geographicShapes={geographicShapes}
+            />
+          </Col>
         </Col>
-        <Col md={3} style={{ minWidth: 'min-content', height: "100%", overflowY: "auto", background: "#f8f9fa" }}> {/*linear-gradient(0deg, #059 0%, #0d8 100%) */}
-          <h3 style={{margin: '10px 0 0 0'}}>Recommended Matches</h3> (Based on 5 rating categories)
+        <Col md={3} style={{ minWidth: 'min-content', height: "100%", overflowY: "hidden", background: "linear-gradient(270deg, #123 0%, #203a60 100%)", padding: '10px 0 .75rem .75rem' }}> {/*linear-gradient(0deg, #059 0%, #0d8 100%) */}
+          <div style={{height: '100%', overflow: 'auto', paddingRight: '.75rem', borderRadius: '6px'}}>
+          <h3 style={{margin: '0', color: 'white'}}>Recommended Matches</h3><div style={{color: 'white'}}>(Based on 5 rating categories)</div>
           <div
             className={propertiesData.length === 0 ? '' : 'hide'}
-            style={{ display: 'flex', height: '20%', justifyContent: 'center', alignItems: 'center', opacity: '50%' }}
+            style={{ display: 'flex', height: '20%', justifyContent: 'center', alignItems: 'center', opacity: '75%', color: 'white' }}
           >
             Perform a search to see property recommendations.
           </div>
@@ -283,6 +289,7 @@ function BrowsePageLayout() {
             onClick={() => { filterToolsRef.current.handleLoadMoreClick(); }}
           >Load More
           </Button>
+          </div>
         </Col>
       </Row>
     </Container>

@@ -13,7 +13,7 @@ function HomepageCarousel() {
   };
 
   return (
-    <Container className="carousel-container" fluid>
+    <Container className="carousel-container" fluid style={{padding: 0}}>
       <Carousel className='carousel-custom' activeIndex={index} onSelect={handleSelect}>
         <Carousel.Item>
           <img

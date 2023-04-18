@@ -193,7 +193,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
   }
 
   return (
-    <div style={{ width: "100%", paddingTop: '15px' }}>
+    <div style={{ width: "100%" }}>
       <div style={{width: '100%', height: 'max-content', background: 'white', borderRadius: '4px'}}>
         <div id="hotspot-scale" style={{opacity: showHotspots === 'visible' ? '' : '0'}}>
           <div id="hotspot-scale-label-low">{hotspotScaleLabels[0]}</div>
@@ -367,7 +367,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         </Modal.Body>
       </Modal>
       <div style={{display: isNaN(property.PARCELPIN) ? 'none' : ''}}>
-        <Row>
+        <Row style={{margin: 0, padding: 0}}>
           <Col md={4}>
             <Plot 
               var data = {[{
@@ -383,7 +383,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
             />
           </Col>
         </Row>
-        <Row>
+        <Row style={{margin: 0, padding: 0}}>
           <Col md={4}>
             <Plot 
               var data = {[{
@@ -408,7 +408,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         </Row>
         <br></br>
         <br></br>
-        <Row>
+        <Row style={{margin: 0, padding: 0}}>
           <Col md={6}>
             <Plot 
               var data = {[{
@@ -447,7 +447,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
             />
           </Col>
         </Row>
-        <Row>
+        <Row style={{margin: 0, padding: 0}}>
           <Col>
             <Plot
 

@@ -293,8 +293,8 @@ function FilterTools(props, ref) {
   };
 
   return (
-    <Container style={{ margin: 0, display: 'grid', gap: '10px' }}>
-      <h3 className="text-center" style={{ margin: '10px 0 0 0', color: 'black' }}>Search Properties</h3>
+    <Container style={{ margin: 0, display: 'grid', gap: '10px', padding: 0 }}>
+      <h3 className="text-center" style={{ margin: '10px 0 0 0', color: 'white' }}>Search Properties</h3>
       <Row>
         <Col xs={12}>
           <Card>
