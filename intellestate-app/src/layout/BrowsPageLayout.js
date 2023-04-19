@@ -49,6 +49,7 @@ function BrowsePageLayout() {
       setOpenedProperties([]);
       setSelectedProperty({});
       setMapPopupOpen('');
+      setPropertyTypesData([]);
       setResetData(false); // Reset the flag after handling the data
     }
 
@@ -224,6 +225,35 @@ function BrowsePageLayout() {
     }
   }
 
+  const [propertyTypesData, setPropertyTypesData] = useState([]);
+
+  const setPropertyTypes = async (pType, pSubType) => {
+    if (isNaN(selectedProperty.AVG_LAT) || isNaN(selectedProperty.AVG_LONG)) {
+      console.log('No property currently selected.');
+    } else {
+      const requestBody = {
+        propertyType: pType,
+        propertySubType: pSubType,
+        currentPropLong: selectedProperty.AVG_LONG,
+        currentPropLat: selectedProperty.AVG_LAT,
+      };
+
+      try {
+        const response = await fetch("http://localhost:3001/propertyTypes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody),
+        });
+
+        const data = await response.json();
+        setPropertyTypesData(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  }
+
   return (
     <Container fluid style={{ height: "100%", overflow: 'hidden' }}>
       <Row style={{ height: "100%", overflowY: "auto" }}>
@@ -265,6 +295,8 @@ function BrowsePageLayout() {
               shapes={shapeValues}
               setHotspots={setHotspots}
               geographicShapes={geographicShapes}
+              setPropertyTypes={setPropertyTypes}
+              propertyTypesData={propertyTypesData}
             />
           </Col>
         </Col>

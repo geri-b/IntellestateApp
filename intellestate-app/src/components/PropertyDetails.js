@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import MapMenu from "./MapMenu";
 
-function PropertyDetails({ properties, property, showDetails, popupOpen, setPopupOpen, mapRef, shapes, setHotspots, geographicShapes }) {
+function PropertyDetails({ properties, property, showDetails, popupOpen, setPopupOpen, mapRef, shapes, setHotspots, geographicShapes, setPropertyTypes, propertyTypesData }) {
 
   const [mapState, setMapState] = useState('');
 
@@ -192,6 +192,16 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
     }
   }
 
+  const [showPropertyTypes, setShowPropertyTypes] = useState('');
+
+  const changeShowPropertyTypes = (e) => {
+    if (e.target.checked) {
+      setShowPropertyTypes('');
+    } else {
+      setShowPropertyTypes('none');
+    }
+  }
+
   return (
     <div style={{ width: "100%" }}>
       <div style={{width: '100%', height: 'max-content', background: 'white', borderRadius: '4px'}}>
@@ -221,7 +231,9 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           setHotspots={onSetHotspots}
           changeShowHotspots={changeShowHotspots}
           changeShowRecommendedProperties={changeShowRecommendedProperties}
+          changeShowPropertyTypes={changeShowPropertyTypes}
           geographicShapes={geographicShapes}
+          setPropertyTypes={setPropertyTypes}
         ></MapMenu>
         {
         <Source key={new Date().getTime()} id="my-data" type="geojson" data={shapes}>
@@ -267,6 +279,43 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         <Source key={new Date().getTime() + 1} id="my-data2" type="geojson" data={shapes}>
           <Layer {...layerStyle2}></Layer>
         </Source>
+        {propertyTypesData.map(prop => (
+          <div key={isNaN(prop.PARCELPIN) ? prop.b_irn : prop.PARCELPIN}>
+            <Marker
+              latitude={prop.AVG_LAT}
+              longitude={prop.AVG_LONG}
+              onClick={() => {if (isNaN(prop.PARCELPIN)) {setPopupOpen("m" + prop.b_irn);} else {setPopupOpen("m" + prop.PARCELPIN);}}}
+              style={{display: showPropertyTypes}}
+            >
+              <div style={{width: '16px', height: '16px', border: '2px solid #808', borderRadius: '50%', background: 'magenta'}}></div>
+            </Marker>
+            {popupOpen === "m" + prop.b_irn && (
+              <Popup
+                latitude={prop.AVG_LAT}
+                longitude={prop.AVG_LONG}
+                onClose={() => setPopupOpen('')}
+                closeButton={true}
+                closeOnClick={false}
+              >
+                {prop.b_name} <br></br>
+                {Math.round(prop.haversine_distance * 1000) / 1000} Miles
+              </Popup>
+            )}
+            {popupOpen === "m" + prop.PARCELPIN && (
+              <Popup
+                latitude={prop.AVG_LAT}
+                longitude={prop.AVG_LONG}
+                onClose={() => setPopupOpen('')}
+                closeButton={true}
+                closeOnClick={false}
+              >
+                {prop.FULL_ADDR} <br></br>
+                {prop.SiteCat1 === 'Residential' ? '' : 'Owner: ' + prop.PARCL_OWN2} <br></br>
+                Distance: {Math.round(prop.haversine_distance * 1000) / 1000} Miles
+              </Popup>
+            )}
+          </div>
+        ))}
         {properties.map(prop => (
           <div key={prop.PARCELPIN} style={{display: 'none'}}>
             <Marker
@@ -287,7 +336,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                 <span>
                   {prop.FULL_ADDR} <br></br>
                   {prop.SiteCat1 === '' ? 'Undefined' : prop.SiteCat1} <br></br>
-                  {prop.PARCL_OWN2}
+                  {prop.SiteCat1 === 'Residential' ? '' : 'Owner: ' + prop.PARCL_OWN2}
                 </span>
               </Popup>
             )}

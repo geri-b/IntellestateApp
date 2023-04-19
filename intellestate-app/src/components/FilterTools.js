@@ -385,7 +385,7 @@ function FilterTools(props, ref) {
         </Col>
       </Row>
       <Card>
-        <Card.Header>Location Filters</Card.Header>
+        <Card.Header>Location</Card.Header>
         <Card.Body style={{display: 'grid', gap: '5px', overflow: 'auto', padding: '1rem 1rem'}}>
           <Row style={{margin: 0, rowGap: '10px'}}>
             <Col xs={8} style={{padding: '0 5px 0 0'}}>
