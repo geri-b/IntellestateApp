@@ -118,7 +118,8 @@ function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperti
     "COMMUNICATION FAC.",
     "UTILITY SERVICE FAC.",
     "OTHER INDUSTRIAL NEC",
-    "INDUSTRIAL COMMON AR"
+    "INDUSTRIAL COMMON AR",
+    "RR-USED IN OPERATION"
   ];
 
   const commercialProps = [

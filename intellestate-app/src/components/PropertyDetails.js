@@ -417,8 +417,8 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
       </Modal>
       <div style={{ display: isNaN(property.PARCELPIN) ? 'none' : '' }}>
         <Row style={{ margin: 0, padding: 0 }}>
-          <Row>
-            <Col>
+          <Row style={{justifyContent: 'center'}}>
+            <Col xs={12} xl={6} xxl={4}>
               <Plot
                 var data={[{
                   values: [property.i_percent_low, property.i_percent_med, property.i_percent_high],
@@ -426,7 +426,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                   type: 'pie',
                   marker: { colors: ['#d9463e', '#d9d93e', '#4ec94e'] }
                 }]}
-                layout={{ automargin: true, autosize: false, width: 300, height: 300, showlegend: false, title: 'Neighborhood Income', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)" }}
+                layout={{ automargin: true, autosize: false, width: 300, height: 300, showlegend: false, title: 'Neighborhood Income', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)", margin: {l: 0, r: 0, t: 70, b: 50} }}
                 config={{ responsive: true }}
                 style={{ width: "50%", aspectRatio: "5 / 4" }}
 
@@ -434,7 +434,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
             </Col>
 
 
-            <Col>
+            <Col xs={12} xl={6} xxl={4}>
               <Plot
                 var data={[{
                   values: [property.d_white, property.d_black, property.d_asian, property.d_indigenous, property.d_pacific],
@@ -451,15 +451,13 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                     ]
                   }
                 }]}
-                layout={{ automargin: true, autosize: false, width: 300, height: 300, showlegend: false, title: 'Local Diversity', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)" }}
+                layout={{ automargin: true, autosize: false, width: 300, height: 300, showlegend: false, title: 'Local Diversity', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)", margin: {l: 0, r: 0, t: 70, b: 50} }}
                 config={{ responsive: true }}
                 style={{ width: "50%", aspectRatio: "5 / 4" }}
 
               />
             </Col>
-          </Row>
-          <Row>
-            <Col>
+            <Col xs={12} xl={6} xxl={4}>
               <Plot
                 var data={[{
 
@@ -492,12 +490,12 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                     ]
                   }
                 }]}
-                layout={{ automargin: true, autosize: false, width: 300, height: 300, title: 'Area Industry Distribution', showlegend: false, textinfo: 'none', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)" }}
+                layout={{ automargin: true, autosize: false, width: 300, height: 300, title: 'Area Industry Distribution', showlegend: false, textinfo: 'none', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)", margin: {l: 0, r: 0, t: 70, b: 50} }}
                 config={{ responsive: true }}
                 style={{ width: "50%", aspectRatio: "5 / 4" }}
               />
             </Col>
-            <Col>
+            <Col xs={12} style={{display: 'grid', justifyContent: 'center'}}>
               <Plot
                 data={[{
                   r: [property.comm_vacant, property.comm_living, property.comm_retail, property.comm_food, property.comm_life_services, property.comm_office, property.comm_automotive, property.comm_entertainment_sports, property.comm_warehouse_supply, property.comm_watercraft_aircraft, property.comm_other],
@@ -505,7 +503,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                   type: "scatterpolar",
                   fill: 'toself'
                 }]}
-                layout={{ automargin: true, autosize: false, width: 300, height: 300, showlegend: false, title: 'Number of Commercial Parcels', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)" }}
+                layout={{ automargin: true, autosize: false, width: 500, height: 500, showlegend: false, title: 'Number of Commercial Parcels', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)", margin: { t: 100, b: 50} }}
                 config={{ responsive: true }}
                 style={{ width: "50%", aspectRatio: "5 / 4" }}
               />
