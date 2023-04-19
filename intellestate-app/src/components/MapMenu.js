@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 
 
-function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperties, geographicShapes}) {
+function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperties, geographicShapes, setPropertyTypes, changeShowPropertyTypes}) {
   const [openMapMenu, setOpenMapMenu] = useState('closed');
 
   const changeOpenMapMenuState = (e) => {
@@ -53,6 +53,223 @@ function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperti
     }
   }, [initialLoad, setInitialLoad, hotspotArea, hotspotType, hotspotSubType, setHotspots, geographicShapes]);
 
+
+  const [propertyType, setPropertyType] = useState('school');
+  const [propertySubType, setPropertySubType] = useState('public');
+  const [propTypeDropdownStates, setPropTypeDropdownStates] = useState({
+    'school': 'public',
+    'agricultural': 'VACANT AG LAND',
+    'industrial': 'VAC INDUSTRIAL LAND',
+    'commercial': 'COMMERCIAL VAC LAND',
+    'residential': 'RES VACANT LAND',
+    'exempt': 'FED-OWNED PROP NEC',
+  });
+
+  const onUpdatePropertyTypes = () => {
+    setPropertyTypes(propertyType, propertySubType);
+  }
+
+  const updatePropertyType = (e) => {
+    setPropertySubType(propTypeDropdownStates[e.target.value]);
+    setPropertyType(e.target.value);
+  }
+
+  const updatePropertySubType = (e) => {
+    let newDropdownStates = dropdownStates;
+    newDropdownStates[propertyType] = e.target.value;
+    setPropTypeDropdownStates(newDropdownStates);
+    setPropertySubType(e.target.value);
+  }
+
+  const agriculturalProps = [
+    "VACANT AG LAND",
+    "VEGETABLE FARM",
+    "NURSERY",
+    "GREENHOUSE",
+    "VACANT AG LAND-CAUV",
+    "CASH GRAIN/GEN-CAUV",
+    "LIVESTOCK FARM-CAUV",
+    "FRUIT/NUT FARM-CAUV",
+    "VEGGIE FARM - CAUV",
+    "TIMBER - CAUV",
+    "OTHER AG NEC - CAUV"
+  ];
+
+  const industrialProps = [
+    "VAC INDUSTRIAL LAND",
+    "MATERIAL YARD STGE",
+    "M & E YARD STGE",
+    "SALVAGE/ SCRAP YARD",
+    "VEHICLE RECYCLING YD",
+    "BILLBOARD SITE(S)",
+    "LAND FILL",
+    "RV STORAGE",
+    "FOOD/DRINK PROC/STGE",
+    "HEAVY MFG/ FOUNDRY",
+    "MEDIUM MFG/ ASSEMBLY",
+    "LIGHT MFG / ASSEMBLY",
+    "SMALL SHOPS",
+    "MINES AND QUARRIES",
+    "GRAIN ELEVATORS",
+    "CONTRACT/ CONST SVCS",
+    "BULK OIL STGE",
+    "R & D FACILITY",
+    "TRANSPORTATION FAC.",
+    "COMMUNICATION FAC.",
+    "UTILITY SERVICE FAC.",
+    "OTHER INDUSTRIAL NEC",
+    "INDUSTRIAL COMMON AR"
+  ];
+
+  const commercialProps = [
+    "COMMERCIAL VAC LAND",
+    "WALK-UP APTS 7-19 U",
+    "WALK-UP APTS 20-39 U",
+    "WALK-UP APTS 40+ U",
+    "ELEVATOR APTS 7-19 U",
+    "ELEVATOR APTS 20-39U",
+    "GARDEN APTS 20-39 U",
+    "ELEVATOR APTS 40+ U",
+    "GARDEN APTS 40+ U",
+    "4- 6 UNIT APARTMENTS",
+    "ROW HOUSING",
+    "CONVALESCENT HOME",
+    "SUBSIDIZED HOUSING",
+    "DORMITORY",
+    "DAY CARE CENTER",
+    "MOTELS",
+    "HOTELS",
+    "NURSING HOME",
+    "HOSPITALS FOR PROFIT",
+    "MOBILE HOME PARK",
+    "COMM CAMPGROUNDS",
+    "OTHER COMM HSNG NEC",
+    "DETACHD STORE<7500SF",
+    "SUPERMARKET",
+    "DISCNT/JR DEPT STORE",
+    "FURNITURE MART",
+    "DEPARTMENT STORE",
+    "STRIPCNTR 4+U>7500SF",
+    "GNRL RETAIL+ 7500 SQ",
+    "COMMUNITY SHOP CNTR",
+    "REGIONAL SHOP CENTER",
+    "FRANCHISE FOOD STORE",
+    "OTHER RETAIL NEC",
+    "RETAIL CONDOMINIUM",
+    "CAFETERIA",
+    "NIGHTCLUB",
+    "PARTY CENTER",
+    "NEIGHBORHOOD TAVERN",
+    "FRANCHISE FD SITDOWN",
+    "FRANCHISE FD COUNTER",
+    "DRIVE-IN RESTAURANT",
+    "ICE CREAM STAND",
+    "OTHER FOOD SVC NEC",
+    "DRYCLEAN PLANT/LNDRY",
+    "FUNERAL HOME",
+    "MED CLINIC/ OFFICES",
+    "MED CLNC/ OFFC CONDO",
+    "ANIMAL CLINIC/ HOSP",
+    "FULL SERVICE BANK",
+    "SAVINGS AND LOAN",
+    "POST OFFICE",
+    "1-2 STORY OFFCE BLDG",
+    "WALKUP OFFICE >2 ST",
+    "ELEVATOR OFFCE >2 ST",
+    "OFFICE CONDO",
+    "GAS STATION W/ KIOSK",
+    "FULL SVC GAS STATION",
+    "FS DRIVETHRU CARWASH",
+    "AUTO SALES & SERVICE",
+    "TRUCK SALES & SVC",
+    "COMM PARKING GARAGE",
+    "COMM PARKING LOT",
+    "ASSOCIATD PARKNG LOT",
+    "SELF-SVC CAR WASH",
+    "USED CAR SALES",
+    "AUTO REPAIR GARAGE",
+    "FRANCHISE AUTO SVC",
+    "THEATRE",
+    "MINATURE GOLF/DR RNG",
+    "GOLF COURSE",
+    "BOWLING ALLEY",
+    "LODGE HALL",
+    "AMUSEMENT PARK",
+    "SPORT/ PUBLC ASSMBLY",
+    "CULTRL/NATURE EXHIBT",
+    "RAQTBALL/TENNIS CLUB",
+    "DETACHED HEALTH SPA",
+    "HOME IMPRVMNT CENTER",
+    "HOME GARDEN CENTER",
+    "BLDG MATERIAL STGE",
+    "MINI-STORAGE WHSE",
+    "1-UNIT WHSE <75000SF",
+    "1-UNIT WHSE >75000SF",
+    "COMM WHSE LOFT-TYPE",
+    "DISTRIBUTION WHSE",
+    "MULTI-TENANT WHSE",
+    "WAREHOUSE CONDO",
+    "COMM TRUCK TERMINAL",
+    "MARINE SVC FACILITY",
+    "AIRCRAFT SALES & SVC",
+    "SMALL BOAT MARINA",
+    "STORE W/ WALKUP APTS",
+    "STORE W/ WALKUP OFFC",
+    "OTHER COMMERCIAL NEC",
+    "COMMERCIAL CONDOMINI",
+    "COMMERCIAL COMN AREA"
+  ];
+
+  const residentialProps = [
+    "RES VACANT LAND",
+    "1-FAMILY PLATTED LOT",
+    "2-FAMILY PLATTED LOT",
+    "3-FAMILY PLATTED LOT",
+    "RESIDENTIAL CONDO",
+    "MOBL HM PLATTED LOT",
+    "LISTED WITH",
+    "COMMON AREA PLATTED",
+    "OTHER RES PLATTED"
+  ];
+
+  const exemptProps = [
+    "FED-OWNED PROP NEC",
+    "FED-OWNED OFFICE",
+    "STATE-OWNED PROP NEC",
+    "STATE-OWNED OFFICE",
+    "STATE-OWNED WHSE",
+    "CNTY-OWNED PROP NEC",
+    "COUNTY-OWNED RES",
+    "COUNTY-OWNED OFFICE",
+    "TWP-OWNED PROP NEC",
+    "MUNI-OWNED PROP NEC",
+    "CITY-OWNED RES",
+    "CITY-OWNED OFFICE",
+    "CITY-OWNED PROPERTY",
+    "BOE-OWNED PROP NEC",
+    "PARK-OWNED PROP NEC",
+    "PARK-OWNED RES",
+    "PRIVATE-ED PROP NEC",
+    "PRIVATE-ED OWNED RES",
+    "PRIVATE-ED OWNED RET",
+    "CHARITABLE USES NEC",
+    "CHARITABLE USES-RES",
+    "CHARITABLE USES-RETL",
+    "CHARITABLE USES-OFFC",
+    "RELIGIOUS USES NEC",
+    "RELIGIOUS USES-RES",
+    "RELIGIOUS USES-OFFC",
+    "CEMETERIES ETC NEC",
+    "CHARITABLE VETRN ORG",
+    "LAND BANK",
+    "NEW COUNTY LAND BANK",
+    "CCC-OWNED PROP NEC",
+    "CCC-OWNED OFFICE",
+    "REGIONAL AGENCY NEC",
+    "CMHA-OWNED PROP NEC",
+    "CMHA-OWNED RES"
+  ]
+
   return (
     <div id="map-menu-container">
       <div style={{height: 'fit-content', borderBottom: openMapMenu === 'open' ? '2px solid #0d4ead' : '', paddingBottom: openMapMenu === 'open'? '5px' : '0px', display: 'grid', gridAutoFlow: 'column', gridTemplateColumns: openMapMenu === 'open' ? 'min-content 1fr' : '1fr', gap: '10px'}}>
@@ -97,10 +314,15 @@ function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperti
             onChange={changeShowHotspots}
             defaultChecked={true}
           />
-          <Form.Select aria-label="Hotspot Area Type" size="sm" defaultValue='tract' onChange={(e) => {setHotspotArea(e.target.value)}}>
-            <option value='tract'>Census Tract</option>
-            <option value='city'>City</option>
-          </Form.Select>
+          <Row style={{margin: 0, padding: 0, gap: '5px'}}>
+            <div style={{display: 'flex', fontWeight: 'bold', margin: 0, padding: 0, alignItems: 'center', width: 'fit-content'}}>Area:</div>
+            <Col style={{margin: 0, padding: 0}}>
+              <Form.Select aria-label="Hotspot Area Type" size="sm" defaultValue='tract' onChange={(e) => {setHotspotArea(e.target.value)}}>
+                <option value='tract'>Census Tract</option>
+                <option value='city'>City</option>
+              </Form.Select>
+            </Col>
+          </Row>
           <Col style={{display: 'grid', gap: '5px'}}>
             <b><u>Hotspot Type</u></b>
             <Row className={hotspotArea === 'city' ? '' : 'hide'}>
@@ -234,9 +456,125 @@ function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperti
             label='Nearby Property Types'
             className="map-control-switch"
             style={{margin: '0', padding: 0, alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left'}}
-            // onChange={changeShowHotspots}
+            onChange={changeShowPropertyTypes}
             defaultChecked={true}
           />
+          <Col style={{display: 'grid', gap: '5px'}}>
+            <b><u>Property Type</u></b>
+            <Row>
+              <Col className="map-radio-container">
+                <Form.Check
+                  type="radio"
+                  name="property-types"
+                  value={'school'}
+                  className="map-control-radio"
+                  style={{textAlign: 'left', alignContent: 'center', alignItems: 'center'}}
+                  onClick={(e) => {updatePropertyType(e)}}
+                  defaultChecked={true}
+                ></Form.Check>
+                <Form.Select aria-label="Schools" size="sm" defaultValue='public' disabled={propertyType !== 'school'} onChange={(e) => {updatePropertySubType(e)}}>
+                  <option style={{display: 'none'}}>Schools</option>
+                  <option value='public'>Public Schools</option>
+                  <option value='private'>Private Schools</option>
+                </Form.Select>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="map-radio-container">
+                <Form.Check
+                  type="radio"
+                  name="property-types"
+                  value={'agricultural'}
+                  className="map-control-radio"
+                  style={{textAlign: 'left', alignContent: 'center', alignItems: 'center'}}
+                  onClick={(e) => {updatePropertyType(e)}}
+                ></Form.Check>
+                <Form.Select aria-label="Agricultural Properties" size="sm" disabled={propertyType !== 'agricultural'} onChange={(e) => {updatePropertySubType(e)}}>
+                  <option style={{display: 'none'}}>Agricultural</option>
+                  {agriculturalProps.map(propType => (
+                    <option value={propType}>{propType}</option>
+                  ))}
+                </Form.Select>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="map-radio-container">
+                <Form.Check
+                  type="radio"
+                  name="property-types"
+                  value={'industrial'}
+                  className="map-control-radio"
+                  style={{textAlign: 'left', alignContent: 'center', alignItems: 'center'}}
+                  onClick={(e) => {updatePropertyType(e)}}
+                ></Form.Check>
+                <Form.Select aria-label="Industrial Properties" size="sm" disabled={propertyType !== 'industrial'} onChange={(e) => {updatePropertySubType(e)}}>
+                  <option style={{display: 'none'}}>Industrial</option>
+                  {industrialProps.map(propType => (
+                    <option value={propType}>{propType}</option>
+                  ))}
+                </Form.Select>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="map-radio-container">
+                <Form.Check
+                  type="radio"
+                  name="property-types"
+                  value={'commercial'}
+                  className="map-control-radio"
+                  style={{textAlign: 'left', alignContent: 'center', alignItems: 'center'}}
+                  onClick={(e) => {updatePropertyType(e)}}
+                ></Form.Check>
+                <Form.Select aria-label="Commercial Properties" size="sm" disabled={propertyType !== 'commercial'} onChange={(e) => {updatePropertySubType(e)}}>
+                  <option style={{display: 'none'}}>Commercial</option>
+                  {commercialProps.map(propType => (
+                    <option value={propType}>{propType}</option>
+                  ))}
+                </Form.Select>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="map-radio-container">
+                <Form.Check
+                  type="radio"
+                  name="property-types"
+                  value={'residential'}
+                  className="map-control-radio"
+                  style={{textAlign: 'left', alignContent: 'center', alignItems: 'center'}}
+                  onClick={(e) => {updatePropertyType(e)}}
+                ></Form.Check>
+                <Form.Select aria-label="Residential Properties" size="sm" disabled={propertyType !== 'residential'} onChange={(e) => {updatePropertySubType(e)}}>
+                  <option style={{display: 'none'}}>Residential</option>
+                  {residentialProps.map(propType => (
+                    <option value={propType}>{propType}</option>
+                  ))}
+                </Form.Select>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="map-radio-container">
+                <Form.Check
+                  type="radio"
+                  name="property-types"
+                  value={'exempt'}
+                  className="map-control-radio"
+                  style={{textAlign: 'left', alignContent: 'center', alignItems: 'center'}}
+                  onClick={(e) => {updatePropertyType(e)}}
+                ></Form.Check>
+                <Form.Select aria-label="Tax-Exempt Properties" size="sm" disabled={propertyType !== 'exempt'} onChange={(e) => {updatePropertySubType(e)}}>
+                  <option style={{display: 'none'}}>Tax-Exempt</option>
+                  {exemptProps.map(propType => (
+                    <option value={propType}>{propType}</option>
+                  ))}
+                </Form.Select>
+              </Col>
+            </Row>
+            <Row style={{margin: 0, justifyContent: 'center'}}>
+              <Button size="sm" type="primary" style={{width: 'fit-content'}} onClick={onUpdatePropertyTypes}>
+                Update Property Types
+              </Button>
+            </Row>
+          </Col>
         </Row>
       </Col>
     </div>

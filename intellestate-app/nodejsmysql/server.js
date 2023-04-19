@@ -144,6 +144,40 @@ app.post("/hotspots", (req, res) => {
     });
 });
 
+app.post("/propertyTypes", (req, res) => {
+    const {propertyType, propertySubType, currentPropLong, currentPropLat} = req.body;
+
+    let sqlQuery = "select *, ";
+
+    if (propertyType == 'school') {
+        sqlQuery += "latitude AVG_LAT, longitude AVG_LONG, ";
+        sqlQuery += "(3959 * acos( cos( radians(" + currentPropLat + ") ) * cos( radians(latitude) ) * cos( radians(longitude) - radians(" + currentPropLong + ") ) + sin( radians(" + currentPropLat + ") ) * sin( radians(latitude) ) ) )" + " as haversine_distance ";
+        if (propertySubType == 'public') {
+            sqlQuery += "from public_schools_ar order by haversine_distance limit 8";
+        } else if (propertySubType == 'private') {
+            sqlQuery += "from private_schools_addr order by haversine_distance limit 8";
+        }
+    } else {
+        sqlQuery += "(3959 * acos( cos( radians(" + currentPropLat + ") ) * cos( radians(avg_lat) ) * cos( radians(avg_long) - radians(" + currentPropLong + ") ) + sin( radians(" + currentPropLat + ") ) * sin( radians(avg_lat) ) ) )" + " as haversine_distance ";
+        if (propertyType == 'exempt') {
+            sqlQuery += `from parcel_ratings where ext_luc_desc = '${propertySubType}' order by haversine_distance limit 25`;
+        } else {
+            sqlQuery += `from parcel_ratings where tax_luc_desc = '${propertySubType}' order by haversine_distance limit 25`;
+        }
+    }
+
+    console.log(sqlQuery);
+
+    conn.query(sqlQuery, (error, results, fields) => {
+        if (error) {
+            console.error('Error executing query:', error);
+            res.status(500).json({ error: 'An error occurred while executing the query.' });
+            return;
+        }
+        res.send(results);
+    });
+});
+
 app.post("/search", (req, res) => {
     const { city, ZIPCODE, STREET, streetNum, suffixName, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes, page = 1, ratingWeights, ratingWeightsValue, invertChecked } = req.body;
     const limit = 50;
