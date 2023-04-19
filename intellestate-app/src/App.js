@@ -5,6 +5,8 @@ import React, {useState} from 'react';
 import Navibar from './components/Navibar';
 
 function App() {
+  const [cityName, setCityName] = useState('');
+
   //hook to determine current page
   const [currentPage, setCurrentPage] = useState('home');
 
@@ -19,10 +21,10 @@ function App() {
 
   let pageContent;
   if (currentPage === 'home') {
-    pageContent = <HomepageLayout changePage={changePage} />;
+    pageContent = <HomepageLayout changePage={changePage} cityName={cityName} setCityName={setCityName} />;
   }
   else if (currentPage === 'browse') {
-    pageContent = <BrowsPageLayout />;
+    pageContent = <BrowsPageLayout cityName={cityName} setCityName={setCityName}/>;
   }
 
   return (

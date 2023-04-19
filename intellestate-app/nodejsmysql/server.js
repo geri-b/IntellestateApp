@@ -288,22 +288,6 @@ app.post("/searchHP", (req, res) => {
         sqlQuery += ` AND city = '${city}'`;
     }
 
-    if (ZIPCODE != '') {
-        sqlQuery += ` AND zipcode = '${ZIPCODE}'`;
-    }
-
-    if (STREET != '') {
-        sqlQuery += ` AND STREET = '${STREET}'`;
-    }
-
-    if (streetNum != '') {
-        sqlQuery += ` AND STREET_NUM = '${streetNum}'`;
-    }
-
-    if (suffixName != '') {
-        sqlQuery += ` AND SUFFIX = '${suffixName}'`;
-    }
-
     sqlQuery += ` LIMIT ${limit}`;
     console.log(sqlQuery);
     conn.query(sqlQuery, (error, results, fields) => {

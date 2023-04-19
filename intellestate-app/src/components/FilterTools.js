@@ -18,11 +18,10 @@ import StreetNumBox from './filterToolComponents/StreetNumberBox';
 import SuffixSearchBox from './filterToolComponents/SuffixSearchBox';
 
 function FilterTools(props, ref) {
-  //
 
   //reset form value hooks
   const resetFormValues = () => {
-    setCityName('');
+    props.setCityName('');
     setzipcodeName('');
     setstreetName('');
     setMinPrice('');
@@ -86,10 +85,9 @@ function FilterTools(props, ref) {
     handleSubmit(currentPage + 1);
   };
   //City Search Hooks
-  const [cityName, setCityName] = useState('');
 
   const handleCityNameChange = (e) => {
-    setCityName(e.target.value);
+    props.setCityName(e.target.value);
     props.setResetData(true);
   };
 
@@ -243,7 +241,7 @@ function FilterTools(props, ref) {
   const handleSubmit = async (page = 1) => {
     props.setSearchInProgress(true); // Set the searchInProgress flag to true when search is initiated
     const requestBody = {
-      city: cityName,
+      city: props.cityName,
       ZIPCODE: zipcodeName,
       streetNum: streetNum,
       suffixName: suffixName,
@@ -389,7 +387,7 @@ function FilterTools(props, ref) {
         <Card.Body style={{display: 'grid', gap: '5px', overflow: 'auto', padding: '1rem 1rem'}}>
           <Row style={{margin: 0, rowGap: '10px'}}>
             <Col xs={8} style={{padding: '0 5px 0 0'}}>
-              <CitySearchBox cityName={cityName} onCityNameChange={handleCityNameChange} />
+              <CitySearchBox cityName={props.cityName} onCityNameChange={handleCityNameChange} />
             </Col>
             <Col xs={4} style={{padding: 0}}>
               <ZipcodeSearchBox zipcodeName={zipcodeName} onzipcodeNameChange={handlezipcodeNameChange} />

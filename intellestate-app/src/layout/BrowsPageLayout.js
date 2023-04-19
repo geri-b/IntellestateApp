@@ -8,7 +8,7 @@ import PropertyDetails from '../components/PropertyDetails';
 import { Button } from 'react-bootstrap';
 import { useEffect } from 'react';
 
-function BrowsePageLayout() {
+function BrowsePageLayout({cityName, setCityName}) {
   // Ref to use handleLoadMoreClick function from parent component
   const filterToolsRef = useRef(null);
 
@@ -17,7 +17,6 @@ function BrowsePageLayout() {
 
   // Flag to check if search is in progress still.
   const [searchInProgress, setSearchInProgress] = useState(false);
-
   const [propertiesData, setPropertiesData] = useState([]);
 
   const [ratingWeights, setRatingWeights] = useState({
@@ -272,6 +271,8 @@ function BrowsePageLayout() {
             initialRatingWeightsValue={ratingWeightsValue}
             searchInProgress={searchInProgress} // Setting seachInProgress
             setSearchInProgress={setSearchInProgress} //handle search in progress change
+            cityName={cityName} 
+            setCityName={setCityName}
           />
         </Col>
         <Col
