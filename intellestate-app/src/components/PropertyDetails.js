@@ -1,10 +1,23 @@
-import Plot from "react-plotly.js";
 import Map, { Layer, Source, Marker, Popup } from 'react-map-gl';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import MapMenu from "./MapMenu";
+import React from 'react';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, RadialLinearScale, PointElement, LineElement, Filler } from 'chart.js';
+import { Pie, Radar } from 'react-chartjs-2';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+ChartJS.register(
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
+  Tooltip,
+  Legend
+);
 
 function PropertyDetails({ properties, property, showDetails, popupOpen, setPopupOpen, mapRef, shapes, setHotspots, geographicShapes, setPropertyTypes, propertyTypesData }) {
 
@@ -334,53 +347,44 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
       <div style={{ margin: '5px 0 0 0', display: property.FULL_ADDR == null ? 'none' : 'inline-block' }}>{property.FULL_ADDR}</div><br></br>
       <div style={{ display: isNaN(property.PARCELPIN) ? 'none' : '' }}>
           <Row style={{justifyContent: 'center', margin: 0, padding: 0}}>
-            <Col md={6} xxl={6} style={{display: 'grid', aspectRatio: '1/1', padding: 0, minWidth: '300px'}}>
-              <Plot
-                var data={[{
-                  values: [property.i_percent_low, property.i_percent_med, property.i_percent_high],
-                  labels: ['Less than $15k per year', '$15k - $40k per year', 'More than $40k per year'],
-                  type: 'pie',
-                  marker: { colors: ['#d9463e', '#d9d93e', '#4ec94e'] }
-                }]}
-                layout={{ automargin: true, autosize: true, showlegend: false, title: 'Neighborhood Income', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)"}}
-                config={{ responsive: true }}
-
-              />
+            <Col xs={6} xxl={4} style={{display: 'grid', aspectRatio: '1/1', padding: '20px', minWidth: '300px'}}>
+              <Row style={{margin: 0, padding: 0, justifyContent: 'center', fontSize: '1.1rem', fontWeight: 'bold'}}>Neighborhood Income</Row>
+              <Pie data={{
+                labels: ['Less than $15k per year', '$15k - $40k per year', 'More than $40k per year'],
+                datasets: [{
+                  label: '%',
+                  data: [property.i_percent_low * 100, property.i_percent_med * 100, property.i_percent_high * 100],
+                  backgroundColor: ['#d9463e', '#d9d93e', '#4ec94e']
+                }]
+              }}></Pie>
             </Col>
 
 
-            <Col md={6} xxl={6} style={{display: 'grid', aspectRatio: '1/1', padding: 0, minWidth: '300px'}}>
-              <Plot
-                var data={[{
-                  values: [property.d_white, property.d_black, property.d_asian, property.d_indigenous, property.d_pacific],
-                  // values: [.50, .50],
-                  labels: ['White', 'Black', 'Asian', 'Indigenous', 'Pacific'],
-                  type: 'pie',
-                  marker: {
-                    colors: [
+            <Col xs={6} xxl={4} style={{display: 'grid', aspectRatio: '1/1', padding: '20px', minWidth: '300px'}}>
+              <Row style={{margin: 0, padding: 0, justifyContent: 'center', fontSize: '1.1rem', fontWeight: 'bold'}}>Local Diversity</Row>
+              <Pie data={{
+                labels: ['White', 'Black', 'Asian', 'Indigenous', 'Pacific'],
+                datasets: [{
+                  label: '%',
+                  data: [property.d_white * 100, property.d_black * 100, property.d_asian * 100, property.d_indigenous * 100, property.d_pacific * 100],
+                  backgroundColor: [
                       '#4444AA',
                       '#DDDD44',
                       '#44AA44',
                       '#AA44AA',
                       '#AA4444'
                     ]
-                  }
-                }]}
-                layout={{ automargin: true, autosize: true, showlegend: false, title: 'Local Diversity', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)"}}
-                config={{ responsive: true }}
-
-              />
+                }]
+              }}></Pie>
             </Col>
-            <Col md={6} xxl={6} style={{display: 'grid', aspectRatio: '1/1', padding: 0, minWidth: '300px'}}>
-              <Plot
-                var data={[{
-
-                  // make function and set data equal to something set data = to function that returns whole data object with use state
-                  values: [property.ind_farm, property.ind_mining, property.ind_utility, property.ind_construction, property.ind_manufacture, property.ind_wholesale, property.ind_retail, property.ind_transport, property.ind_it, property.ind_finance, property.ind_real_estate, property.ind_science, property.ind_management, property.ind_waste, property.ind_education, property.ind_health_care, property.ind_entertain, property.ind_food_service, property.ind_other, property.ind_public_admin],
-                  labels: ['Farming', 'Mining', 'Utility', 'Construction', 'Manufacturing', 'Wholesale', 'Retail', 'Transport', 'Information Technology', 'Finance', 'Real Estate', 'Science', 'Management', 'Waste Management', 'Education', 'Health Care', 'Entertainment', 'Food Service', 'Other', 'Public Administration'],
-                  type: 'pie',
-                  marker: {
-                    colors: [
+            <Col xs={6} xxl={4} style={{display: 'grid', aspectRatio: '1/1', padding: '20px', minWidth: '300px'}}>
+              <Row style={{margin: 0, padding: 0, justifyContent: 'center', fontSize: '1.1rem', fontWeight: 'bold'}}>Area Job Distribution</Row>
+              <Pie data={{
+                labels: ['Farming', 'Mining', 'Utility', 'Construction', 'Manufacturing', 'Wholesale', 'Retail', 'Transport', 'Information Technology', 'Finance', 'Real Estate', 'Science', 'Management', 'Waste Management', 'Education', 'Health Care', 'Entertainment', 'Food Service', 'Other', 'Public Administration'],
+                datasets: [{
+                  label: '%',
+                  data: [property.ind_farm * 100, property.ind_mining * 100, property.ind_utility * 100, property.ind_construction * 100, property.ind_manufacture * 100, property.ind_wholesale * 100, property.ind_retail * 100, property.ind_transport * 100, property.ind_it * 100, property.ind_finance * 100, property.ind_real_estate * 100, property.ind_science * 100, property.ind_management * 100, property.ind_waste * 100, property.ind_education * 100, property.ind_health_care * 100, property.ind_entertain * 100, property.ind_food_service * 100, property.ind_other * 100, property.ind_public_admin * 100],
+                  backgroundColor: [
                       '#e71d43',
                       '#ff3700',
                       '#ff6e00',
@@ -402,23 +406,21 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                       '#A0A4A5',
                       '#33E6FF'
                     ]
-                  }
-                }]}
-                layout={{ automargin: true, autosize: true, title: 'Area Industry Distribution', showlegend: false, textinfo: 'none', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)"}}
-                config={{ responsive: true }}
-              />
+                }]
+              }}></Pie>
             </Col>
-            <Col md={6} xxl={6} style={{display: 'grid', aspectRatio: '1/1', padding: 0, minWidth: '300px'}}>
-              <Plot
-                data={[{
-                  r: [property.comm_vacant, property.comm_living, property.comm_retail, property.comm_food, property.comm_life_services, property.comm_office, property.comm_automotive, property.comm_entertainment_sports, property.comm_warehouse_supply, property.comm_watercraft_aircraft, property.comm_other],
-                  theta: ['Vacant', 'Living', 'Retail', 'Food', 'Life Services', 'Office', 'Automotive', 'Entertainment', 'Warehouse', 'Aircraft', 'Other'],
-                  type: "scatterpolar",
-                  fill: 'toself'
-                }]}
-                layout={{ automargin: true, autosize: true, showlegend: false, title: 'Number of Commercial Parcels', plot_bgcolor: "rgba(0,0,0,0)", paper_bgcolor: "rgba(0,0,0,0)"}}
-                config={{ responsive: true }}
-              />
+            <Col xs={6} xxl={4} style={{display: 'grid', aspectRatio: '1/1', padding: '20px 0 0 0', minWidth: '300px'}}>
+              <Row style={{margin: 0, padding: 0, justifyContent: 'center', fontSize: '1.1rem', fontWeight: 'bold'}}>Number of Commercial Parcels</Row>
+              <Radar data={{
+                labels: ['Vacant', 'Living', 'Retail', 'Food', 'Life Services', 'Office', 'Automotive', 'Entertainment', 'Warehouse', 'Aircraft', 'Other'],
+                datasets: [{
+                  label: '# of Type',
+                  backgroundColor: 'rgba(99, 132, 255, 0.2)',
+                  borderColor: 'rgba(99, 132, 255, 1)',
+                  borderWidth: 1,
+                  data: [property.comm_vacant, property.comm_living, property.comm_retail, property.comm_food, property.comm_life_services, property.comm_office, property.comm_automotive, property.comm_entertainment_sports, property.comm_warehouse_supply, property.comm_watercraft_aircraft, property.comm_other],
+                }]
+              }}></Radar>
             </Col>
           </Row>
       </div>
