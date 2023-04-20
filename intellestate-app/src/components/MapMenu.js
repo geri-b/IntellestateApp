@@ -137,7 +137,6 @@ function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperti
     "CONVALESCENT HOME",
     "SUBSIDIZED HOUSING",
     "DORMITORY",
-    "DAY CARE CENTER",
     "MOTELS",
     "HOTELS",
     "NURSING HOME",
@@ -474,9 +473,9 @@ function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperti
                   defaultChecked={true}
                 ></Form.Check>
                 <Form.Select aria-label="Schools" size="sm" defaultValue='public' disabled={propertyType !== 'school'} onChange={(e) => {updatePropertySubType(e)}}>
-                  <option style={{display: 'none'}}>Schools</option>
                   <option value='public'>Public Schools</option>
                   <option value='private'>Private Schools</option>
+                  <option value="DAY CARE CENTER">Day Care Centers</option>
                 </Form.Select>
               </Col>
             </Row>

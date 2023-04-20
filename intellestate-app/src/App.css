@@ -335,7 +335,7 @@ Filter Tools
 }
 
 .selected-property-card {
-  box-shadow: 0 0 0 4px rgba(13,110,253,.25);
+  box-shadow: 0 0 0 4px rgba(255,128,0,.85);
   border-radius: 6px;
 }
 
@@ -398,7 +398,7 @@ Filter Tools
   opacity: 90%;
   margin: 5px 0 0 5px;
   padding: 5px;
-  min-width: 40px;
+  min-width: min-content;
   max-width: 30%;
   height: fit-content;
   max-height: calc(100% - 10px);
@@ -514,9 +514,24 @@ Filter Tools
   font-weight: bold;
 }
 
+.include-vacant-properties > input, .include-vacant-properties > label {
+  margin-top: 0;
+  cursor: pointer;
+}
+
 
 
 .property-ratings-row > .col {
   border-radius: 6px;
   padding-bottom: 5px;
+}
+
+
+#rec-weights-cbody .form-check label {
+  margin: 0;
+  cursor: pointer;
+}
+
+#rec-weights-cbody .form-check-input {
+  cursor: pointer;
 }

@@ -1,5 +1,3 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 
 function LandSQFTDropdown({ minSQFT, maxSQFT, onMinSQFTChange, onMaxSQFTChange}) {

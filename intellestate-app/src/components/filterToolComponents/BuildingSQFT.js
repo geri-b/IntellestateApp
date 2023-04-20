@@ -1,4 +1,4 @@
-import { DropdownButton, Dropdown, Row} from 'react-bootstrap';
+import {Row} from 'react-bootstrap';
 
 function BuildingSQFT({ minSQFT, maxSQFT, onMinSQFTChange, onMaxSQFTChange}) {
 

@@ -149,7 +149,7 @@ app.post("/propertyTypes", (req, res) => {
 
     let sqlQuery = "select *, ";
 
-    if (propertyType == 'school') {
+    if (propertySubType == 'public' || propertySubType == 'private') {
         sqlQuery += "latitude AVG_LAT, longitude AVG_LONG, ";
         sqlQuery += "(3959 * acos( cos( radians(" + currentPropLat + ") ) * cos( radians(latitude) ) * cos( radians(longitude) - radians(" + currentPropLong + ") ) + sin( radians(" + currentPropLat + ") ) * sin( radians(latitude) ) ) )" + " as haversine_distance ";
         if (propertySubType == 'public') {
@@ -179,7 +179,7 @@ app.post("/propertyTypes", (req, res) => {
 });
 
 app.post("/search", (req, res) => {
-    const { city, ZIPCODE, STREET, streetNum, suffixName, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes, page = 1, ratingWeights, ratingWeightsValue, invertChecked } = req.body;
+    const { city, ZIPCODE, STREET, streetNum, suffixName, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes, page = 1, ratingWeights, ratingWeightsValue, invertChecked, algorithmType, includeVacant } = req.body;
     const limit = 50;
     const offset = (page - 1) * limit;
 
@@ -188,23 +188,41 @@ app.post("/search", (req, res) => {
     let sqlQuery = "SELECT *";
 
     if (selectedWeights.length > 0) {
-        sqlQuery += ", (";
+        if (algorithmType === 'dot_product') {
+            sqlQuery += ", (";
+        } else if (algorithmType === 'euclidean') {
+            sqlQuery += ", SQRT((";
+        }
 
         selectedWeights.forEach((weight, index) => {
             const ratingKey = weight[0] + "_rating"; // e.g., p_rating, i_rating, etc.
-            sqlQuery += `${index === 0 ? '' : ' + '}${ratingWeightsValue[weight]} * (`;
-            if (invertChecked[weight]) {
-                sqlQuery += `1 - IFNULL(${ratingKey}, 1))`;
-            } else {
-                sqlQuery += `IFNULL(${ratingKey}, 0))`;
+            if (algorithmType === 'dot_product') {
+                sqlQuery += `${index === 0 ? '' : ' + '}${ratingWeightsValue[weight]} * (`;
+                if (invertChecked[weight]) {
+                    sqlQuery += `1 - IFNULL(${ratingKey}, 1))`;
+                } else {
+                    sqlQuery += `IFNULL(${ratingKey}, 0))`;
+                }
+                totalWeightDiv += ratingWeightsValue[weight];
+            } else if (algorithmType === 'euclidean') {
+                sqlQuery += `${index === 0 ? '' : ' + '}${ratingWeightsValue[weight]} * POWER(`;
+                if (invertChecked[weight]) {
+                    sqlQuery += `1 - IFNULL(${ratingKey}, 1), 2)`;
+                } else {
+                    sqlQuery += `IFNULL(${ratingKey}, 0), 2)`;
+                }
+                totalWeightDiv += Math.pow(ratingWeightsValue[weight], 2);
             }
-            totalWeightDiv += ratingWeightsValue[weight];
         });
 
-        sqlQuery += `) / ${totalWeightDiv} AS overall_rating`;
+        if (algorithmType === 'dot_product') {
+            sqlQuery += `) / ${totalWeightDiv} AS overall_rating`;
+        } else if (algorithmType === 'euclidean') {
+            sqlQuery += `) / ${totalWeightDiv}) AS overall_rating`;
+        }
     }
 
-    sqlQuery += " FROM parcel_ratings WHERE 1";
+    sqlQuery += " FROM parcel_ratings WHERE SUBSTRING(GEOCODE, 1, 5) = 39035";
     if (city != '') {
         sqlQuery += ` AND city = '${city}'`;
     }
@@ -260,6 +278,10 @@ app.post("/search", (req, res) => {
 
     if (selectedPropertyTypes.length > 0) {
         sqlQuery += ` AND SiteCat1 IN (${selectedPropertyTypes.map((type) => `'${type}'`).join(", ")})`;
+    }
+
+    if (!includeVacant) {
+        sqlQuery += ` AND SiteCat2 NOT IN ('Commercial Vacant', 'Industrial Vacant', 'Other Commercial', 'Other Industrial', 'Other Residential', 'Residential Vacant', 'Vacant Agricultural')`;
     }
 
     if (selectedWeights.length > 0) {

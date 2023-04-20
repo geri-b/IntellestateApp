@@ -3,16 +3,12 @@ import Map, { Layer, Source, Marker, Popup } from 'react-map-gl';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useState } from "react";
-import { Col, Modal, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import MapMenu from "./MapMenu";
 
 function PropertyDetails({ properties, property, showDetails, popupOpen, setPopupOpen, mapRef, shapes, setHotspots, geographicShapes, setPropertyTypes, propertyTypesData }) {
 
   const [mapState, setMapState] = useState('');
-
-  const [showAdvancedMap, setShowAdvancedMap] = useState(false);
-  const [advancedPopupOpen, setAdvancedPopupOpen] = useState('');
-  const [advancedMapState, setAdvancedMapState] = useState('');
 
   const handleMapClick = () => {
     if (mapState === popupOpen) {
@@ -20,21 +16,6 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
       setMapState('');
     } else {
       setMapState(popupOpen);
-    }
-  }
-
-  const handleModalClose = () => {
-    setAdvancedMapState('');
-    setAdvancedPopupOpen('');
-    setShowAdvancedMap(false);
-  }
-
-  const handleAdvancedMapClick = () => {
-    if (advancedMapState === advancedPopupOpen) {
-      setAdvancedPopupOpen('');
-      setAdvancedMapState('');
-    } else {
-      setAdvancedMapState(advancedPopupOpen);
     }
   }
 
@@ -351,70 +332,6 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         ></Marker>
       </Map>
       <div style={{ margin: '5px 0 0 0', display: property.FULL_ADDR == null ? 'none' : 'inline-block' }}>{property.FULL_ADDR}</div><br></br>
-      {/* <Button style={{margin: '5px'}} onClick={() => setShowAdvancedMap(true)}>Advanced Map</Button>
-      <Button style={{margin: '5px'}} onClick={() => setHotspots('tract', 'income')}>Show Tract Hotspots</Button>
-      <Button style={{margin: '5px'}} onClick={() => setHotspots('city', 'crime')}>Show City Hotspots</Button> */}
-      <Modal
-        show={showAdvancedMap}
-        onHide={handleModalClose}
-        dialogClassName="modal-90w"
-        aria-labelledby="advanced-map-modal-title"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="advanced-map-modal-title">
-            Advanced Map
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Row style={{ height: '100%', rowGap: '5px' }}>
-            <Col md={6} lg={6}>
-              <Map
-                initialViewState={{
-                  longitude: -81.6,
-                  latitude: 41.5,
-                  zoom: 9,
-                }}
-                style={{ border: '2px solid lightgrey', borderRadius: '8px' }}
-                mapLib={maplibregl}
-                mapStyle="https://api.maptiler.com/maps/streets-v2/style.json?key=nmF5UJHGt6DxUo6Ooheo"
-                type="vector"
-                onClick={handleAdvancedMapClick}
-              >
-                <Marker
-                  latitude={isNaN(property.AVG_LAT) ? 0 : property.AVG_LAT}
-                  longitude={isNaN(property.AVG_LONG) ? 0 : property.AVG_LONG}
-                  color="red"
-                  style={{ zIndex: 1, display: isNaN(property.PARCELPIN) ? 'none' : '' }}
-                  onClick={() => setAdvancedPopupOpen(property.PARCELPIN)}
-                ></Marker>
-                {advancedPopupOpen === property.PARCELPIN && (
-                  <Popup
-                    latitude={isNaN(property.AVG_LAT) ? 0 : property.AVG_LAT}
-                    longitude={isNaN(property.AVG_LONG) ? 0 : property.AVG_LONG}
-                    onClose={() => setAdvancedPopupOpen('')}
-                    closeButton={true}
-                    closeOnClick={false}
-                    anchor="top"
-                  >
-                    <span>
-                      {property.FULL_ADDR}<br></br>
-                      {property.SiteCat1}<br></br>
-                      {property.PARCL_OWN2}
-                    </span>
-                  </Popup>
-                )}
-              </Map>
-            </Col>
-            <Col className="advanced-map-column" md={6} lg={3}>
-              <Col className="data-overlays-column">Data Overlays</Col>
-            </Col>
-            <Col className="advanced-map-column" lg={3}>
-              Similar Properties
-            </Col>
-          </Row>
-        </Modal.Body>
-      </Modal>
       <div style={{ display: isNaN(property.PARCELPIN) ? 'none' : '' }}>
           <Row style={{justifyContent: 'center', margin: 0, padding: 0}}>
             <Col md={6} xxl={6} style={{display: 'grid', aspectRatio: '1/1', padding: 0, minWidth: '300px'}}>
