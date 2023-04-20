@@ -64,6 +64,7 @@ function BrowsePageLayout({cityName, setCityName}) {
   };
 
   const handleShowDetails = (property) => {
+=======
     if (property.ind_farm < 0.02) {
       property.ind_other += property.ind_farm;
       property.ind_farm = null;
@@ -143,6 +144,15 @@ function BrowsePageLayout({cityName, setCityName}) {
       property.ind_other += property.ind_public_admin;
       property.ind_public_admin = null;
     }
+    if (property.d_indigenous < 0.005){
+      property.d_indigenous = null;
+    }
+    if (property.d_pacific < 0.005){
+      property.d_pacific = null;
+    }
+    if (property.d_asian < 0.005){
+      property.d_asian = null;
+    }
 
     if (property.PARCELPIN !== selectedProperty.PARCELPIN) {
       setSelectedProperty(property);
@@ -174,11 +184,11 @@ function BrowsePageLayout({cityName, setCityName}) {
     initialGeoShapes['city'] = cityJson;
     setGeographicShapes(initialGeoShapes);
   };
-  
+
   useEffect(() => {
     loadGeographicShapes();
   }, []);
-  
+
   const setHotspots = async (aType, hType, hSubType) => {
     const requestBody = {
       areaType: aType,
@@ -271,7 +281,7 @@ function BrowsePageLayout({cityName, setCityName}) {
             initialRatingWeightsValue={ratingWeightsValue}
             searchInProgress={searchInProgress} // Setting seachInProgress
             setSearchInProgress={setSearchInProgress} //handle search in progress change
-            cityName={cityName} 
+            cityName={cityName}
             setCityName={setCityName}
           />
         </Col>

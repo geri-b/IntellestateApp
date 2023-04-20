@@ -1,41 +1,32 @@
-import { DropdownButton, Dropdown } from 'react-bootstrap';
+import { DropdownButton, Dropdown, Row} from 'react-bootstrap';
 
-function BuildingSQFT({ minSQFT, maxSQFT, onMinSQFTChange, onMaxSQFTChange, onApplyClick }) {
+function BuildingSQFT({ minSQFT, maxSQFT, onMinSQFTChange, onMaxSQFTChange}) {
 
     return (
-        <DropdownButton
-            id="building-sqft-dropdown-button"
-            title="Building Square Footage"
-        >
-            <div className="m-2">
-                <label htmlFor="min-price-input" className="form-label">
-                    Min Square Footage:
-                </label>
+        <Row style={{display: 'grid', gridAutoFlow: 'column', gridTemplateColumns: 'min-content auto auto', gap: '5px', padding: '0 1rem', alignItems: 'center'}}>
+                <div style={{whiteSpace: 'nowrap', padding: 0, display: 'grid', alignContent: 'center', width: '105px', justifyContent: 'left'}}>
+                    Building SQFT
+                </div>
                 <input
                     type="number"
                     className="form-control"
-                    id="min-sqft-input"
-                    placeholder="Enter min SQFT"
+                    id="min-bsqft-input"
+                    placeholder="Min"
                     value={minSQFT}
                     onChange={onMinSQFTChange}
+                    style={{padding: '3px 8px', MozAppearance: 'textfield', textAlign: 'center'}}
                 />
-            </div>
-            <div className="m-2">
-                <label htmlFor="max-sqft-input" className="form-label">
-                    Max Square Footage:
-                </label>
+                -
                 <input
                     type="number"
                     className="form-control"
-                    id="max-sqft-input"
-                    placeholder="Enter max SQFT"
+                    id="max-bsqft-input"
+                    placeholder="Max"
                     value={maxSQFT}
                     onChange={onMaxSQFTChange}
+                    style={{padding: '3px 8px', MozAppearance: 'textfield', textAlign: 'center'}}
                 />
-            </div>
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={onApplyClick}>Apply</Dropdown.Item>
-        </DropdownButton>
+        </Row>
     );
 }
 

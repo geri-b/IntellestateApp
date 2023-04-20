@@ -1,42 +1,33 @@
 
-import { DropdownButton, Dropdown} from 'react-bootstrap';
+import { DropdownButton, Dropdown, Row} from 'react-bootstrap';
 
 function PriceRangeDropdown({ minPrice, maxPrice, onMinPriceChange, onMaxPriceChange, onApplyClick }) {
 
     return (
-        <DropdownButton
-            id="price-range-dropdown-button"
-            title="Select Price Range"
-        >
-            <div className="m-2">
-                <label htmlFor="min-price-input" className="form-label">
-                    Min Price:
-                </label>
+        <Row style={{display: 'grid', gridAutoFlow: 'column', gridTemplateColumns: 'min-content auto auto', gap: '5px', padding: '0 1rem', alignItems: 'center'}}>
+                <div style={{whiteSpace: 'nowrap', padding: 0, display: 'grid', alignContent: 'center', width: '105px', justifyContent: 'left'}}>
+                    Property Price
+                </div>
                 <input
                     type="number"
                     className="form-control"
                     id="min-price-input"
-                    placeholder="Enter min price"
+                    placeholder="Min"
                     value={minPrice}
                     onChange={onMinPriceChange}
+                    style={{padding: '3px 8px', MozAppearance: 'textfield', textAlign: 'center'}}
                 />
-            </div>
-            <div className="m-2">
-                <label htmlFor="max-price-input" className="form-label">
-                    Max Price:
-                </label>
+                -
                 <input
                     type="number"
                     className="form-control"
                     id="max-price-input"
-                    placeholder="Enter max price"
+                    placeholder="Max"
                     value={maxPrice}
                     onChange={onMaxPriceChange}
+                    style={{padding: '3px 8px', MozAppearance: 'textfield', textAlign: 'center'}}
                 />
-            </div>
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={onApplyClick}>Apply</Dropdown.Item>
-        </DropdownButton>
+        </Row>
     );
 }
 
