@@ -10,7 +10,7 @@ import ZipcodeSearchBox from './filterToolComponents/ZipcodeSearchBox';
 import StreetNameSearchBox from './filterToolComponents/StreetNameSearchBox';
 import ConfirmSearchButton from './filterToolComponents/ConfirmSearchButton';
 import { useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Form } from 'react-bootstrap';
 import '../App.css';
 import Checkbox from './filterToolComponents/CheckBox';
 import { forwardRef, useImperativeHandle } from 'react';
@@ -64,6 +64,8 @@ function FilterTools(props, ref) {
       crime: false,
       school: false,
     });
+    setAlgorithmType('dot_product');
+    setIncludeVacant(false);
   };
 
   const handleResetFilters = () => {
@@ -257,6 +259,8 @@ function FilterTools(props, ref) {
       ratingWeights: ratingWeights,
       ratingWeightsValue: ratingWeightsValue,
       invertChecked: invertChecked,
+      algorithmType: algorithmType,
+      includeVacant: includeVacant,
     };
 
     try {
@@ -290,33 +294,35 @@ function FilterTools(props, ref) {
     props.setResetData(true);
   };
 
+  const [algorithmType, setAlgorithmType] = useState('dot_product');
+  const [includeVacant, setIncludeVacant] = useState(false);
+
+  const handleAlgorithmTypeChange = (event) => {
+    setAlgorithmType(event.target.value);
+    props.setResetData(true);
+  };
+
+  const handleIncludeVacantPropsChange = (event) => {
+    setIncludeVacant(event.target.checked);
+    props.setResetData(true);
+  };
+
   return (
-    <Container style={{ margin: 0, display: 'grid', gap: '10px', padding: 0 }}>
-      <h3 className="text-center" style={{ margin: '10px 0 0 0', color: 'white' }}>Search Properties</h3>
+    <Container style={{ margin: 0, display: 'grid', gap: '10px', padding: '0 .75rem', height: '100%', overflowY: 'auto', borderRadius: '6px' }}>
+      <h3 className="text-center" style={{ color: 'white', margin: 0 }}>Search Properties</h3>
       <Row>
         <Col xs={12}>
           <Card>
             <Card.Header>
               Recommendation Weights
             </Card.Header>
-            <Card.Body style={{display: 'grid', gap: '5px', overflow: 'auto', padding: '5px 1rem 10px 1rem'}}>
+            <Card.Body id='rec-weights-cbody' style={{display: 'grid', gap: '5px', overflow: 'auto', padding: '5px 1rem 10px 1rem'}}>
               <div>
                 <em>
                   Which categories do you prioritize most?
                   {/* Select the attributes you're looking for. If one matters more to you, increase its weight. Don't like our default scoring? Toggle inversion to look for properties with a lower score instead! */}
                 </em>
               </div>
-              {/* <Row>
-                <Col>
-                  Category
-                </Col>
-                <Col>
-                  Weight
-                </Col>
-                <Col>
-                  Invert
-                </Col>
-              </Row> */}
               <Checkbox
                 label="Price"
                 name="price"
@@ -367,6 +373,14 @@ function FilterTools(props, ref) {
                 invertChecked={invertChecked.diversity}
                 onInvertClick={() => handleInvertClick("diversity")}
               />
+              <hr style={{margin: '.5rem'}}></hr>
+              <Row style={{margin: 0, padding: 0, gap: '5px', justifyContent: 'center'}}>
+                <div style={{display: 'flex', margin: 0, padding: 0, alignItems: 'center', width: 'fit-content'}}>Algorithm:</div>
+                <Form.Select style={{width: 'min-content'}} aria-label="Algorithm Type" size="sm" defaultValue='dot_product' onChange={(e) => {handleAlgorithmTypeChange(e)}}>
+                  <option value='dot_product'>Dot Product</option>
+                  <option value='euclidean'>Euclidean</option>
+                </Form.Select>
+              </Row>
             </Card.Body>
           </Card>
         </Col>
@@ -442,6 +456,18 @@ function FilterTools(props, ref) {
                 onApplyClick={handleApplyClick}
               />
             </Col>
+            <Row style={{margin: 0, padding: 0, justifyContent: 'center'}}>
+              <Form.Check
+                type="checkbox"
+                id='include-vacant-properties'
+                name='vacant-properties'
+                label='Include Vacant Land'
+                className='include-vacant-properties'
+                style={{alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left', width: 'min-content', whiteSpace: 'nowrap'}}
+                onChange={handleIncludeVacantPropsChange}
+                defaultChecked={false}
+              />
+            </Row>
           </Row>
         </Card.Body>
       </Card>
