@@ -6,8 +6,9 @@ import { useState, useRef } from 'react';
 import FilterTools from '../components/FilterTools';
 import PropertyDetails from '../components/PropertyDetails';
 import { Button } from 'react-bootstrap';
+import { useEffect } from 'react';
 
-function BrowsePageLayout() {
+function BrowsePageLayout({cityName, setCityName}) {
   // Ref to use handleLoadMoreClick function from parent component
   const filterToolsRef = useRef(null);
 
@@ -16,7 +17,6 @@ function BrowsePageLayout() {
 
   // Flag to check if search is in progress still.
   const [searchInProgress, setSearchInProgress] = useState(false);
-
   const [propertiesData, setPropertiesData] = useState([]);
 
   const [ratingWeights, setRatingWeights] = useState({
@@ -38,6 +38,7 @@ function BrowsePageLayout() {
   const [openedProperties, setOpenedProperties] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState({});
   const [mapPopupOpen, setMapPopupOpen] = useState('');
+  const mapRef = useRef();
 
   const handleDataUpdate = (newData) => {
     let currentPropertiesData = propertiesData;
@@ -46,6 +47,8 @@ function BrowsePageLayout() {
       currentPropertiesData = [];
       setOpenedProperties([]);
       setSelectedProperty({});
+      setMapPopupOpen('');
+      setPropertyTypesData([]);
       setResetData(false); // Reset the flag after handling the data
     }
 
@@ -61,9 +64,6 @@ function BrowsePageLayout() {
   };
 
   const handleShowDetails = (property) => {
-<<<<<<< Updated upstream
-    setSelectedProperty(property);
-    setMapPopupOpen('');
 =======
     if (property.ind_farm < 0.02) {
       property.ind_other += property.ind_farm;
@@ -163,23 +163,113 @@ function BrowsePageLayout() {
         essential: true,
       });
     }
->>>>>>> Stashed changes
   };
 
   const handleSetSelectedMarker = (property) => {
     setMapPopupOpen(property.PARCELPIN)
     setSelectedProperty(property);
-    document.getElementsByClassName(property.PARCELPIN)[0].scrollIntoView({behavior: 'smooth', block: 'center'});
+    document.getElementsByClassName(property.PARCELPIN)[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
+  const [shapeValues, setShapeValues] = useState(null);
+  const [geographicShapes, setGeographicShapes] = useState(null);
+
+  const loadGeographicShapes = async () => {
+    let initialGeoShapes = {};
+    const tractResponse = await fetch('/TractShapes.geojson');
+    const tractJson = await tractResponse.json();
+    initialGeoShapes['tract'] = tractJson;
+    const cityResponse = await fetch('/CityShapes.geojson');
+    const cityJson = await cityResponse.json();
+    initialGeoShapes['city'] = cityJson;
+    setGeographicShapes(initialGeoShapes);
+  };
+
+  useEffect(() => {
+    loadGeographicShapes();
+  }, []);
+
+  const setHotspots = async (aType, hType, hSubType) => {
+    const requestBody = {
+      areaType: aType,
+      hotspotType: hType,
+      hotspotSubType: hSubType,
+    };
+
+    try {
+      const response = await fetch("http://localhost:3001/hotspots", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      });
+
+      const data = await response.json();
+      if (geographicShapes[aType]) {
+        let newShapeValues = {...geographicShapes[aType]};
+        let newFeatures = [];
+        for (const feature of newShapeValues.features) {
+          let newFeature = {...feature};
+          newFeature.properties.hotspotValue = -1;
+          if (aType === 'tract') {
+            for (const tractData of data) {
+              if (Number(tractData.tract) === newFeature.id) {
+                newFeature.properties.hotspotValue = Math.round(Number(tractData.pei) * 100) / 10;
+              }
+            }
+          } else if (aType === 'city') {
+            for (const cityData of data) {
+              if (cityData.city.toLowerCase() === newFeature.properties.name.toLowerCase()) {
+                newFeature.properties.hotspotValue = Math.round(Number(cityData.pei) * 100) / 10;
+              }
+            }
+          }
+          newFeatures.push(newFeature);
+        }
+        newShapeValues.features = newFeatures;
+        setShapeValues(newShapeValues);
+      }
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  const [propertyTypesData, setPropertyTypesData] = useState([]);
+
+  const setPropertyTypes = async (pType, pSubType) => {
+    if (isNaN(selectedProperty.AVG_LAT) || isNaN(selectedProperty.AVG_LONG)) {
+      console.log('No property currently selected.');
+    } else {
+      const requestBody = {
+        propertyType: pType,
+        propertySubType: pSubType,
+        currentPropLong: selectedProperty.AVG_LONG,
+        currentPropLat: selectedProperty.AVG_LAT,
+      };
+
+      try {
+        const response = await fetch("http://localhost:3001/propertyTypes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody),
+        });
+
+        const data = await response.json();
+        setPropertyTypesData(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  }
 
   return (
-    <Container fluid style={{ height: "calc(100% - 57.8px)" }}>
+    <Container fluid style={{ height: "100%", overflow: 'hidden' }}>
       <Row style={{ height: "100%", overflowY: "auto" }}>
         <Col
           className="left-col"
           md={3}
-          style={{ height: "100%", overflowY: "auto" }}
+          style={{ height: "100%", overflowY: "auto", background: "linear-gradient(90deg, #123 0%, #203a60 100%)", minWidth: 'min-content' }} // bg #f8f9fa or linear-gradient(180deg, #059 0%, #509 100%)
         >
           <FilterTools
             ref={filterToolsRef}
@@ -191,12 +281,42 @@ function BrowsePageLayout() {
             initialRatingWeightsValue={ratingWeightsValue}
             searchInProgress={searchInProgress} // Setting seachInProgress
             setSearchInProgress={setSearchInProgress} //handle search in progress change
+            cityName={cityName}
+            setCityName={setCityName}
           />
         </Col>
-        <Col md={6} style={{ height: "100%", overflowY: "auto" }}>
+        <Col
+          className="right-col"
+          style={{
+            height: "100%",
+            overflowY: "hidden",
+            padding: '.75rem 0',
+            background: 'linear-gradient(90deg, #203a60  0%, #203a60 100%)'
+            // background: 'linear-gradient(90deg, #203a60 0%, white 10%, white 90%, #203a60 100%)'
+          }}
+        >
+          <Col style={{height: "100%", overflowY: "auto", background: 'white', padding: '5px', borderRadius: '6px'}}>
+            <PropertyDetails
+              properties={propertiesData}
+              property={selectedProperty}
+              showDetails={handleSetSelectedMarker}
+              popupOpen={mapPopupOpen}
+              setPopupOpen={setMapPopupOpen}
+              mapRef={mapRef}
+              shapes={shapeValues}
+              setHotspots={setHotspots}
+              geographicShapes={geographicShapes}
+              setPropertyTypes={setPropertyTypes}
+              propertyTypesData={propertyTypesData}
+            />
+          </Col>
+        </Col>
+        <Col md={3} style={{ minWidth: 'min-content', height: "100%", overflowY: "hidden", background: "linear-gradient(270deg, #123 0%, #203a60 100%)", padding: '10px 0 .75rem .75rem' }}> {/*linear-gradient(0deg, #059 0%, #0d8 100%) */}
+          <div style={{height: '100%', overflow: 'auto', paddingRight: '.75rem', borderRadius: '6px'}}>
+          <h3 style={{margin: '0', color: 'white'}}>Recommended Matches</h3><div style={{color: 'white'}}>(Based on 5 rating categories)</div>
           <div
             className={propertiesData.length === 0 ? '' : 'hide'}
-            style={{display: 'flex', height: '20%', justifyContent: 'center', alignItems: 'center', opacity: '50%'}}
+            style={{ display: 'flex', height: '20%', justifyContent: 'center', alignItems: 'center', opacity: '75%', color: 'white' }}
           >
             Perform a search to see property recommendations.
           </div>
@@ -210,25 +330,9 @@ function BrowsePageLayout() {
           <Button
             className={propertiesData.length === 0 ? 'hide' : ''}
             onClick={() => { filterToolsRef.current.handleLoadMoreClick(); }}
-            >Load More
+          >Load More
           </Button>
-        </Col>
-        <Col
-          className="right-col"
-          md={3}
-          style={{
-            height: "100%",
-            overflowY: "auto",
-            background: "#f8f9fa",
-          }}
-        >
-          <PropertyDetails
-            properties={propertiesData}
-            property={selectedProperty}
-            showDetails={handleSetSelectedMarker}
-            popupOpen={mapPopupOpen}
-            setPopupOpen={setMapPopupOpen}
-          />
+          </div>
         </Col>
       </Row>
     </Container>

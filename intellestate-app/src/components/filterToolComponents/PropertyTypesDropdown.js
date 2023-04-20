@@ -4,7 +4,7 @@ import { Dropdown, Form } from 'react-bootstrap';
 function PropertyTypeDropdown({propertyTypes, onCheckboxChange}) {
 
     return (
-        <Dropdown>
+        <Dropdown autoClose='outside'>
             <Dropdown.Toggle id="property-type-dropdown-button" variant="primary">
                 Property Types
             </Dropdown.Toggle>

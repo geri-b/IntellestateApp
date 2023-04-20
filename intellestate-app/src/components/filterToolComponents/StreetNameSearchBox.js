@@ -8,6 +8,7 @@ const StreetNameSearchBox = ({streetName, onstreetNameChange}) => {
                 placeholder="Street"
                 value={streetName}
                 onChange={onstreetNameChange}
+                style={{padding: '3px 8px'}}
             />
         </Form.Group>
     );

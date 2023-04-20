@@ -18,11 +18,10 @@ import StreetNumBox from './filterToolComponents/StreetNumberBox';
 import SuffixSearchBox from './filterToolComponents/SuffixSearchBox';
 
 function FilterTools(props, ref) {
-  //
 
   //reset form value hooks
   const resetFormValues = () => {
-    setCityName('');
+    props.setCityName('');
     setzipcodeName('');
     setstreetName('');
     setMinPrice('');
@@ -41,6 +40,8 @@ function FilterTools(props, ref) {
       industrial: false,
       agricultural: false,
       utility: false,
+      mixed: false,
+      other: false,
     });
     setRatingWeights({
       price: true,
@@ -56,13 +57,20 @@ function FilterTools(props, ref) {
       crime: 1,
       school: 1,
     });
+    setInvertChecked({
+      price: false,
+      income: false,
+      diversity: false,
+      crime: false,
+      school: false,
+    });
   };
 
   const handleResetFilters = () => {
     resetFormValues();
     props.setResetData(true);
-    const data = [];
-    props.onDataUpdate(data);
+    // const data = [];
+    // props.onDataUpdate(data);
   };
 
   //load more pages hooks
@@ -77,10 +85,9 @@ function FilterTools(props, ref) {
     handleSubmit(currentPage + 1);
   };
   //City Search Hooks
-  const [cityName, setCityName] = useState('');
 
   const handleCityNameChange = (e) => {
-    setCityName(e.target.value);
+    props.setCityName(e.target.value);
     props.setResetData(true);
   };
 
@@ -157,6 +164,8 @@ function FilterTools(props, ref) {
     industrial: false,
     agricultural: false,
     utility: false,
+    mixed: false,
+    other: false,
   });
 
   const handlePropertyTypeCheckboxChange = (e) => {
@@ -232,7 +241,7 @@ function FilterTools(props, ref) {
   const handleSubmit = async (page = 1) => {
     props.setSearchInProgress(true); // Set the searchInProgress flag to true when search is initiated
     const requestBody = {
-      city: cityName,
+      city: props.cityName,
       ZIPCODE: zipcodeName,
       streetNum: streetNum,
       suffixName: suffixName,
@@ -247,6 +256,7 @@ function FilterTools(props, ref) {
       page: page,
       ratingWeights: ratingWeights,
       ratingWeightsValue: ratingWeightsValue,
+      invertChecked: invertChecked,
     };
 
     try {
@@ -264,50 +274,148 @@ function FilterTools(props, ref) {
     }
   };
 
+  const [invertChecked, setInvertChecked] = useState({
+    price: false,
+    income: false,
+    diversity: false,
+    crime: false,
+    school: false,
+  });
+
+  const handleInvertClick = (name) => {
+    setInvertChecked((prevInvertChecked) => ({
+      ...prevInvertChecked,
+      [name]: !prevInvertChecked[name],
+    }));
+    props.setResetData(true);
+  };
+
   return (
-    <Container className="filters-container p-3 rounded">
-      <h2 className="my-4 text-center">Search Properties</h2>
-      <Button className='my-2' style={{ maxWidth: '200px' }} onClick={handleResetFilters}> Reset Filters</Button>
-      <Card className="mb-3">
-        <Card.Header>Location Filters</Card.Header>
-        <Card.Body>
-          <Row className="my-2">
-            <Col xs={12} className="my-2">
-              <CitySearchBox cityName={cityName} onCityNameChange={handleCityNameChange} />
+    <Container style={{ margin: 0, display: 'grid', gap: '10px', padding: 0 }}>
+      <h3 className="text-center" style={{ margin: '10px 0 0 0', color: 'white' }}>Search Properties</h3>
+      <Row>
+        <Col xs={12}>
+          <Card>
+            <Card.Header>
+              Recommendation Weights
+            </Card.Header>
+            <Card.Body style={{display: 'grid', gap: '5px', overflow: 'auto', padding: '5px 1rem 10px 1rem'}}>
+              <div>
+                <em>
+                  Which categories do you prioritize most?
+                  {/* Select the attributes you're looking for. If one matters more to you, increase its weight. Don't like our default scoring? Toggle inversion to look for properties with a lower score instead! */}
+                </em>
+              </div>
+              {/* <Row>
+                <Col>
+                  Category
+                </Col>
+                <Col>
+                  Weight
+                </Col>
+                <Col>
+                  Invert
+                </Col>
+              </Row> */}
+              <Checkbox
+                label="Price"
+                name="price"
+                checked={ratingWeights.price}
+                onChange={handleRatingWeightCheckboxChange}
+                weight={ratingWeightsValue.price}
+                onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.price}
+                onInvertClick={() => handleInvertClick("price")}
+              />
+              <Checkbox
+                label="Crime"
+                name="crime"
+                checked={ratingWeights.crime}
+                onChange={handleRatingWeightCheckboxChange}
+                weight={ratingWeightsValue.crime}
+                onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.crime}
+                onInvertClick={() => handleInvertClick("crime")}
+              />
+              <Checkbox
+                label="School"
+                name="school"
+                checked={ratingWeights.school}
+                onChange={handleRatingWeightCheckboxChange}
+                weight={ratingWeightsValue.school}
+                onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.school}
+                onInvertClick={() => handleInvertClick("school")}
+              />
+              <Checkbox
+                label="Income"
+                name="income"
+                checked={ratingWeights.income}
+                onChange={handleRatingWeightCheckboxChange}
+                weight={ratingWeightsValue.income}
+                onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.income}
+                onInvertClick={() => handleInvertClick("income")}
+              />
+              <Checkbox
+                label="Diversity"
+                name="diversity"
+                checked={ratingWeights.diversity}
+                onChange={handleRatingWeightCheckboxChange}
+                weight={ratingWeightsValue.diversity}
+                onWeightChange={handleRatingWeightInputChange}
+                invertChecked={invertChecked.diversity}
+                onInvertClick={() => handleInvertClick("diversity")}
+              />
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      <Row className='justify-content-center' style={{margin: 0, gap: '10px', padding: '0 5px'}}>
+        <Col style={{padding: 0}}>
+          <Button style={{ width: '100%' }} onClick={handleResetFilters} variant='secondary'> Reset Filters</Button>
+        </Col>
+        <Col style={{padding: 0}}>
+          <ConfirmSearchButton
+            onSearchClick={() => { setCurrentPage(1); handleSubmit(1); }}
+            searchInProgress={props.searchInProgress}
+          />
+        </Col>
+      </Row>
+      <Card>
+        <Card.Header>Location</Card.Header>
+        <Card.Body style={{display: 'grid', gap: '5px', overflow: 'auto', padding: '1rem 1rem'}}>
+          <Row style={{margin: 0, rowGap: '10px'}}>
+            <Col xs={8} style={{padding: '0 5px 0 0'}}>
+              <CitySearchBox cityName={props.cityName} onCityNameChange={handleCityNameChange} />
             </Col>
-            <Col xs={12} className="my-2">
+            <Col xs={4} style={{padding: 0}}>
               <ZipcodeSearchBox zipcodeName={zipcodeName} onzipcodeNameChange={handlezipcodeNameChange} />
             </Col>
-            <Col xs={12} className="my-2">
-              <StreetNameSearchBox streetName={streetName} onstreetNameChange={handlestreetNameChange} />
-            </Col>
-            <Col xs={12} className="my-2">
+            <Col xs={3} style={{padding: 0}}>
               <StreetNumBox streetNum={streetNum} onStreetNumChange={handlestreetNumChange} />
             </Col>
-            <Col xs={12} className="my-2">
+            <Col xs={7} style={{padding: '0 5px 0 5px'}}>
+              <StreetNameSearchBox streetName={streetName} onstreetNameChange={handlestreetNameChange} />
+            </Col>
+            <Col xs={2} style={{padding: 0}}>
               <SuffixSearchBox suffixName={suffixName} onsuffixNameChange={handlesSuffixfNameChange} />
             </Col>
           </Row>
         </Card.Body>
       </Card>
-      <Row className='justify-content-center my-3'>
-        <ConfirmSearchButton
-          onSearchClick={() => { setCurrentPage(1); handleSubmit(1); }}
-          searchInProgress={props.searchInProgress}
-        />
-      </Row>
-      <Card className="mb-3">
+      <Card style={{minWidth: 'min-content'}}>
         <Card.Header>Property Filters</Card.Header>
         <Card.Body>
-          <Row className="my-2">
-            <Col xs={12} className="my-2">
+          <Row style={{margin: 0, gap: '10px'}}>
+            <Col xs={12}>
               <PropertyTypeDropdown
                 propertyTypes={propertyTypes}
                 onCheckboxChange={handlePropertyTypeCheckboxChange}
               />
 
             </Col>
-            <Col xs={12} className="my-2">
+            <Col xs={12}>
               <PriceRangeDropdown
                 minPrice={minPrice}
                 maxPrice={maxPrice}
@@ -316,7 +424,7 @@ function FilterTools(props, ref) {
                 onApplyClick={handlePriceApplyClick}
               />
             </Col>
-            <Col xs={12} className="my-2">
+            <Col xs={12}>
               <BuildingSQFT
                 minSQFT={minBuildingSQFT}
                 maxSQFT={maxBuildingSQFT}
@@ -325,7 +433,7 @@ function FilterTools(props, ref) {
                 onApplyClick={handleBuildingApplyClick}
               />
             </Col>
-            <Col xs={12} className="my-2">
+            <Col xs={12}>
               <LandSQFTDropdown
                 minSQFT={minSQFT}
                 maxSQFT={maxSQFT}
@@ -337,63 +445,6 @@ function FilterTools(props, ref) {
           </Row>
         </Card.Body>
       </Card>
-
-      <Row className="my-2">
-        <Col xs={12} className="my-2">
-          <Card className="mb-3">
-            <Card.Header>
-              <h5>Sort by</h5>
-            </Card.Header>
-            <Card.Body>
-              <p>
-                <em>
-                  Select a checkbox to sort a property based on what you are looking for. Don't worry, if you select multiple boxes we will sort the properties accordingly!
-                </em>
-              </p>
-              <Checkbox
-                label="Price"
-                name="price"
-                checked={ratingWeights.price}
-                onChange={handleRatingWeightCheckboxChange}
-                weight={ratingWeightsValue.price}
-                onWeightChange={handleRatingWeightInputChange}
-              />
-              <Checkbox
-                label="Income"
-                name="income"
-                checked={ratingWeights.income}
-                onChange={handleRatingWeightCheckboxChange}
-                weight={ratingWeightsValue.income}
-                onWeightChange={handleRatingWeightInputChange}
-              />
-              <Checkbox
-                label="Diversity"
-                name="diversity"
-                checked={ratingWeights.diversity}
-                onChange={handleRatingWeightCheckboxChange}
-                weight={ratingWeightsValue.diversity}
-                onWeightChange={handleRatingWeightInputChange}
-              />
-              <Checkbox
-                label="Crime"
-                name="crime"
-                checked={ratingWeights.crime}
-                onChange={handleRatingWeightCheckboxChange}
-                weight={ratingWeightsValue.crime}
-                onWeightChange={handleRatingWeightInputChange}
-              />
-              <Checkbox
-                label="School"
-                name="school"
-                checked={ratingWeights.school}
-                onChange={handleRatingWeightCheckboxChange}
-                weight={ratingWeightsValue.school}
-                onWeightChange={handleRatingWeightInputChange}
-              />
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
     </Container>
   );
 }

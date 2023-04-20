@@ -1,10 +1,17 @@
 import React from 'react';
-import { Col } from 'react-bootstrap';
+import { ToggleButton, Col } from 'react-bootstrap';
+import invertIcon from '../../images/BrowsePage/InvertIcon.png'
 
-function Checkbox({ label, name, checked, onChange, weight, onWeightChange }) {
+function Checkbox({ invertChecked, onInvertClick, label, name, checked, onChange, weight, onWeightChange }) {
+    const invertIconStyle = {
+        backgroundColor: invertChecked ? '#0d6efd' : 'transparent',
+        borderColor: invertChecked ? '#0d6efd' : '#0d6efd',
+        borderWidth: '2px',
+    };
+
     return (
-        <div className="form-check d-flex align-items-center">
-            <Col className="d-flex justify-content-start">
+        <div className="form-check d-flex align-items-center" style={{margin: 0, gap: '5px'}}>
+            <Col className="d-flex justify-content-start" style={{alignItems: 'center'}}>
                 <input
                     className="form-check-input"
                     type="checkbox"
@@ -12,6 +19,7 @@ function Checkbox({ label, name, checked, onChange, weight, onWeightChange }) {
                     id={name}
                     checked={checked}
                     onChange={onChange}
+                    style={{marginTop: 0}}
                 />
 
                 <label className="form-check" htmlFor={name}>
@@ -27,9 +35,19 @@ function Checkbox({ label, name, checked, onChange, weight, onWeightChange }) {
                     value={weight}
                     onChange={onWeightChange}
                     disabled={!checked}
-                    style={{ width: "80px" }}
+                    style={{ width: "80px", padding: '3px 8px' }}
                 />
             </Col>
+            <ToggleButton
+                variant="light"
+                className="btn shadow-none invert-rank"
+                active={invertChecked}
+                onClick={onInvertClick}
+                style={invertIconStyle}
+                title='Invert Ranking'
+            >
+                <img className="invert-icon" src={invertIcon} style={{width: '20px', height: '20px', filter: invertChecked ? 'brightness(0) invert(1)' : ''}} alt='Invert Ranking' />
+            </ToggleButton>
         </div>
     );
 }
