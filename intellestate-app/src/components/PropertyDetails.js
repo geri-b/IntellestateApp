@@ -354,7 +354,8 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                 datasets: [{
                   label: '%',
                   data: [property.i_percent_low * 100, property.i_percent_med * 100, property.i_percent_high * 100],
-                  backgroundColor: ['#d9463e', '#d9d93e', '#4ec94e']
+                  backgroundColor: ['#d9463e', '#d9d93e', '#4ec94e'],
+                  borderColor: ['#b32', '#bb2', '#3b3'],
                 }]
               }}></Pie>
             </Col>
@@ -368,12 +369,19 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                   label: '%',
                   data: [property.d_white * 100, property.d_black * 100, property.d_asian * 100, property.d_indigenous * 100, property.d_pacific * 100],
                   backgroundColor: [
-                      '#4444AA',
-                      '#DDDD44',
-                      '#44AA44',
-                      '#AA44AA',
-                      '#AA4444'
-                    ]
+                    '#4444AA',
+                    '#DDDD44',
+                    '#44AA44',
+                    '#AA44AA',
+                    '#AA4444'
+                  ],
+                  borderColor: [
+                    '#338',
+                    '#bb3',
+                    '#383',
+                    '#838',
+                    '#833'
+                  ]
                 }]
               }}></Pie>
             </Col>
@@ -385,27 +393,49 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                   label: '%',
                   data: [property.ind_farm * 100, property.ind_mining * 100, property.ind_utility * 100, property.ind_construction * 100, property.ind_manufacture * 100, property.ind_wholesale * 100, property.ind_retail * 100, property.ind_transport * 100, property.ind_it * 100, property.ind_finance * 100, property.ind_real_estate * 100, property.ind_science * 100, property.ind_management * 100, property.ind_waste * 100, property.ind_education * 100, property.ind_health_care * 100, property.ind_entertain * 100, property.ind_food_service * 100, property.ind_other * 100, property.ind_public_admin * 100],
                   backgroundColor: [
-                      '#e71d43',
-                      '#ff3700',
-                      '#ff6e00',
-                      '#ffa500',
-                      '#ffc300',
-                      '#ffe100',
-                      '#aad500',
-                      '#55aa00',
-                      '#008000',
-                      '#005555',
-                      '#002baa',
-                      '#0000ff',
-                      '#1900d5',
-                      '#3200ac',
-                      '#4b0082',
-                      '#812ba6',
-                      '#b857ca',
-                      '#d03a87',
-                      '#A0A4A5',
-                      '#33E6FF'
-                    ]
+                    '#e71d43',
+                    '#ff3700',
+                    '#ff6e00',
+                    '#ffa500',
+                    '#ffc300',
+                    '#ffe100',
+                    '#aad500',
+                    '#55aa00',
+                    '#008000',
+                    '#005555',
+                    '#002baa',
+                    '#0000ff',
+                    '#1900d5',
+                    '#3200ac',
+                    '#4b0082',
+                    '#812ba6',
+                    '#b857ca',
+                    '#d03a87',
+                    '#A0A4A5',
+                    '#33E6FF'
+                  ],
+                  borderColor: [
+                    '#b13',
+                    '#c20',
+                    '#c50',
+                    '#c80',
+                    '#ca0',
+                    '#cb0',
+                    '#8b0',
+                    '#380',
+                    '#060',
+                    '#033',
+                    '#028',
+                    '#00c',
+                    '#10b',
+                    '#208',
+                    '#306',
+                    '#628',
+                    '#93a',
+                    '#b26',
+                    '#888',
+                    '#2bc'
+                  ]
                 }]
               }}></Pie>
             </Col>
