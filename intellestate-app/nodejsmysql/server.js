@@ -178,6 +178,21 @@ app.post("/propertyTypes", (req, res) => {
     });
 });
 
+app.post("/foodDeserts", (req, res) => {
+    let sqlQuery = "select * from food_desert_coorded";
+
+    console.log(sqlQuery);
+
+    conn.query(sqlQuery, (error, results, fields) => {
+        if (error) {
+            console.error('Error executing query:', error);
+            res.status(500).json({ error: 'An error occurred while executing the query.' });
+            return;
+        }
+        res.send(results);
+    });
+});
+
 app.post("/search", (req, res) => {
     const { city, ZIPCODE, STREET, streetNum, suffixName, minPrice, maxPrice, minSQFT, maxSQFT, minBuildingSQFT, maxBuildingSQFT, propertyTypes, page = 1, ratingWeights, ratingWeightsValue, invertChecked, algorithmType, includeVacant } = req.body;
     const limit = 50;
