@@ -48,6 +48,18 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
     }
   }
 
+  const markerColor = {
+    'Residential': 'lightskyblue',
+    'Commercial': 'forestgreen',
+    'Agricultural': '#e70',
+    'Utility': '#7d7',
+    'Government': 'royalblue',
+    'Institutional': '#e8b828',
+    'Industrial': 'saddlebrown',
+    'Mixed': 'purple',
+    'Other': 'grey',
+  };
+
   const [headerHover, setHeaderHover] = useState(false);
   const [bodyHover, setBodyHover] = useState(false);
 
@@ -81,35 +93,19 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
         style={{ backgroundColor: bodyHover ? '#f8f9fa' : 'white', cursor: bodyHover ? 'pointer' : 'default', display: 'grid', padding: '5px 5px 1rem 5px' }}
 
       >
-        <Row style={{padding: '0 0 0px 0'}}>
-          <Col className='col fw-bold'>
+        <Row style={{padding: '2px 0 2px 0'}}>
+          <Col className='col fw-bold' style={{lineHeight: '100%'}}>
             ~${property.GCERT3}
           </Col>
-          <Col className='col fw-bold'>
+          <Col className='col fw-bold' style={{lineHeight: '100%'}}>
             {property.TOTAL_RES_AREA + property.TOTAL_COM_AREA} sqft.
           </Col>
-          <Col className='col fw-bold'>
+          <Col className='col fw-bold' style={{lineHeight: '100%'}}>
             {property.COM_BLDG_CNT === '0' ? property.RES_BLDG_COUNT : property.COM_BLDG_CNT} Bldg.
           </Col>
-          <Col className='col fw-bold'>
+          <Col className='col fw-bold' style={{lineHeight: '100%', color: markerColor[property.SiteCat1 === '' ? 'Other' : property.SiteCat1]}}>
             {property.SiteCat1 === '' ? 'N/A' : property.SiteCat1}
           </Col>
-          {/* <Col className="col fw-bold" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{padding: 0}}>
-            <Row className="justify-content-center align-items-center">
-              {property.TOTAL_RES_AREA + property.TOTAL_COM_AREA} sq.
-            </Row>
-            <Row className="justify-content-center align-items-center">
-              {property.RES_BLDG_CNT + property.COM_BLDG_CNT} Bldg.
-            </Row>
-          </Col>
-          <Col className="col fw-bold" xs={5} sm={4} md={3} lg={3} xl={2} xxl={2} style={{paddingLeft: 0}}>
-            <Row className="justify-content-center align-items-center">
-              ~${property.GCERT3}
-            </Row>
-            <Row className="justify-content-center align-items-center">
-              {property.SiteCat1}
-            </Row>
-          </Col> */}
         </Row>
         <Row className='card-body-row property-ratings-row' style={{ gap: "5px", margin: '5px 0' }}>
           <Col style={{backgroundColor: ratingBackgroundColor(property.p_rating)}}>

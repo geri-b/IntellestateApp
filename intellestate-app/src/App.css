@@ -474,7 +474,7 @@ Filter Tools
       height var(--ham-anim-speed) ease-in-out var(--ham-anim-speed);
 }
 
-#show-hotspots, #show-recommended-properties, #show-nearby-property-types {
+#show-hotspots, #show-recommended-properties, #show-nearby-property-types, #show-food-deserts {
   margin: 0;
 }
 

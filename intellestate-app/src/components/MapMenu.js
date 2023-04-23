@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 
 
-function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperties, geographicShapes, setPropertyTypes, changeShowPropertyTypes}) {
+function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperties, geographicShapes, setPropertyTypes, changeShowPropertyTypes, changeShowFoodDeserts}) {
   const [openMapMenu, setOpenMapMenu] = useState('closed');
 
   const changeOpenMapMenuState = (e) => {
@@ -285,7 +285,7 @@ function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperti
             <div id="l3" className="map-menu-line"></div>
           </label>
         </div>
-        <div style={{display: 'flex', margin: 0, alignItems: 'center', fontSize: '21px', color: '#0d4ead'}} className={openMapMenu === 'open' ? 'justify-content-center' : 'hide'}>
+        <div style={{display: 'flex', margin: 0, alignItems: 'center', fontSize: '21px', color: '#0d4ead'}} className={openMapMenu === 'open' ? '' : 'hide'}>
           Map Controls
         </div>
       </div>
@@ -300,6 +300,18 @@ function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperti
             style={{margin: '0', padding: 0, alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left'}}
             onChange={changeShowRecommendedProperties}
             defaultChecked={true}
+          />
+        </Row>
+        <Row style={{margin: 0}}>
+          <Form.Check
+            type="switch"
+            id='show-food-deserts'
+            name='food-deserts'
+            label='Food Desert Blocks'
+            className="map-control-switch"
+            style={{margin: '0', padding: 0, alignContent: 'center', alignItems: 'center', display: 'flex', gap: '10px', textAlign: 'left'}}
+            onChange={changeShowFoodDeserts}
+            defaultChecked={false}
           />
         </Row>
         <hr style={{margin: '.5rem 0'}}></hr>
@@ -571,7 +583,7 @@ function MapMenu({setHotspots, changeShowHotspots, changeShowRecommendedProperti
             </Row>
             <Row style={{margin: 0, justifyContent: 'center'}}>
               <Button size="sm" type="primary" style={{width: 'fit-content'}} onClick={onUpdatePropertyTypes}>
-                Update Property Types
+                Update Nearby Properties
               </Button>
             </Row>
           </Col>

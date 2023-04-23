@@ -312,7 +312,7 @@ function BrowsePageLayout({cityName, setCityName}) {
         </Col>
         <Col md={3} style={{ minWidth: 'min-content', height: "100%", overflowY: "hidden", background: "linear-gradient(270deg, #123 0%, #203a60 100%)", padding: '10px 0 .75rem 0' }}> {/*linear-gradient(0deg, #059 0%, #0d8 100%) */}
           <div style={{height: '100%', overflow: 'auto', paddingRight: '.75rem', paddingLeft: '.75rem', borderRadius: '6px'}}>
-            <h3 style={{margin: '0', color: 'white'}}>Recommended Matches</h3><div style={{color: 'white'}}>(Based on 5 rating categories)</div>
+            <h3 style={{margin: '0', color: 'white', fontWeight: 'bold', height: '33px'}}>Recommended Matches</h3><div style={{color: 'white'}}>(Based on 5 rating categories)</div> {/* #d0f */}
             <div
               className={propertiesData.length === 0 ? '' : 'hide'}
               style={{ display: 'flex', height: '20%', justifyContent: 'center', alignItems: 'center', opacity: '75%', color: 'white' }}
