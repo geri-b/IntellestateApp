@@ -406,7 +406,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           onClick={() => setPopupOpen(property.PARCELPIN)}
         ></Marker>
       </Map>
-      <div style={{ margin: '5px 0 0 0', display: property.FULL_ADDR == null ? 'none' : 'inline-block' }}>{property.FULL_ADDR}</div><br></br>
+      <div style={{ margin: '5px 0 0 0', fontWeight: 'bold', display: property.FULL_ADDR == null ? 'none' : 'inline-block' }}>{property.FULL_ADDR}</div><br></br>
       <div style={{ display: isNaN(property.PARCELPIN) ? 'none' : '' }}>
           <Row style={{justifyContent: 'center', margin: 0, padding: 0}}>
             <Col xs={6} xxl={4} style={{display: 'grid', aspectRatio: '1/1', padding: '20px', minWidth: '300px'}}>

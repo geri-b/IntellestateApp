@@ -313,7 +313,7 @@ function FilterTools(props, ref) {
       <Row>
         <Col xs={12}>
           <Card>
-            <Card.Header style={{fontWeight: 'bold', fontSize: '20px', color: '#0d6dfd', height: '41px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <Card.Header style={{fontWeight: 'bold', fontSize: '20px', color: 'black', height: '41px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
               Recommendation Weights
             </Card.Header>
             <Card.Body id='rec-weights-cbody' style={{display: 'grid', gap: '5px', overflow: 'auto', padding: '5px 1rem 10px 1rem'}}>
@@ -397,7 +397,7 @@ function FilterTools(props, ref) {
         </Col>
       </Row>
       <Card>
-        <Card.Header style={{fontWeight: 'bold', fontSize: '20px', color: '#0d6dfd', height: '41px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <Card.Header style={{fontWeight: 'bold', fontSize: '20px', color: 'black', height: '41px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           Location
         </Card.Header>
         <Card.Body style={{display: 'grid', gap: '5px', overflow: 'auto', padding: '1rem 1rem'}}>
@@ -421,7 +421,7 @@ function FilterTools(props, ref) {
         </Card.Body>
       </Card>
       <Card style={{minWidth: 'min-content'}}>
-        <Card.Header style={{fontWeight: 'bold', fontSize: '20px', color: '#0d6dfd', height: '41px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <Card.Header style={{fontWeight: 'bold', fontSize: '20px', color: 'black', height: '41px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           Property Filters
         </Card.Header>
         <Card.Body>

@@ -184,7 +184,7 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
           {/* <Col style={{padding: 0, fontSize: '12px'}}>
             Compared to City
           </Col> */}
-          <Col style={{padding: 0, fontSize: '12px'}}>
+          <Col style={{padding: 0, fontSize: '12px', fontStyle: 'italic'}}>
             *Compared to the Cuyahoga County average.
           </Col>
         </Row>
