@@ -1,7 +1,7 @@
 import Map, { Layer, Source, Marker, Popup } from 'react-map-gl';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import MapMenu from "./MapMenu";
 import React from 'react';
@@ -196,6 +196,40 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
     }
   }
 
+  const [initialLoad, setInitialLoad] = useState(true);
+  const [showFoodDeserts, setShowFoodDeserts] = useState('none');
+  const [foodDeserts, setFoodDeserts] = useState([]);
+  
+  const changeShowFoodDeserts = (e) => {
+    if (e.target.checked) {
+      setShowFoodDeserts('');
+    } else {
+      setShowFoodDeserts('none');
+    }
+  }
+
+  useEffect(() => {
+    const getFoodDeserts = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/foodDeserts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
+  
+        const data = await response.json();
+        setFoodDeserts(data)
+        console.log(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    if (initialLoad) {
+      setInitialLoad(false);
+      getFoodDeserts();
+    }
+  }, [initialLoad, setInitialLoad]);
+
   return (
     <div style={{ width: "100%" }}>
       <div style={{ width: '100%', height: 'max-content', background: 'white', borderRadius: '4px' }}>
@@ -228,6 +262,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           changeShowPropertyTypes={changeShowPropertyTypes}
           geographicShapes={geographicShapes}
           setPropertyTypes={setPropertyTypes}
+          changeShowFoodDeserts={changeShowFoodDeserts}
         ></MapMenu>
         {
           <Source key={new Date().getTime()} id="my-data" type="geojson" data={shapes}>
@@ -336,6 +371,33 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
             )}
           </div>
         ))}
+        {useMemo(() => foodDeserts.map(block => (
+          <div key={block.geocode}>
+            <Marker
+              latitude={block.avg_lat}
+              longitude={block.avg_long}
+              // onClick={() => { setPopupOpen(prop.PARCELPIN); showDetails(prop) }}
+              style={{ display: showFoodDeserts }}
+            >
+              <div style={{width: '20px', height: '20px', border: '2px solid grey', borderRadius: '50%', background: 'lightgrey', opacity: .5}}></div>
+            </Marker>
+            {/* {popupOpen === prop.PARCELPIN && (
+              <Popup
+                latitude={prop.AVG_LAT}
+                longitude={prop.AVG_LONG}
+                onClose={() => setPopupOpen('')}
+                closeButton={true}
+                closeOnClick={false}
+              >
+                <span>
+                  {prop.FULL_ADDR} <br></br>
+                  {prop.SiteCat1 === '' ? 'Undefined' : prop.SiteCat1} <br></br>
+                  {prop.SiteCat1 === 'Residential' ? '' : 'Owner: ' + prop.PARCL_OWN2}
+                </span>
+              </Popup>
+            )} */}
+          </div>
+        )), [foodDeserts, showFoodDeserts])}
         <Marker
           latitude={isNaN(property.AVG_LAT) ? 0 : property.AVG_LAT}
           longitude={isNaN(property.AVG_LONG) ? 0 : property.AVG_LONG}
@@ -344,17 +406,18 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
           onClick={() => setPopupOpen(property.PARCELPIN)}
         ></Marker>
       </Map>
-      <div style={{ margin: '5px 0 0 0', display: property.FULL_ADDR == null ? 'none' : 'inline-block' }}>{property.FULL_ADDR}</div><br></br>
+      <div style={{ margin: '5px 0 0 0', fontWeight: 'bold', display: property.FULL_ADDR == null ? 'none' : 'inline-block' }}>{property.FULL_ADDR}</div><br></br>
       <div style={{ display: isNaN(property.PARCELPIN) ? 'none' : '' }}>
           <Row style={{justifyContent: 'center', margin: 0, padding: 0}}>
             <Col xs={6} xxl={4} style={{display: 'grid', aspectRatio: '1/1', padding: '20px', minWidth: '300px'}}>
               <Row style={{margin: 0, padding: 0, justifyContent: 'center', fontSize: '1.1rem', fontWeight: 'bold'}}>Neighborhood Income</Row>
               <Pie data={{
-                labels: ['Less than $15k per year', '$15k - $40k per year', 'More than $40k per year'],
+                labels: ['Less than $15k per year', '$15k - $40k per year', 'Greater than $40k per year'],
                 datasets: [{
                   label: '%',
                   data: [property.i_percent_low * 100, property.i_percent_med * 100, property.i_percent_high * 100],
-                  backgroundColor: ['#d9463e', '#d9d93e', '#4ec94e']
+                  backgroundColor: ['#d9463e', '#d9d93e', '#4ec94e'],
+                  borderColor: ['#b32', '#bb2', '#3b3'],
                 }]
               }}></Pie>
             </Col>
@@ -368,12 +431,19 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                   label: '%',
                   data: [property.d_white * 100, property.d_black * 100, property.d_asian * 100, property.d_indigenous * 100, property.d_pacific * 100],
                   backgroundColor: [
-                      '#4444AA',
-                      '#DDDD44',
-                      '#44AA44',
-                      '#AA44AA',
-                      '#AA4444'
-                    ]
+                    '#4444AA',
+                    '#DDDD44',
+                    '#44AA44',
+                    '#AA44AA',
+                    '#AA4444'
+                  ],
+                  borderColor: [
+                    '#338',
+                    '#bb3',
+                    '#383',
+                    '#838',
+                    '#833'
+                  ]
                 }]
               }}></Pie>
             </Col>
@@ -385,27 +455,49 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
                   label: '%',
                   data: [property.ind_farm * 100, property.ind_mining * 100, property.ind_utility * 100, property.ind_construction * 100, property.ind_manufacture * 100, property.ind_wholesale * 100, property.ind_retail * 100, property.ind_transport * 100, property.ind_it * 100, property.ind_finance * 100, property.ind_real_estate * 100, property.ind_science * 100, property.ind_management * 100, property.ind_waste * 100, property.ind_education * 100, property.ind_health_care * 100, property.ind_entertain * 100, property.ind_food_service * 100, property.ind_other * 100, property.ind_public_admin * 100],
                   backgroundColor: [
-                      '#e71d43',
-                      '#ff3700',
-                      '#ff6e00',
-                      '#ffa500',
-                      '#ffc300',
-                      '#ffe100',
-                      '#aad500',
-                      '#55aa00',
-                      '#008000',
-                      '#005555',
-                      '#002baa',
-                      '#0000ff',
-                      '#1900d5',
-                      '#3200ac',
-                      '#4b0082',
-                      '#812ba6',
-                      '#b857ca',
-                      '#d03a87',
-                      '#A0A4A5',
-                      '#33E6FF'
-                    ]
+                    '#e71d43',
+                    '#ff3700',
+                    '#ff6e00',
+                    '#ffa500',
+                    '#ffc300',
+                    '#ffe100',
+                    '#aad500',
+                    '#55aa00',
+                    '#008000',
+                    '#005555',
+                    '#002baa',
+                    '#0000ff',
+                    '#1900d5',
+                    '#3200ac',
+                    '#4b0082',
+                    '#812ba6',
+                    '#b857ca',
+                    '#d03a87',
+                    '#A0A4A5',
+                    '#33E6FF'
+                  ],
+                  borderColor: [
+                    '#b13',
+                    '#c20',
+                    '#c50',
+                    '#c80',
+                    '#ca0',
+                    '#cb0',
+                    '#8b0',
+                    '#380',
+                    '#060',
+                    '#033',
+                    '#028',
+                    '#00c',
+                    '#10b',
+                    '#208',
+                    '#306',
+                    '#628',
+                    '#93a',
+                    '#b26',
+                    '#888',
+                    '#2bc'
+                  ]
                 }]
               }}></Pie>
             </Col>
