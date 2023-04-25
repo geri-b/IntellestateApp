@@ -192,45 +192,57 @@ function PropertyCard({ property, onHeaderClick, onBodyClick, onButtonClick }) {
         <Row>
           {property.showExtraInfo && (
             <Card.Body>
-              <Card.Title style={{ borderBottom: '1px solid #ccc'}}>PROPERTY INFORMATION</Card.Title>
+              <hr style={{margin: '5px 0'}}></hr>
               <Card.Text style={{ marginBottom: '-20px' }}>
                 <Row>
-                <Col className="text-center" style={{ whiteSpace: 'nowrap' }}>
+                <Col style={{ whiteSpace: 'nowrap', textAlign: 'left' }}>
                   Description: <span style={{ fontWeight: 'bold' }}> {property.SiteCat1 === 'Commercial' ? property.TAX_LUC_DESC : property.SiteCat2} </span>
                 </Col>                    
                 </Row>
                 <Row>
-                <Col className="text-left" style={{ whiteSpace: 'nowrap', textTransform: 'capitalize' }}>
-                Owner: <span style={{ fontWeight: 'bold' }}>{property.SiteCat1 === 'Residential' ? 'Resident/Land Lord' : property.PARCL_OWN2} </span>
+                <Col style={{ whiteSpace: 'nowrap', textTransform: 'capitalize', textAlign: 'left' }}>
+                Owner: <span style={{ fontWeight: 'bold' }}>{property.SiteCat2 === 'Condo' || property.SiteCat2 === 'Single Family' || property.SiteCat2 === 'Multi-Family 2 Units' || property.SiteCat2 === 'Multi-Family 3 Units' ? 'Resident' : property.PARCL_OWN2} </span>
                 </Col>
                 </Row>
-                <Row>
-                <Col className="text-right" style={{ whiteSpace: 'nowrap' }}>
+                <hr style={{margin: '5px 0'}}></hr>
+                <Row style={{margin: 0, gap: '5px'}}>
+                <Col style={{ whiteSpace: 'nowrap', textAlign: 'left', padding: 0 }}>
                   Land Price: <span style={{ fontWeight: 'bold' }}> ${property.GCERT1} </span>
                 </Col>
-                <Col className="text-right" style={{ whiteSpace: 'nowrap' }}>
-                  Building Price: <span style={{ fontWeight: 'bold' }}> ${property.GCERT2} </span>
+                <Col style={{ whiteSpace: 'nowrap', textAlign: 'left', padding: 0 }}>
+                  Build. Price: <span style={{ fontWeight: 'bold' }}> ${property.GCERT2} </span>
                 </Col>
                 </Row>
-                <Row>
-                  <Col className="text-left" style={{ whiteSpace: 'nowrap' }}>
+                <Row style={{margin: 0, gap: '5px'}}>
+                <Col style={{ whiteSpace: 'nowrap', textAlign: 'left', padding: 0 }}>
+                  Prior Sale: <span style={{ fontWeight: 'bold' }}> ${property.SALES_AMOU} </span>
+                </Col>
+                <Col style={{ whiteSpace: 'nowrap', textAlign: 'left', padding: 0 }}>
+                  Transfer Date: <span style={{ fontWeight: 'bold' }}>{property.TRANSFER_DATE} </span>
+                </Col>
+                </Row>
+                <Row style={{margin: 0, gap: '5px'}}>
+                <Col style={{ whiteSpace: 'nowrap', textAlign: 'left', padding: 0 }}>
+                Acreage: <span style={{ fontWeight: 'bold' }}> {property.TOTAL_ACRE}</span>
+                </Col>
+                <Col style={{ whiteSpace: 'nowrap', textAlign: 'left', padding: 0 }}>
+                Residential Units: <span style={{ fontWeight: 'bold' }}> {property.Units2}</span>
+                </Col>
+                </Row>
+                <Row style={{margin: 0, gap: '5px'}}>
+                  <Col style={{ whiteSpace: 'nowrap', textAlign: 'left', padding: 0 }}>
                   Water: <span style={{ fontWeight: 'bold' }}> {property.WATER} </span>
                 </Col>
-                <Col className="text-center" style={{ whiteSpace: 'nowrap' }}>
+                <Col style={{ whiteSpace: 'nowrap', textAlign: 'left', padding: 0 }}>
                 Sewer: <span style={{ fontWeight: 'bold' }}> {property.SEWER} </span>
                 </Col>
                 </Row>
-                <Row>
-                <Col className="text-right" style={{ whiteSpace: 'nowrap' }}>
+                <Row style={{margin: 0, gap: '5px'}}>
+                <Col style={{ whiteSpace: 'nowrap', textAlign: 'left', padding: 0 }}>
                 Gas: <span style={{ fontWeight: 'bold' }}> {property.GAS} </span>
                 </Col>
-                <Col className="text-right" style={{ whiteSpace: 'nowrap' }}>
+                <Col style={{ whiteSpace: 'nowrap', textAlign: 'left', padding: 0 }}>
                 Electricity: <span style={{ fontWeight: 'bold' }}> {property.ELECTRICITY} </span>
-                </Col>
-                </Row>
-                <Row>
-                <Col className="text-center" style={{ whiteSpace: 'nowrap' }}>
-                Units: <span style={{ fontWeight: 'bold' }}> {property.Units2}</span>
                 </Col>
                 </Row>
 

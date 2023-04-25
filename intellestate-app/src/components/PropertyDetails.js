@@ -379,7 +379,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
               // onClick={() => { setPopupOpen(prop.PARCELPIN); showDetails(prop) }}
               style={{ display: showFoodDeserts }}
             >
-              <div style={{width: '20px', height: '20px', border: '2px solid grey', borderRadius: '50%', background: 'lightgrey', opacity: .5}}></div>
+              <div style={{width: '20px', height: '20px', border: '2px solid #a00', borderRadius: '50%', background: '#e00', opacity: .5}}></div>
             </Marker>
             {/* {popupOpen === prop.PARCELPIN && (
               <Popup
