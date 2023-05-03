@@ -407,7 +407,7 @@ function PropertyDetails({ properties, property, showDetails, popupOpen, setPopu
         ></Marker>
       </Map>
       <div style={{ margin: '5px 0 0 0', fontWeight: 'bold', display: property.FULL_ADDR == null ? 'none' : 'inline-block' }}>{property.FULL_ADDR}</div><br></br>
-      <div style={{ display: isNaN(property.PARCELPIN) ? 'none' : '' }}>
+      <div style={{ display: isNaN(property.PARCELPIN) && !(typeof property.PARCELPIN === 'string') ? 'none' : '' }}>
           <Row style={{justifyContent: 'center', margin: 0, padding: 0}}>
             <Col xs={6} xxl={4} style={{display: 'grid', aspectRatio: '1/1', padding: '20px', minWidth: '300px'}}>
               <Row style={{margin: 0, padding: 0, justifyContent: 'center', fontSize: '1.1rem', fontWeight: 'bold'}}>Neighborhood Income</Row>
